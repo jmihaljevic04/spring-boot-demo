@@ -1,0 +1,24 @@
+[*]
+end_of_line = lf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+insert_final_newline = true
+charset = utf-8
+
+[*.java]
+max_line_length = 150
+ij_java_class_count_to_use_import_on_demand = 999
+ij_java_names_count_to_use_import_on_demand = 999
+ij_java_blank_lines_after_class_header = 1
+ij_java_blank_lines_before_class_end = 1
+ij_java_blank_lines_around_method = 1
+ij_java_blank_lines_around_method_in_interface = 1
+ij_java_for_brace_force = always
+ij_java_if_brace_force = always
+ij_java_while_brace_force = always
+ij_java_do_while_brace_force = always
+ij_java_insert_override_annotation = true
+
+[*.sql]
+max_line_length = off
