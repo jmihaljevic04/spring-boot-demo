@@ -12,11 +12,13 @@
 	<artifactId>spring-boot-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-boot-demo</name>
-	<description>spring-boot-demo</description>
+	<description>Pet project as a Spring Boot demo application.</description>
+
 	<properties>
 		<java.version>21</java.version>
 		<spring-modulith.version>1.2.0</spring-modulith.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -87,6 +89,7 @@
 			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
 		</dependency>
 
+		<!-- UTILITY section -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -129,6 +132,8 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- TEST section -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
