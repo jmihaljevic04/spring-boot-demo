@@ -35,6 +35,7 @@
         <pet.spring-thymeleaf.version>3.3.0</pet.spring-thymeleaf.version>
         <pet.spring-validation.version>3.3.0</pet.spring-validation.version>
         <pet.spring-web.version>3.3.0</pet.spring-web.version>
+        <pet.spring-retry.version>2.0.6</pet.spring-retry.version>
         <pet.flyway.version>10.10.0</pet.flyway.version>
         <pet.thymeleaf-security-extras.version>3.1.2.RELEASE</pet.thymeleaf-security-extras.version>
 
@@ -44,6 +45,7 @@
         <pet.postgresql.version>42.7.3</pet.postgresql.version>
         <pet.spring-config-processor.version>3.3.0</pet.spring-config-processor.version>
         <pet.lombok.version>1.18.32</pet.lombok.version>
+        <pet.spring-openapi.version>2.5.0</pet.spring-openapi.version>
 
         <pet.spring-test.version>3.3.0</pet.spring-test.version>
         <pet.spring-testcontainers.version>3.3.0</pet.spring-testcontainers.version>
@@ -114,6 +116,11 @@
             <version>${pet.spring-web.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.retry</groupId>
+            <artifactId>spring-retry</artifactId>
+            <version>${pet.spring-retry.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
             <version>${pet.flyway.version}</version>
@@ -166,6 +173,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${pet.lombok.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${pet.spring-openapi.version}</version>
             <optional>true</optional>
         </dependency>
 
