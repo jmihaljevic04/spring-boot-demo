@@ -1,4 +1,4 @@
-package com.pet.springbootdemo;
+package com.pet.pethubapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,7 +27,7 @@ public class TestcontainersConfiguration {
     }
 
     public static void main(String[] args) {
-        SpringApplication.from(SpringBootDemoApplication::main).with(TestcontainersConfiguration.class).run(args);
+        SpringApplication.from(PetHubApiApplication::main).with(TestcontainersConfiguration.class).run(args);
     }
 
 }

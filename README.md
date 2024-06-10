@@ -11,7 +11,7 @@ cache and much more.
 Installation:
 
 - NodeJS
-- GIT
+- Git
 - Docker
 - Java 21
 - IDE (instructions are based on IntelliJ IDEA)
@@ -44,6 +44,9 @@ and https://medium.com/better-programming/i-review-my-own-pull-requests-83f74937
 Guide how to name test classes and
 methods: https://www.codurance.com/publications/2014/12/13/naming-test-classes-and-methods <br>
 TDD methodology should be applied where possible, but not in strict mode.
+
+Why is having shared libraries (dependencies) hard to
+maintain: https://phauer.com/2016/dont-share-libraries-among-microservices/
 
 ***
 
@@ -98,9 +101,50 @@ history), make sure PR build is successful and is the one who merges PR after al
 
 ## Codebase intro
 
-For running application locally `docker-compose` file is present to run containerized integrations.
+For running application locally `docker-compose` file is present to run containerized integrations. If running with
+Spring command (or through IDE), containers are started automatically.
+If necessary, containers can be started with following commands (positioned in root directory):
+
+- download and start containers: `docker compose up`
+- start with downloaded containers: `docker compose start`
+- stop containers: `docker compose stop`
+- stop and remove containers and volumes: `docker compose down -v`
 
 Code style is mainly influenced by default IntelliJ IDEA style, but overwritten with `.editorconfig` file, and is
 automatically applied.
 
 Maven wrapper is available, so use it instead your local installation (if using IntelliJ IDEA, change usage to wrapper).
+
+### Microservices
+
+Project contains two microservices: `api` and `batch`. Purpose of it is to split functionalities and load to separate
+executable _jars_.
+For instance, first one serves API endpoints and can be easily scaled based on incoming load, while second one is
+responsible for handling scheduled jobs, which may be "heavy" but won't impact API performance.
+
+In real microservice architecture, these should have two separate databases (Database per Service pattern), but since
+this is example application due to simplicity they will share it (one example is sync between entities on DB).
+In production environment this will also work with right configuration.
+What we need to keep on mind is database migrations, because they will be executed on shared database by first
+microservice which will start.
+
+Another advantage of splitting is splitting dependencies. For example, `api` microservice doesn't need to have
+dependency for _spring-batch_.
+
+Regarding dependencies, common approach is to have `common`, `shared` or some similarly named _jar_ which is used in
+both microservices (but is not application by itself), and provides shared dependencies, domain classes, utilities etc.
+Although it simplifies development and remove need for most of the duplicate, it just hides another dependency which has
+to be maintained and is weak point for both microservices. Some examples are:
+
+- changes made in common module require redeploy of both microservices (tightly coupled)
+- in time combined with poor decisions, becomes cluttered with a bunch of logic
+- often hides need for extracting logic to another application (microservice)
+- if used by someone outside of this project (shared utilities on org level), provides transitive dependencies (which
+  are often not handled properly) and discourages people on making changes due to many unknowns
+
+### Communication between microservices
+
+Applications support both synchronous and asynchronous communication between themselves. Sync is done via HTTP (REST
+APIs) where we are expecting response immediately and consciously blocking further process.
+Async is done via RabbitMQ pub/sub mechanism in cases where response and execution time is not necessary, for example
+triggering to send an email or process something.

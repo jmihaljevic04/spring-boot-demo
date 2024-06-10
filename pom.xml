@@ -11,8 +11,15 @@
     <groupId>com.pet</groupId>
     <artifactId>spring-boot-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>spring-boot-demo</name>
-    <description>Pet project as a Spring Boot demo application.</description>
+    <description>Pet project as a Spring Boot demo application. This is parent project providing dependencies.
+    </description>
+
+    <modules>
+        <module>pet-hub-api</module>
+        <module>pet-hub-batch</module>
+    </modules>
 
     <properties>
         <java.version>21</java.version>

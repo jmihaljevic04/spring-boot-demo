@@ -1,4 +1,4 @@
-package com.pet.springbootdemo;
+package com.pet.pethubbatch;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootTest(properties = "integration-test.rabbitmq.enabled=true")
 @Import(TestcontainersConfiguration.class)
-class SpringBootDemoApplicationShould {
+class PetHubBatchApplicationShould {
 
     @Test
     void loadContext() {
