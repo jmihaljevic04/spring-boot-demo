@@ -99,6 +99,23 @@ history), make sure PR build is successful and is the one who merges PR after al
 
 ***
 
+## Dependency management
+
+All dependencies and their versions are managed in parent/root _pom.xml_ file, and used/resolved in child _pom.xml_
+files.
+
+New dependencies should be always declared in root file, alongside with their version. But before adding new, always
+check compatibility with existing ones and if they are already present as transitive dependencies.
+
+Useful commands to:
+
+- check used/unused and declared/undeclared dependencies: `mvn dependency:analyze`
+- check mismatches between declared and resolved: `mvn dependency:analyze-dep-mgt`
+- check duplicate declarations: `mvn dependency:analyze-duplicate`
+- check dependency tree and resolved dependencies in project: `mvn dependency:tree`
+
+***
+
 ## Codebase intro
 
 For running application locally `docker-compose` file is present to run containerized integrations. If running with

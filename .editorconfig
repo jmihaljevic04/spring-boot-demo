@@ -22,3 +22,6 @@ ij_java_insert_override_annotation = true
 
 [*.sql]
 max_line_length = off
+
+[*.xml]
+max_line_length = off
