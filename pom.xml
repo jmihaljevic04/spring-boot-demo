@@ -55,6 +55,8 @@
         <pet.testcontainers-junit.version>1.19.8</pet.testcontainers-junit.version>
         <pet.testcontainers-postgresql.version>1.19.8</pet.testcontainers-postgresql.version>
         <pet.testcontainers-rabbitmq.version>1.19.8</pet.testcontainers-rabbitmq.version>
+        <pet.archunit.version>1.3.0</pet.archunit.version>
+
         <pet.maven-spring-plugin.version>3.3.0</pet.maven-spring-plugin.version>
         <pet.maven-surefire-plugin.version>3.2.5</pet.maven-surefire-plugin.version>
     </properties>
@@ -231,6 +233,13 @@
             <version>${pet.testcontainers-rabbitmq.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5</artifactId>
+            <version>${pet.archunit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
     <dependencyManagement>
         <dependencies>
