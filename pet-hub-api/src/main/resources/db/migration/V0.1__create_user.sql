@@ -1,4 +1,4 @@
-create table "user"
+create table app_user
 (
     id              bigint generated always as identity primary key,
     email           text      not null unique,

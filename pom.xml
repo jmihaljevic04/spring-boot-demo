@@ -14,6 +14,7 @@
     <packaging>pom</packaging>
     <name>spring-boot-demo</name>
     <description>Pet project as a Spring Boot demo application. This is parent project providing dependencies.</description>
+    <inceptionYear>2024</inceptionYear>
 
     <modules>
         <module>pet-hub-api</module>
@@ -198,6 +199,12 @@
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt-impl</artifactId>
+                <version>${pet.jwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
                 <version>${pet.jwt.version}</version>
                 <scope>runtime</scope>
             </dependency>

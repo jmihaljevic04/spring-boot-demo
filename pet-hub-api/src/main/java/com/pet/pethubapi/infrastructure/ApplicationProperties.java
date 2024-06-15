@@ -16,7 +16,7 @@ public class ApplicationProperties {
 
     @Getter
     @Setter
-    private static final class JWTProperties {
+    public static final class JWTProperties {
 
         private String secretKey;
         private int expiration;

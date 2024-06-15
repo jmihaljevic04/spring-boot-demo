@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Component
@@ -27,6 +28,8 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
     private static final String REQUEST_ID_HEADER_KEY = "X-Request-ID";
     private static final String LOAD_BALANCER_HEADER_KEY = "X-Forwaded-For";
     private static final String LOG_ITEM_DELIMITER = ", ";
+    private static final String AUTH_URL = "/auth/";
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("(\"password\":)\\s?(\"(.+)\")");
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -54,7 +57,16 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
 
         if (shouldLogRequestBody(httpMethod)) {
             final var requestBody = new String(requestWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
-            requestSb.append("Request body: ").append(requestBody);
+            if (StringUtils.isBlank(requestBody)) {
+                requestSb.append("Request body is empty");
+            } else {
+                var normalizedRequestBody = normalizeBody(requestBody);
+
+                if (isAuthRequest(requestUri)) {
+                    normalizedRequestBody = hidePassword(normalizedRequestBody);
+                }
+                requestSb.append("Request body: ").append(normalizedRequestBody);
+            }
         }
 
         final var responseStatus = response.getStatus();
@@ -104,6 +116,26 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
 
     private boolean shouldLogRequestBody(String httpMethod) {
         return !HttpMethod.GET.matches(httpMethod) && !HttpMethod.DELETE.matches(httpMethod);
+    }
+
+    /**
+     * Trims, normalizes trailing whitespaces into single one and removes new lines.
+     */
+    private String normalizeBody(String originalBody) {
+        return StringUtils.normalizeSpace(originalBody.replace("\n", "").replace("\r", ""));
+    }
+
+    private boolean isAuthRequest(String requestUri) {
+        return requestUri.contains(AUTH_URL);
+    }
+
+    private String hidePassword(String requestBody) {
+        final var matcher = PASSWORD_PATTERN.matcher(requestBody);
+        if (matcher.find()) {
+            return requestBody.replace(matcher.group(3), "********");
+        }
+
+        return requestBody;
     }
 
 }
