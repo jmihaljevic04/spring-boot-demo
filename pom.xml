@@ -45,6 +45,7 @@
         <pet.spring-config-processor.version>3.3.0</pet.spring-config-processor.version>
         <pet.lombok.version>1.18.32</pet.lombok.version>
         <pet.spring-openapi.version>2.5.0</pet.spring-openapi.version>
+        <pet.hazelcast.version>5.4.0</pet.hazelcast.version>
 
         <pet.spring-test.version>3.3.0</pet.spring-test.version>
         <pet.spring-testcontainers.version>3.3.0</pet.spring-testcontainers.version>
@@ -181,6 +182,12 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${pet.spring-openapi.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast-spring</artifactId>
+                <version>${pet.hazelcast.version}</version>
                 <optional>true</optional>
             </dependency>
 
