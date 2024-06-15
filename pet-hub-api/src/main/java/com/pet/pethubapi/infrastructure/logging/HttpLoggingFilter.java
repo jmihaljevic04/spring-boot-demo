@@ -1,4 +1,4 @@
-package com.pet.pethubapi.config;
+package com.pet.pethubapi.infrastructure.logging;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

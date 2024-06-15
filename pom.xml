@@ -37,6 +37,7 @@
         <pet.spring-retry.version>2.0.6</pet.spring-retry.version>
         <pet.flyway.version>10.10.0</pet.flyway.version>
         <pet.thymeleaf-security-extras.version>3.1.2.RELEASE</pet.thymeleaf-security-extras.version>
+        <pet.jwt.version>0.12.5</pet.jwt.version>
 
         <pet.spring-devtools.version>3.3.0</pet.spring-devtools.version>
         <pet.spring-docker-compose.version>3.3.0</pet.spring-docker-compose.version>
@@ -138,6 +139,16 @@
                 <artifactId>thymeleaf-extras-springsecurity6</artifactId>
                 <version>${pet.thymeleaf-security-extras.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast-spring</artifactId>
+                <version>${pet.hazelcast.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${pet.jwt.version}</version>
+            </dependency>
 
             <!-- UTILITY section -->
             <dependency>
@@ -185,10 +196,10 @@
                 <optional>true</optional>
             </dependency>
             <dependency>
-                <groupId>com.hazelcast</groupId>
-                <artifactId>hazelcast-spring</artifactId>
-                <version>${pet.hazelcast.version}</version>
-                <optional>true</optional>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${pet.jwt.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <!-- TEST section -->
