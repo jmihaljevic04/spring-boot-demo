@@ -132,6 +132,9 @@ automatically applied.
 
 Maven wrapper is available, so use it instead your local installation (if using IntelliJ IDEA, change usage to wrapper).
 
+This application is imagined as a web service (API), so it hasn't implemented translations, proper error mapping to keys
+etc.
+
 ### Microservices
 
 Project contains two microservices: `api` and `batch`. Purpose of it is to split functionalities and load to separate
