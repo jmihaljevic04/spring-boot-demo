@@ -1,7 +1,9 @@
-package com.pet.pethubapi.application.auth.impl;
+package com.pet.pethubapi.infrastructure.impl;
 
-import com.pet.pethubapi.application.auth.JwtService;
 import com.pet.pethubapi.infrastructure.ApplicationProperties;
+import com.pet.pethubapi.infrastructure.security.InvalidTokenException;
+import com.pet.pethubapi.infrastructure.security.JwtService;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +34,12 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public boolean isTokenExpired(String token) {
-        final var expiration = Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token).getPayload().getExpiration();
-        return expiration.before(new Date());
+        try {
+            final var expiration = Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token).getPayload().getExpiration();
+            return expiration.before(new Date());
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new InvalidTokenException(e);
+        }
     }
 
     @Override

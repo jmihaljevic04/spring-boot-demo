@@ -5,13 +5,13 @@ import com.pet.pethubapi.domain.auth.RegisterDTO;
 
 public interface AuthenticationService {
 
-    void registerNewUser(RegisterDTO registerDTO);
+    void registerNewUser(RegisterDTO input);
 
     /**
      * Authenticates against existing users and returns JWT.
      *
      * @return generated token
      */
-    String authenticateUser(LoginDTO loginDTO);
+    String authenticateUser(LoginDTO input);
 
 }
