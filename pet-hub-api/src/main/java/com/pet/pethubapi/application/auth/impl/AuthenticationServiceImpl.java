@@ -2,6 +2,7 @@ package com.pet.pethubapi.application.auth.impl;
 
 import com.pet.pethubapi.application.auth.AuthenticationService;
 import com.pet.pethubapi.application.auth.InvalidAuthenticationException;
+import com.pet.pethubapi.application.auth.JWTResponse;
 import com.pet.pethubapi.domain.auth.LoginDTO;
 import com.pet.pethubapi.domain.auth.RegisterDTO;
 import com.pet.pethubapi.domain.user.User;
@@ -47,13 +48,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public String authenticateUser(LoginDTO input) {
+    public JWTResponse authenticateUser(LoginDTO input) {
         validateLoginInput(input);
 
         final var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(input.email(), input.password()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return jwtService.generateToken(input.email());
+        return jwtService.generateTokens(input.email());
+    }
+
+    @Override
+    public JWTResponse refreshToken(String refreshToken) {
+        if (jwtService.hasTokenExpired(refreshToken) || !jwtService.isRefreshToken(refreshToken)) {
+            throw new InvalidAuthenticationException("Refresh token has expired or is invalid!");
+        }
+
+        final var username = jwtService.getUsernameFromToken(refreshToken);
+
+        return jwtService.generateTokens(username);
     }
 
     private static void validateRegisterInput(RegisterDTO input) {

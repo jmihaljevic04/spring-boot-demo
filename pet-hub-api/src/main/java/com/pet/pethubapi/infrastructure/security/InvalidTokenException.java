@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class InvalidTokenException extends RuntimeException {
 
     public InvalidTokenException(Exception cause) {
-        super("Authentication token is not valid!", cause);
+        super("JWT is not valid!", cause);
     }
 
 }

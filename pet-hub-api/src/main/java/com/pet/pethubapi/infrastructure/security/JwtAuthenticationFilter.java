@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authHeaderValue != null && authHeaderValue.startsWith(JWT_PREFIX)) {
             authHeaderValue = authHeaderValue.substring(JWT_PREFIX.length());
 
-            if (!jwtService.isTokenExpired(authHeaderValue)) {
+            if (!jwtService.hasTokenExpired(authHeaderValue) && jwtService.isAccessToken(authHeaderValue)) {
                 final var username = jwtService.getUsernameFromToken(authHeaderValue);
                 final var userDetails = userDetailsService.loadUserByUsername(username);
                 final var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

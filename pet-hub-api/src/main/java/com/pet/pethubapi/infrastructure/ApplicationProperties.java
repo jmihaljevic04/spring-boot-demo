@@ -19,7 +19,9 @@ public class ApplicationProperties {
     public static final class JWTProperties {
 
         private String secretKey;
-        private int expiration;
+        private int accessExpiration;
+        private int adminAccessExpiration;
+        private int refreshExpiration;
 
     }
 
