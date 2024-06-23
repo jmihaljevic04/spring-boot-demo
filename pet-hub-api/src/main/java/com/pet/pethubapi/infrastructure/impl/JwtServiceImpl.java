@@ -1,6 +1,7 @@
 package com.pet.pethubapi.infrastructure.impl;
 
 import com.pet.pethubapi.application.auth.JWTResponse;
+import com.pet.pethubapi.domain.role.Role;
 import com.pet.pethubapi.infrastructure.ApplicationProperties;
 import com.pet.pethubapi.infrastructure.security.InvalidTokenException;
 import com.pet.pethubapi.infrastructure.security.JwtService;
@@ -8,11 +9,14 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -26,9 +30,9 @@ public class JwtServiceImpl implements JwtService {
     private final ApplicationProperties applicationProperties;
 
     @Override
-    public JWTResponse generateTokens(String username) {
+    public JWTResponse generateTokens(String username, Set<Role> authorities) {
         final var currentDate = new Date();
-        final var accessToken = generateAccessToken(username, currentDate);
+        final var accessToken = generateAccessToken(username, currentDate, authorities);
         final var refreshToken = generateRefreshToken(username, currentDate);
 
         return new JWTResponse(accessToken, refreshToken);
@@ -81,13 +85,18 @@ public class JwtServiceImpl implements JwtService {
         return Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token).getPayload().getSubject();
     }
 
-    private String generateAccessToken(String username, Date currentDate) {
+    private String generateAccessToken(String username, Date currentDate, Set<Role> authorities) {
+        final var stringifiedRoles = authorities.stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.joining());
+
         return Jwts.builder()
             .subject(username)
             .issuedAt(currentDate)
             .issuer(ISSUER)
             .expiration(getExpirationInterval(username, currentDate))
             .claim(ACCESS_CLAIM, Boolean.TRUE)
+            .claim("authorities", stringifiedRoles)
             .signWith(getSignKey())
             .compact();
     }
