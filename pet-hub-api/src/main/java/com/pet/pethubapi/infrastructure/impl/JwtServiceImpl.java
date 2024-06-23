@@ -17,19 +17,29 @@ import java.util.Date;
 @Service
 public class JwtServiceImpl implements JwtService {
 
+    private static final String ADMIN_USERNAME = "admin";
+    // 24 hours
+    private static final int ADMIN_EXPIRATION_INTERVAL = 86400000;
+
     private final ApplicationProperties applicationProperties;
 
     @Override
     public String generateToken(String username) {
+        final var isAdmin = ADMIN_USERNAME.equals(username);
         final var expirationInterval = applicationProperties.getJwt().getExpiration();
 
-        return Jwts.builder()
+        final var jwtBuilder = Jwts.builder()
             .subject(username)
             .issuedAt(new Date())
-            .expiration(new Date(System.currentTimeMillis() + expirationInterval))
-            .issuer("PetHub")
-            .signWith(getSignKey())
-            .compact();
+            .issuer("PetHub");
+
+        if (isAdmin) {
+            jwtBuilder.expiration(new Date(System.currentTimeMillis() + ADMIN_EXPIRATION_INTERVAL));
+        } else {
+            jwtBuilder.expiration(new Date(System.currentTimeMillis() + expirationInterval));
+        }
+
+        return jwtBuilder.signWith(getSignKey()).compact();
     }
 
     @Override
