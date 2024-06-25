@@ -61,6 +61,7 @@
 
         <pet.maven-spring-plugin.version>3.3.0</pet.maven-spring-plugin.version>
         <pet.maven-surefire-plugin.version>3.2.5</pet.maven-surefire-plugin.version>
+        <pet.jacoco.version>0.8.11</pet.jacoco.version>
     </properties>
 
     <dependencyManagement>
@@ -208,6 +209,11 @@
                 <version>${pet.jwt.version}</version>
                 <scope>runtime</scope>
             </dependency>
+            <dependency>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${pet.jacoco.version}</version>
+            </dependency>
 
             <!-- TEST section -->
             <dependency>
@@ -291,6 +297,32 @@
                         <include>**/*Should.java</include>
                     </includes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${pet.jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <destFile>${project.build.directory}/jacoco.exec</destFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/jacoco-report</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
