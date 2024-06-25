@@ -168,3 +168,16 @@ Applications support both synchronous and asynchronous communication between the
 APIs) where we are expecting response immediately and consciously blocking further process.
 Async is done via RabbitMQ pub/sub mechanism in cases where response and execution time is not necessary, for example
 triggering to send an email or process something.
+
+### Flyway
+
+Project is using default naming schema for Flyway migrations: `Vx.x__migration-description.sql`
+
+First version represents major project version and should be in sync. So, it can be said that migrations are grouped by
+major project version.
+Second version is plain iterating number of migration.
+
+### OpenAPI (Swagger)
+
+Application has available OpenAPI UI, for example at: _localhost:8080/api/swagger-ui.html_. It can be only accessed by
+existing user (authentication is required).
