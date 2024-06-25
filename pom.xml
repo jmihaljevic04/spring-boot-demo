@@ -21,6 +21,12 @@
         <module>pet-hub-batch</module>
     </modules>
 
+    <scm>
+        <connection>scm:git:https://github.com/jmihaljevic04/spring-boot-demo.git</connection>
+        <developerConnection>scm:git:https://github.com/jmihaljevic04/spring-boot-demo.git</developerConnection>
+        <url>https://github.com/jmihaljevic04/spring-boot-demo</url>
+    </scm>
+
     <properties>
         <java.version>21</java.version>
 
