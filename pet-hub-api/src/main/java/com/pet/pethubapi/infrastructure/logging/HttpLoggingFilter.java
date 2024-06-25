@@ -35,11 +35,15 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("(\"password\":)\\s?(\"(.+?)\")");
     private static final Pattern ACCESS_TOKEN_PATTERN = Pattern.compile("(\"accessToken\":)\\s?(\"(.+?)\")");
     private static final Pattern REFRESH_TOKEN_PATTERN = Pattern.compile("(\"refreshToken\":)\\s?(\"(.+?)\")");
+    private static final List<String> IGNORED_APIS = new ArrayList<>();
 
     static {
         SENSITIVE_DATA_PATTERNS.add(PASSWORD_PATTERN);
         SENSITIVE_DATA_PATTERNS.add(ACCESS_TOKEN_PATTERN);
         SENSITIVE_DATA_PATTERNS.add(REFRESH_TOKEN_PATTERN);
+
+        IGNORED_APIS.add("/v3/api-docs");
+        IGNORED_APIS.add("/swagger-ui");
     }
 
     @Override
@@ -58,53 +62,55 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
         filterChain.doFilter(requestWrapper, responseWrapper);
         final var duration = Duration.between(startTime, Instant.now()).toMillis();
 
-        final var isAuthRequest = isAuthRequest(requestUri);
+        if (IGNORED_APIS.stream().noneMatch(requestUri::contains)) {
+            final var isAuthRequest = isAuthRequest(requestUri);
 
-        // request
-        final var requestSb = new StringBuilder();
-        requestSb
-            .append("HTTP ").append(httpMethod).append(" request :: ")
-            .append("Request ID: ").append(requestId)
-            .append(LOG_ITEM_DELIMITER).append("Request URI: ").append(requestUri)
-            .append(LOG_ITEM_DELIMITER).append("Source: ").append(source)
-            .append(LOG_ITEM_DELIMITER).append("Target: ").append(target);
+            // request
+            final var requestSb = new StringBuilder();
+            requestSb
+                .append("HTTP ").append(httpMethod).append(" request :: ")
+                .append("Request ID: ").append(requestId)
+                .append(LOG_ITEM_DELIMITER).append("Request URI: ").append(requestUri)
+                .append(LOG_ITEM_DELIMITER).append("Source: ").append(source)
+                .append(LOG_ITEM_DELIMITER).append("Target: ").append(target);
 
-        if (shouldLogRequestBody(httpMethod)) {
-            final var requestBody = new String(requestWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
-            if (StringUtils.isBlank(requestBody)) {
-                requestSb.append(LOG_ITEM_DELIMITER).append("Request body is empty");
-            } else {
-                var normalizedRequestBody = normalizeBody(requestBody);
+            if (shouldLogRequestBody(httpMethod)) {
+                final var requestBody = new String(requestWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
+                if (StringUtils.isBlank(requestBody)) {
+                    requestSb.append(LOG_ITEM_DELIMITER).append("Request body is empty");
+                } else {
+                    var normalizedRequestBody = normalizeBody(requestBody);
 
-                if (isAuthRequest) {
-                    normalizedRequestBody = hideSensitiveData(normalizedRequestBody, PASSWORD_PATTERN);
+                    if (isAuthRequest) {
+                        normalizedRequestBody = hideSensitiveData(normalizedRequestBody, PASSWORD_PATTERN);
+                    }
+                    requestSb.append(LOG_ITEM_DELIMITER).append("Request body: ").append(normalizedRequestBody);
                 }
-                requestSb.append(LOG_ITEM_DELIMITER).append("Request body: ").append(normalizedRequestBody);
             }
-        }
 
-        // response
-        final var responseStatus = response.getStatus();
-        var responseBody = new String(responseWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
-        if (isAuthRequest) {
-            for (var pattern : SENSITIVE_DATA_PATTERNS) {
-                responseBody = hideSensitiveData(responseBody, pattern);
+            // response
+            final var responseStatus = response.getStatus();
+            var responseBody = new String(responseWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
+            if (isAuthRequest) {
+                for (var pattern : SENSITIVE_DATA_PATTERNS) {
+                    responseBody = hideSensitiveData(responseBody, pattern);
+                }
             }
+
+            final var responseSb = new StringBuilder();
+            responseSb
+                .append("HTTP ").append(httpMethod).append(" response :: ")
+                .append("Request ID: ").append(requestId).append(LOG_ITEM_DELIMITER)
+                .append("Request URI: ").append(requestUri).append(LOG_ITEM_DELIMITER)
+                .append("Source: ").append(source).append(LOG_ITEM_DELIMITER)
+                .append("Target: ").append(target).append(LOG_ITEM_DELIMITER)
+                .append("Response status: ").append(responseStatus).append(LOG_ITEM_DELIMITER)
+                .append("Response body: ").append(responseBody).append(LOG_ITEM_DELIMITER)
+                .append("Duration: ").append(duration).append("ms");
+
+            log.info(requestSb.toString());
+            log.info(responseSb.toString());
         }
-
-        final var responseSb = new StringBuilder();
-        responseSb
-            .append("HTTP ").append(httpMethod).append(" response :: ")
-            .append("Request ID: ").append(requestId).append(LOG_ITEM_DELIMITER)
-            .append("Request URI: ").append(requestUri).append(LOG_ITEM_DELIMITER)
-            .append("Source: ").append(source).append(LOG_ITEM_DELIMITER)
-            .append("Target: ").append(target).append(LOG_ITEM_DELIMITER)
-            .append("Response status: ").append(responseStatus).append(LOG_ITEM_DELIMITER)
-            .append("Response body: ").append(responseBody).append(LOG_ITEM_DELIMITER)
-            .append("Duration: ").append(duration).append("ms");
-
-        log.info(requestSb.toString());
-        log.info(responseSb.toString());
 
         responseWrapper.copyBodyToResponse();
     }
