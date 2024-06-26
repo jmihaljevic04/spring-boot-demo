@@ -67,19 +67,12 @@ With this approach, it is easier to do hotfixes (create hotfix branch from appro
 _main_ branch), keep track of deployed releases and working on next release simultaneously, troubleshoot issues on
 specific environment (check-out branch/release and run it locally).
 
-Each release is versioned and tagged with Git tag.
 
-Versioning is done with simple SemVer strategy: **MAJOR**.**MINOR**.**PATCH** (e.g. 2.1.0).
-Major version represents major changes like upgrading to new framework version or overhaul of architecture, and is
-increased only by code owners. Minor is incremented on each release. Patch is incremented on each hotfix.
-_SNAPSHOT_ suffix is being used only during development of new release and is removed when deploying release.
-
-Versioning is done automatically with CI/CD tool and `maven-version-plugin`.
 When releasing new version, _SNAPSHOT_ suffix is removed and _develop_ branch is merged into _release_ branch. When
 deploying said release to production, nothing is changed and no artifacts are being built. It reuses built artifact for
 UAT.
-When new version is released (merged into _release_ branch), project version is being incremented and _SNAPSHOT_ suffix
-is being added.
+When new version is released (merged into _release_ branch), project version is incremented and _SNAPSHOT_ suffix
+is added.
 
 ### How to create branches and merge them?
 
@@ -96,6 +89,30 @@ When feature/hotfix/bugfix is completed, create a pull request. One of the code 
 Creator of PR (assignee) is responsible for that PR, which means: test coverage of newly added/modified code, resolve
 merge conflicts, resolve all comments, regularly update PR with target branch (preferably use rebase for cleaner
 history), make sure PR build is successful and is the one who merges PR after all checks are okay.
+
+## Release flow
+
+Described above is general release flow and how branches should be managed. Below release technique and commands will be
+described.
+
+Each release is versioned and tagged with Git tag.
+
+Versioning is done with simple SemVer strategy: **MAJOR**.**MINOR**.**PATCH** (e.g. 2.1.0).
+Major version represents major changes like upgrading to new framework version or overhaul of architecture, and is
+increased only by code owners. Minor is incremented on each release. Patch is incremented on each hotfix.
+_SNAPSHOT_ suffix is being used only during development of new release and is removed when deploying release.
+
+Versioning is done automatically with CI/CD tool and `maven-version-plugin` and `maven-release-plugin`.
+
+Example commands:
+
+1. `mvn -B -Darguments=-DskipTests release:prepare release:clean` remove _SNAPSHOT_ suffix, tag with current versions,
+   push it to repo, set new development version (increment path and add suffix) and also push it to repo. `clean` cleans
+   utility auto-generated files
+2. next command would be `mvn release:perform` but that is still in **TODO** due to setting up artifact repository
+
+- `mvn build-helper:parse-version versions:set -DgenerateBackupPoms=false -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.nextMinorVersion}.0' versions:commit`
+  manually set next version for all modules, which in this case increments minor version
 
 ***
 
