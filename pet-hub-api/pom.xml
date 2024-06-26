@@ -4,11 +4,11 @@
     <parent>
         <groupId>com.pet</groupId>
         <artifactId>spring-boot-demo</artifactId>
-        <version>0.0.1</version>
+        <version>0.0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>pet-hub-api</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>pet-hub-api</name>
     <description>PetHub application providing API endpoints.</description>
 
