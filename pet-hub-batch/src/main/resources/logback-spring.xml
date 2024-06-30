@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <property name="file-date-pattern" value="%d{yyyy-MM-dd}"/>
+    <property name="total-file-size" value="10GB"/>
+    <property name="max-history" value="30"/>
+    <springProperty scope="context" name="logging-file" source="logging.file.name"/>
+
+    <springProfile name="remoteLogger">
+        <appender name="file-log-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${logging-file}</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${logging-file}.${file-date-pattern}.gz</fileNamePattern>
+                <maxHistory>${max-history}</maxHistory>
+                <totalSizeCap>${total-file-size}</totalSizeCap>
+            </rollingPolicy>
+            <encoder>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} BATCH ${PID} [%thread] %-5level %logger %class{40}: %msg%n%wEx</pattern>
+            </encoder>
+        </appender>
+
+        <logger name="audit-logger" level="INFO" additivity="false">
+            <appender-ref ref="file-log-appender"/>
+        </logger>
+
+        <root level="INFO">
+            <appender-ref ref="file-log-appender"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="!remoteLogger">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+</configuration>

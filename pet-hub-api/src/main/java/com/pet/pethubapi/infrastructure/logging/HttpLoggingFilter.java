@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-@Slf4j
+@Slf4j(topic = "audit-logger")
 @Component
 public class HttpLoggingFilter extends OncePerRequestFilter {
 
