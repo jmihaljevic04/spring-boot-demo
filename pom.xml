@@ -286,6 +286,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${pet.maven-spring-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <excludes>
                         <exclude>
@@ -293,6 +300,16 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!-- exposes Git info on Actuator metrics -->
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+                <configuration>
+                    <excludeProperties>
+                        <excludeProperty>time</excludeProperty>
+                    </excludeProperties>
                 </configuration>
             </plugin>
             <plugin>
@@ -306,6 +323,7 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!-- generates code coverage reports -->
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${pet.jacoco.version}</version>

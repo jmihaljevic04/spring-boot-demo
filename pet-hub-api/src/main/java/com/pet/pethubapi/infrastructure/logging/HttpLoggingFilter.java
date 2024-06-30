@@ -44,6 +44,7 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
 
         IGNORED_APIS.add("/v3/api-docs");
         IGNORED_APIS.add("/swagger-ui");
+        IGNORED_APIS.add("/actuator");
     }
 
     @Override

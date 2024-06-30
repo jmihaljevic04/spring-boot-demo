@@ -198,3 +198,12 @@ Second version is plain iterating number of migration.
 
 Application has available OpenAPI UI, for example at: _localhost:8080/api/swagger-ui.html_. It can be only accessed by
 existing user (authentication is required).
+
+### Actuator
+
+Actuator has four endpoint categories enabled (which are accessible only by admin role):
+
+- health: _localhost:8080/api/actuator/health_
+- info: _localhost:8080/api/actuator/info_
+- metrics: _localhost:8080/api/actuator/metrics_
+- Prometheus-formatted metrics: _localhost:8080/api/actuator/prometheus_
