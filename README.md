@@ -203,7 +203,10 @@ existing user (authentication is required).
 
 Actuator has four endpoint categories enabled (which are accessible only by admin role):
 
-- health: _localhost:8080/api/actuator/health_
+- health: _localhost:8080/api/actuator/health_ (available for unauthenticated requests also)
 - info: _localhost:8080/api/actuator/info_
 - metrics: _localhost:8080/api/actuator/metrics_
 - Prometheus-formatted metrics: _localhost:8080/api/actuator/prometheus_
+
+Besides those four, Actuator also provides basic liveness and readiness probes within _/health_ endpoint (which are not
+protected by authentication).
