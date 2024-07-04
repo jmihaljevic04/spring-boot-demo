@@ -1,4 +1,4 @@
-package com.pet.pethubapi.infrastructure;
+package com.pet.pethubapi.domain;
 
 import lombok.Getter;
 import lombok.Setter;

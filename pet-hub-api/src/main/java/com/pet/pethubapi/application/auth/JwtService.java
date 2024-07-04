@@ -1,6 +1,5 @@
-package com.pet.pethubapi.infrastructure.security;
+package com.pet.pethubapi.application.auth;
 
-import com.pet.pethubapi.application.auth.JWTResponse;
 import com.pet.pethubapi.domain.role.Role;
 
 import java.util.Set;

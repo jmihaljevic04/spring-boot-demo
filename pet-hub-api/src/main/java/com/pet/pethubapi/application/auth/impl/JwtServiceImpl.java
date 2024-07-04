@@ -1,10 +1,10 @@
-package com.pet.pethubapi.infrastructure.impl;
+package com.pet.pethubapi.application.auth.impl;
 
+import com.pet.pethubapi.application.auth.InvalidTokenException;
 import com.pet.pethubapi.application.auth.JWTResponse;
+import com.pet.pethubapi.application.auth.JwtService;
+import com.pet.pethubapi.domain.ApplicationProperties;
 import com.pet.pethubapi.domain.role.Role;
-import com.pet.pethubapi.infrastructure.ApplicationProperties;
-import com.pet.pethubapi.infrastructure.security.InvalidTokenException;
-import com.pet.pethubapi.infrastructure.security.JwtService;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

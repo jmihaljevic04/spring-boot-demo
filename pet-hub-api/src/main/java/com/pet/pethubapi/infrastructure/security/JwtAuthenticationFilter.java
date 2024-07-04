@@ -1,5 +1,6 @@
 package com.pet.pethubapi.infrastructure.security;
 
+import com.pet.pethubapi.application.auth.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
