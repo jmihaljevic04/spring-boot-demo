@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
@@ -21,19 +23,19 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> register(@RequestBody RegisterDTO request) {
         authenticationService.registerNewUser(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<JWTResponse> authenticate(@RequestBody LoginDTO request) {
         final var response = authenticationService.authenticateUser(request);
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/refresh-token")
+    @GetMapping(value = "/refresh-token", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<JWTResponse> refreshToken(@RequestHeader("X-Auth-Refresh") String refreshToken) {
         final var response = authenticationService.refreshToken(refreshToken);
         return ResponseEntity.ok().body(response);
