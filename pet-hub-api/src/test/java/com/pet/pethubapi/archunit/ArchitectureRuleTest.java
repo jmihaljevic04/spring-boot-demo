@@ -1,12 +1,15 @@
 package com.pet.pethubapi.archunit;
 
 import com.pet.pethubapi.PetHubApiApplication;
+import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import jakarta.persistence.Entity;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAnyPackage;
 
 @SuppressWarnings("unused")
 @AnalyzeClasses(packagesOf = PetHubApiApplication.class)
@@ -38,8 +41,7 @@ class ArchitectureRuleTest {
 
     @ArchTest
     public static final ArchRule packageStructureRule = ArchRuleDefinition.classes()
-        .that().doNotHaveSimpleName("PetHubApiApplication").and().doNotHaveSimpleName("PetHubApiApplicationShould").and().doNotHaveSimpleName(
-            "TestcontainersConfiguration").and().resideOutsideOfPackage("..archunit..")
+        .that(DescribedPredicate.not(resideInAnyPackage("com.pet.pethubapi", "com.pet.pethubapi.archunit")))
         .should().resideInAnyPackage("..application..", "..infrastructure..", "..interfaces..", "..domain..");
 
     @ArchTest

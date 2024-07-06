@@ -1,21 +1,19 @@
 package com.pet.pethubapi.interfaces.auth;
 
-import com.pet.pethubapi.TestcontainersConfiguration;
+import com.pet.pethubapi.PetIntegrationTest;
 import com.pet.pethubapi.application.auth.AuthenticationService;
 import com.pet.pethubapi.application.auth.InvalidAuthenticationException;
 import com.pet.pethubapi.application.auth.LoginDTO;
 import com.pet.pethubapi.application.auth.RegisterDTO;
 import com.pet.pethubapi.infrastructure.security.JWTResponse;
 import io.restassured.RestAssured;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,9 +23,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ContextConfiguration(classes = TestcontainersConfiguration.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Slf4j
+@PetIntegrationTest
 class AuthenticationControllerShould {
 
     @LocalServerPort
