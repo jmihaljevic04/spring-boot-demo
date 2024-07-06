@@ -210,3 +210,14 @@ Actuator has four endpoint categories enabled (which are accessible only by admi
 
 Besides those four, Actuator also provides basic liveness and readiness probes within _/health_ endpoint (which are not
 protected by authentication).
+
+### Testcontainers
+
+Project is utilizing Testcontainers via Spring Boot dependency. Images (containers) are **not** defined by
+_docker-compose.yaml_ file.
+To have benefit of reusing Testcontainers when executing tests locally, developer must add following line to
+_.testcontainers.properties_ file: `testcontainers.reuse.enable=true`.
+File is located at: C:\Users\<Username>.
+
+Container reuse feature is only available within application itself (API and BATCH applications will have separate
+containers.)

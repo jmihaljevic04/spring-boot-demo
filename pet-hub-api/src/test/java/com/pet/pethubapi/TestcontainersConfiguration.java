@@ -16,14 +16,14 @@ public class TestcontainersConfiguration {
     @Bean
     @ServiceConnection
     PostgreSQLContainer<?> postgresContainer() {
-        return new PostgreSQLContainer<>(DockerImageName.parse("postgres:16.3-alpine"));
+        return new PostgreSQLContainer<>(DockerImageName.parse("postgres:16.3-alpine")).withReuse(true);
     }
 
     @Bean
     @ConditionalOnProperty(name = "integration-test.rabbitmq.enabled", havingValue = "true")
     @ServiceConnection
     RabbitMQContainer rabbitContainer() {
-        return new RabbitMQContainer(DockerImageName.parse("rabbitmq:3.13-alpine"));
+        return new RabbitMQContainer(DockerImageName.parse("rabbitmq:3.13-alpine")).withReuse(true);
     }
 
     public static void main(String[] args) {
