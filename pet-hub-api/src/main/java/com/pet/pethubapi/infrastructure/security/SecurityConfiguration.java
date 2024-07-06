@@ -1,6 +1,5 @@
 package com.pet.pethubapi.infrastructure.security;
 
-import com.pet.pethubapi.application.auth.JwtService;
 import com.pet.pethubapi.infrastructure.impl.UserDetailsServiceImpl;
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;

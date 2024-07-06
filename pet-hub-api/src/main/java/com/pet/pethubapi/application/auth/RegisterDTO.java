@@ -1,4 +1,4 @@
-package com.pet.pethubapi.domain.auth;
+package com.pet.pethubapi.application.auth;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

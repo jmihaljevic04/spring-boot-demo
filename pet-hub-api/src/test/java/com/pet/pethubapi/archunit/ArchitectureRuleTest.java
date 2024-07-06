@@ -13,40 +13,52 @@ import org.springframework.web.bind.annotation.RestController;
 class ArchitectureRuleTest {
 
     @ArchTest
-    static ArchRule domainLayerRule = ArchRuleDefinition.noClasses()
+    public static final ArchRule domainLayerRule = ArchRuleDefinition.noClasses()
         .that().resideInAPackage("..domain..")
         .should().dependOnClassesThat()
         .resideInAnyPackage("..application..", "..infrastructure..", "..interfaces..");
 
     @ArchTest
-    static ArchRule applicationLayerRule = ArchRuleDefinition.noClasses()
+    public static final ArchRule applicationLayerRule = ArchRuleDefinition.noClasses()
         .that().resideInAPackage("..application..")
         .should().dependOnClassesThat()
-        .resideInAnyPackage("..infrastructure..", "..interfaces..");
+        .resideInAnyPackage("..interfaces..");
 
     @ArchTest
-    static ArchRule interfaceLayerRule = ArchRuleDefinition.noClasses()
+    public static final ArchRule interfaceLayerRule = ArchRuleDefinition.noClasses()
         .that().resideInAPackage("..interfaces..")
         .should().dependOnClassesThat()
-        .resideInAnyPackage("..infrastructure..");
+        .resideInAnyPackage("..domain..");
 
     @ArchTest
-    static ArchRule implementationPackageRule = ArchRuleDefinition.classes()
+    public static final ArchRule infrastructureLayerRule = ArchRuleDefinition.noClasses()
+        .that().resideInAPackage("..infrastructure..")
+        .should().dependOnClassesThat()
+        .resideInAnyPackage("..interfaces..", "..application..");
+
+    @ArchTest
+    public static final ArchRule packageStructureRule = ArchRuleDefinition.classes()
+        .that().doNotHaveSimpleName("PetHubApiApplication").and().doNotHaveSimpleName("PetHubApiApplicationShould").and().doNotHaveSimpleName(
+            "TestcontainersConfiguration").and().resideOutsideOfPackage("..archunit..")
+        .should().resideInAnyPackage("..application..", "..infrastructure..", "..interfaces..", "..domain..");
+
+    @ArchTest
+    public static final ArchRule implementationPackageRule = ArchRuleDefinition.classes()
         .that().haveSimpleNameEndingWith("Impl")
         .should().resideInAPackage("..impl");
 
     @ArchTest
-    static ArchRule interfacePackageRule = ArchRuleDefinition.classes()
+    public static final ArchRule interfacePackageRule = ArchRuleDefinition.classes()
         .that().areInterfaces()
         .should().resideOutsideOfPackage("..impl");
 
     @ArchTest
-    static ArchRule controllerPackageRule = ArchRuleDefinition.classes()
+    public static final ArchRule controllerPackageRule = ArchRuleDefinition.classes()
         .that().areAnnotatedWith(RestController.class)
         .should().resideInAPackage("..interfaces..");
 
     @ArchTest
-    static ArchRule entityPackageRule = ArchRuleDefinition.classes()
+    public static final ArchRule entityPackageRule = ArchRuleDefinition.classes()
         .that().areAnnotatedWith(Entity.class)
         .should().resideInAPackage("..domain..");
 

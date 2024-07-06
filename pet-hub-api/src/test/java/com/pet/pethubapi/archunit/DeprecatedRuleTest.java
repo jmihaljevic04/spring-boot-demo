@@ -14,15 +14,15 @@ import static com.tngtech.archunit.core.domain.properties.CanBeAnnotated.Predica
 class DeprecatedRuleTest {
 
     @ArchTest
-    static ArchRule deprecatedClassRule = ArchRuleDefinition.noClasses()
+    public static final ArchRule deprecatedClassRule = ArchRuleDefinition.noClasses()
         .should().dependOnClassesThat().areAnnotatedWith(Deprecated.class);
 
     @ArchTest
-    static ArchRule deprecatedMethodRule = ArchRuleDefinition.noClasses()
+    public static final ArchRule deprecatedMethodRule = ArchRuleDefinition.noClasses()
         .should().callMethodWhere(target(annotatedWith(Deprecated.class)));
 
     @ArchTest
-    static ArchRule deprecatedFieldRule = ArchRuleDefinition.noClasses()
+    public static final ArchRule deprecatedFieldRule = ArchRuleDefinition.noClasses()
         .should().accessFieldWhere(target(annotatedWith(Deprecated.class)));
 
 }

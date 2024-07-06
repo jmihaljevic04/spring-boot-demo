@@ -14,16 +14,16 @@ import static com.tngtech.archunit.library.ProxyRules.no_classes_should_directly
 public class ProxyRuleTest {
 
     @ArchTest
-    static ArchRule publicTransactionalMethodRule = ArchRuleDefinition.methods()
+    public static final ArchRule publicTransactionalMethodRule = ArchRuleDefinition.methods()
         .that().areAnnotatedWith(Transactional.class)
         .should().bePublic();
 
     @ArchTest
-    static ArchRule useSpringTransactionalRule = ArchRuleDefinition.noMethods()
+    public static final ArchRule useSpringTransactionalRule = ArchRuleDefinition.noMethods()
         .should().beAnnotatedWith(jakarta.transaction.Transactional.class);
 
     @ArchTest
-    static ArchRule invokeTransactionalMethodRule = no_classes_should_directly_call_other_methods_declared_in_the_same_class_that_are_annotated_with(
+    public static final ArchRule invokeTransactionalMethodRule = no_classes_should_directly_call_other_methods_declared_in_the_same_class_that_are_annotated_with(
         Transactional.class);
 
 }

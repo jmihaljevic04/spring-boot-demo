@@ -15,25 +15,25 @@ import static com.tngtech.archunit.core.domain.properties.CanBeAnnotated.Predica
 public class TestClassRuleTest {
 
     @ArchTest
-    static ArchRule testClassAccessRule = ArchRuleDefinition.classes()
+    public static final ArchRule testClassAccessRule = ArchRuleDefinition.classes()
         .that().containAnyMethodsThat(annotatedWith(Test.class))
         .should().bePackagePrivate();
 
     @ArchTest
-    static ArchRule testMethodAccessRule = ArchRuleDefinition.methods()
+    public static final ArchRule testMethodAccessRule = ArchRuleDefinition.methods()
         .that().areAnnotatedWith(Test.class)
         .should().bePackagePrivate();
 
     @ArchTest
-    static ArchRule noJunit4AssertRule = ArchRuleDefinition.noClasses()
+    public static final ArchRule noJunit4AssertRule = ArchRuleDefinition.noClasses()
         .should().dependOnClassesThat().haveFullyQualifiedName("org.junit.Assert");
 
     @ArchTest
-    static ArchRule noJunit5AssertRule = ArchRuleDefinition.noClasses()
+    public static final ArchRule noJunit5AssertRule = ArchRuleDefinition.noClasses()
         .should().dependOnClassesThat().haveFullyQualifiedName("org.junit.jupiter.api.Assertions");
 
     @ArchTest
-    static ArchRule noDisabledTestRule = ArchRuleDefinition.noClasses()
+    public static final ArchRule noDisabledTestRule = ArchRuleDefinition.noClasses()
         .should().beAnnotatedWith(Disabled.class);
 
 }

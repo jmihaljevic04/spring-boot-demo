@@ -15,26 +15,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnnotationRuleTest {
 
     @ArchTest
-    static ArchRule serviceAnnotationRule = ArchRuleDefinition.classes()
+    public static final ArchRule serviceAnnotationRule = ArchRuleDefinition.classes()
         .that().haveSimpleNameEndingWith("ServiceImpl")
         .should().beAnnotatedWith(Service.class);
 
     @ArchTest
-    static ArchRule repositoryAnnotationRule = ArchRuleDefinition.classes()
+    public static final ArchRule repositoryAnnotationRule = ArchRuleDefinition.classes()
         .that().haveSimpleNameEndingWith("Repository")
         .should().beAnnotatedWith(Repository.class);
 
     @ArchTest
-    static ArchRule restControllerAnnotationRule = ArchRuleDefinition.classes()
+    public static final ArchRule restControllerAnnotationRule = ArchRuleDefinition.classes()
         .that().haveSimpleNameEndingWith("Controller")
         .should().beAnnotatedWith(RestController.class);
 
     @ArchTest
-    static ArchRule controllerAnnotationRule = ArchRuleDefinition.noClasses()
+    public static final ArchRule controllerAnnotationRule = ArchRuleDefinition.noClasses()
         .should().beAnnotatedWith(Controller.class);
 
     @ArchTest
-    static ArchRule junit4TestAnnotationRule = ArchRuleDefinition.noMethods()
+    public static final ArchRule junit4TestAnnotationRule = ArchRuleDefinition.noMethods()
         .should().beAnnotatedWith(org.junit.Test.class);
 
 }

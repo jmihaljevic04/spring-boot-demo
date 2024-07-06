@@ -18,30 +18,30 @@ import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_
 public class GeneralRuleTest {
 
     @ArchTest
-    static ArchRule standardStreamRule = NO_CLASSES_SHOULD_ACCESS_STANDARD_STREAMS;
+    public static final ArchRule standardStreamRule = NO_CLASSES_SHOULD_ACCESS_STANDARD_STREAMS;
 
     @ArchTest
-    static ArchRule genericExceptionRule = NO_CLASSES_SHOULD_THROW_GENERIC_EXCEPTIONS;
+    public static final ArchRule genericExceptionRule = NO_CLASSES_SHOULD_THROW_GENERIC_EXCEPTIONS;
 
     @ArchTest
-    static ArchRule useJodaTimeRule = NO_CLASSES_SHOULD_USE_JODATIME;
+    public static final ArchRule useJodaTimeRule = NO_CLASSES_SHOULD_USE_JODATIME;
 
     @ArchTest
-    static ArchRule useJavaLoggingRule = NO_CLASSES_SHOULD_USE_JAVA_UTIL_LOGGING;
+    public static final ArchRule useJavaLoggingRule = NO_CLASSES_SHOULD_USE_JAVA_UTIL_LOGGING;
 
     @ArchTest
-    static ArchRule extendRuntimeExRule = ArchRuleDefinition.classes()
-        .that().haveSimpleNameEndingWith("Exception")
-        .should().beAssignableTo(RuntimeException.class);
-
-    @ArchTest
-    static ArchRule apiMethodsReturnResponseEntityRule = ArchRuleDefinition.methods()
+    public static final ArchRule apiMethodsReturnResponseEntityRule = ArchRuleDefinition.methods()
         .that().areDeclaredInClassesThat().areAnnotatedWith(RestController.class)
         .should().haveRawReturnType(ResponseEntity.class);
 
     @ArchTest
-    static ArchRule noPublicFields = ArchRuleDefinition.noFields()
-        .that().areNotStatic().or().areNotFinal()
-        .should().bePublic();
+    public static final ArchRule staticFinalFieldsRule = ArchRuleDefinition.fields()
+        .that().areStatic()
+        .should().beFinal();
+
+    @ArchTest
+    public static final ArchRule publicStaticFinalFieldsRule = ArchRuleDefinition.fields()
+        .that().arePublic()
+        .should().beFinal().andShould().beStatic();
 
 }

@@ -1,7 +1,6 @@
 package com.pet.pethubapi.application.auth;
 
-import com.pet.pethubapi.domain.auth.LoginDTO;
-import com.pet.pethubapi.domain.auth.RegisterDTO;
+import com.pet.pethubapi.infrastructure.security.JWTResponse;
 
 public interface AuthenticationService {
 
