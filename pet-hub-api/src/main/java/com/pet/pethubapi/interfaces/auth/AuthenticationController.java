@@ -37,7 +37,7 @@ public class AuthenticationController {
 
     @GetMapping(value = "/refresh-token", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<JWTResponse> refreshToken(@RequestHeader("X-Auth-Refresh") String refreshToken) {
-        final var response = authenticationService.refreshToken(refreshToken);
+        final var response = authenticationService.refreshAuthToken(refreshToken);
         return ResponseEntity.ok().body(response);
     }
 

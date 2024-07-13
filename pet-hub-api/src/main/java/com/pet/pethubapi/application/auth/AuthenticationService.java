@@ -14,6 +14,6 @@ public interface AuthenticationService {
     /**
      * Accepts refresh token to re-authenticate user.
      */
-    JWTResponse refreshToken(String refreshToken);
+    JWTResponse refreshAuthToken(String refreshToken);
 
 }

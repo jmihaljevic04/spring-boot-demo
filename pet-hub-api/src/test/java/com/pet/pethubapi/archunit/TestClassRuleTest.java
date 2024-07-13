@@ -7,6 +7,7 @@ import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.tngtech.archunit.core.domain.properties.CanBeAnnotated.Predicates.annotatedWith;
 
@@ -35,5 +36,9 @@ public class TestClassRuleTest {
     @ArchTest
     public static final ArchRule noDisabledTestRule = ArchRuleDefinition.noClasses()
         .should().beAnnotatedWith(Disabled.class);
+
+    @ArchTest
+    public static final ArchRule noTransactionTestRule = ArchRuleDefinition.noClasses()
+        .should().beAnnotatedWith(Transactional.class);
 
 }

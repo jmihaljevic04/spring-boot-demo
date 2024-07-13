@@ -37,4 +37,8 @@ public class AnnotationRuleTest {
     public static final ArchRule junit4TestAnnotationRule = ArchRuleDefinition.noMethods()
         .should().beAnnotatedWith(org.junit.Test.class);
 
+    @ArchTest
+    public static final ArchRule jakartaTransactionalAnnotationRule = ArchRuleDefinition.noMethods()
+        .should().beAnnotatedWith(jakarta.transaction.Transactional.class); // use Spring framework annotation
+
 }

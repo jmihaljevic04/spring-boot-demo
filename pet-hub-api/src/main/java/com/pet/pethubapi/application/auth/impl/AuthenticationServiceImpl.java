@@ -6,7 +6,7 @@ import com.pet.pethubapi.application.auth.LoginDTO;
 import com.pet.pethubapi.application.auth.RegisterDTO;
 import com.pet.pethubapi.application.auth.UnauthorizedException;
 import com.pet.pethubapi.domain.role.Role;
-import com.pet.pethubapi.domain.role.RoleRepository;
+import com.pet.pethubapi.domain.role.RoleEnum;
 import com.pet.pethubapi.domain.user.User;
 import com.pet.pethubapi.domain.user.UserRepository;
 import com.pet.pethubapi.infrastructure.security.JWTResponse;
@@ -27,12 +27,11 @@ import java.util.regex.Pattern;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private static final Pattern EMAIL_VALIDATOR = Pattern.compile("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$");
+    private static final Pattern EMAIL_VALIDATOR = Pattern.compile("^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,4}$");
     // at least one small and one capital letter, at least one digit, at least one special symbol, and length [8,20]
-    private static final Pattern PASSWORD_VALIDATOR = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[@#$%^&+=]).{8,}$\n");
+    private static final Pattern PASSWORD_VALIDATOR = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).(?=.*[@#$%&+=-\\\\!.]).{8,20}$");
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
@@ -41,8 +40,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void registerNewUser(RegisterDTO input) {
         validateRegisterInput(input);
 
-        final var userRole = roleRepository.findByName("user");
         final var userRoles = new HashSet<Role>(1);
+        final var userRole = new Role();
+        userRole.setId(RoleEnum.USER.getId());
         userRoles.add(userRole);
 
         final var user = new User();
@@ -77,7 +77,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public JWTResponse refreshToken(String refreshToken) {
+    public JWTResponse refreshAuthToken(String refreshToken) {
+        if (StringUtils.isBlank(refreshToken)) {
+            throw new InvalidAuthenticationException("Refresh token is empty!");
+        }
+
         if (jwtService.hasTokenExpired(refreshToken) || !jwtService.isRefreshToken(refreshToken)) {
             throw new UnauthorizedException("Refresh token has expired or is invalid!");
         }
@@ -88,7 +92,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private void validateRegisterInput(RegisterDTO input) {
         if (input == null) {
-            throw new InvalidAuthenticationException("Input for new user registration is null!");
+            throw new InvalidAuthenticationException("Input for new user registration is empty!");
         }
 
         if (StringUtils.isAnyBlank(input.getEmail(), input.getPassword(), input.getFirstName(), input.getLastName())) {
@@ -115,7 +119,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static void validateLoginInput(LoginDTO input) {
         if (input == null) {
-            throw new InvalidAuthenticationException("Input for user login is null!");
+            throw new InvalidAuthenticationException("Input for user login is empty!");
         }
 
         if (StringUtils.isAnyBlank(input.email(), input.password())) {

@@ -105,7 +105,7 @@ class AuthenticationControllerShould {
         var input = "refreshToken";
         var mockResponse = new JWTResponse("accessToken", "refreshToken");
 
-        when(authenticationServiceMock.refreshToken(input)).thenReturn(mockResponse);
+        when(authenticationServiceMock.refreshAuthToken(input)).thenReturn(mockResponse);
 
         var response = given()
             .basePath("/api/auth/refresh-token")
@@ -117,7 +117,7 @@ class AuthenticationControllerShould {
         var responseBody = response.as(JWTResponse.class);
         assertThat(responseBody).isEqualTo(mockResponse);
 
-        verify(authenticationServiceMock).refreshToken(input);
+        verify(authenticationServiceMock).refreshAuthToken(input);
         verifyNoMoreInteractions(authenticationServiceMock);
     }
 

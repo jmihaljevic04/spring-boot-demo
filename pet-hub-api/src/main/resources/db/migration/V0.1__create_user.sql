@@ -12,7 +12,7 @@ create table app_user
     version         int       not null default 0
 );
 
-INSERT INTO public.app_user (id, email, password, first_name, last_name, created_by)
-VALUES (1, 'admin@pethub.com', '{bcrypt}$2a$10$WO9MllE2D9Jq9xgWBdJW6u569K5Eux8Y.VOaXNxHDykYdsqYCXcpC', 'Admin', 'Admin', 'system'),
-       (2, 'user@pethub.com', '{bcrypt}$2a$10$WEs.Ad8P7WbzGuzgJmnciO65vTuVaUjIaupC7eeMb1qtvnG7ShGkS', 'User', 'User', 'system');
+INSERT INTO public.app_user (email, password, first_name, last_name, created_by)
+VALUES ('admin@pethub.com', '{bcrypt}$2a$10$WO9MllE2D9Jq9xgWBdJW6u569K5Eux8Y.VOaXNxHDykYdsqYCXcpC', 'Admin', 'Admin', 'system'),
+       ('user@pethub.com', '{bcrypt}$2a$10$WEs.Ad8P7WbzGuzgJmnciO65vTuVaUjIaupC7eeMb1qtvnG7ShGkS', 'User', 'User', 'system');
 
