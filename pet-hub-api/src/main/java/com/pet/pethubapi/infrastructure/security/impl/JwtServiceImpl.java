@@ -1,10 +1,11 @@
-package com.pet.pethubapi.infrastructure.impl;
+package com.pet.pethubapi.infrastructure.security.impl;
 
 import com.pet.pethubapi.domain.ApplicationProperties;
 import com.pet.pethubapi.domain.role.Role;
 import com.pet.pethubapi.infrastructure.security.InvalidTokenException;
 import com.pet.pethubapi.infrastructure.security.JWTResponse;
 import com.pet.pethubapi.infrastructure.security.JwtService;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -16,16 +17,16 @@ import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    private static final String ISSUER = "PetHub";
     private static final String ADMIN_USERNAME = "admin";
-    private static final String ACCESS_CLAIM = "access_token";
-    private static final String REFRESH_CLAIM = "refresh_token";
+    public static final String ISSUER = "PetHub";
+    public static final String ACCESS_CLAIM = "access_token";
+    public static final String REFRESH_CLAIM = "refresh_token";
+    public static final String AUTHORITIES_CLAIM = "authorities";
 
     private final ApplicationProperties applicationProperties;
 
@@ -43,6 +44,8 @@ public class JwtServiceImpl implements JwtService {
         try {
             final var expiration = Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token).getPayload().getExpiration();
             return expiration.before(new Date());
+        } catch (ExpiredJwtException e) {
+            return true;
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidTokenException(e);
         }
@@ -88,7 +91,7 @@ public class JwtServiceImpl implements JwtService {
     private String generateAccessToken(String username, Date currentDate, Set<Role> authorities) {
         final var stringifiedRoles = authorities.stream()
             .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.joining());
+            .toList().toString();
 
         return Jwts.builder()
             .subject(username)
@@ -96,7 +99,7 @@ public class JwtServiceImpl implements JwtService {
             .issuer(ISSUER)
             .expiration(getExpirationInterval(username, currentDate))
             .claim(ACCESS_CLAIM, Boolean.TRUE)
-            .claim("authorities", stringifiedRoles)
+            .claim(AUTHORITIES_CLAIM, stringifiedRoles)
             .signWith(getSignKey())
             .compact();
     }

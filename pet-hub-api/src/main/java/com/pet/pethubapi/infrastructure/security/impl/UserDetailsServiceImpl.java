@@ -1,4 +1,4 @@
-package com.pet.pethubapi.infrastructure.impl;
+package com.pet.pethubapi.infrastructure.security.impl;
 
 import com.pet.pethubapi.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

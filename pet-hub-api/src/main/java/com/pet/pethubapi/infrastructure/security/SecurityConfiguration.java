@@ -1,6 +1,6 @@
 package com.pet.pethubapi.infrastructure.security;
 
-import com.pet.pethubapi.infrastructure.impl.UserDetailsServiceImpl;
+import com.pet.pethubapi.infrastructure.security.impl.UserDetailsServiceImpl;
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
