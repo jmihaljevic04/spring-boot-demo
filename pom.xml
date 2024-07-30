@@ -46,6 +46,7 @@
         <pet.flyway.version>10.10.0</pet.flyway.version>
         <pet.thymeleaf-security-extras.version>3.1.2.RELEASE</pet.thymeleaf-security-extras.version>
         <pet.jwt.version>0.12.5</pet.jwt.version>
+        <pet.google-guava-core.version>33.2.1-jre</pet.google-guava-core.version>
 
         <pet.spring-devtools.version>3.3.0</pet.spring-devtools.version>
         <pet.spring-docker-compose.version>3.3.0</pet.spring-docker-compose.version>
@@ -70,6 +71,7 @@
         <pet.maven-spring-plugin.version>3.3.0</pet.maven-spring-plugin.version>
         <pet.maven-surefire-plugin.version>3.2.5</pet.maven-surefire-plugin.version>
         <pet.jacoco.version>0.8.11</pet.jacoco.version>
+        <pet.checkstyle-plugin.version>3.4.0</pet.checkstyle-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -158,6 +160,11 @@
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt-api</artifactId>
                 <version>${pet.jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${pet.google-guava-core.version}</version>
             </dependency>
 
             <!-- UTILITY section -->
@@ -353,6 +360,24 @@
                         <configuration>
                             <outputDirectory>${project.build.directory}/jacoco-report</outputDirectory>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!-- checks for code style issues during build phase -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${pet.checkstyle-plugin.version}</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
