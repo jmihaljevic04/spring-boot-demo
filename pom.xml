@@ -72,6 +72,7 @@
         <pet.maven-surefire-plugin.version>3.2.5</pet.maven-surefire-plugin.version>
         <pet.jacoco.version>0.8.11</pet.jacoco.version>
         <pet.checkstyle-plugin.version>3.4.0</pet.checkstyle-plugin.version>
+        <pet.checkstyle.version>10.17.0</pet.checkstyle.version>
     </properties>
 
     <dependencyManagement>
@@ -371,6 +372,24 @@
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${pet.checkstyle.version}</version> <!-- version of Checkstyle itself -->
+                        <exclusions>
+                            <exclusion>
+                                <groupId>com.google.guava</groupId>
+                                <artifactId>guava</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.google.guava</groupId>
+                        <artifactId>guava</artifactId>
+                        <version>${pet.google-guava-core.version}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <id>validate</id>
