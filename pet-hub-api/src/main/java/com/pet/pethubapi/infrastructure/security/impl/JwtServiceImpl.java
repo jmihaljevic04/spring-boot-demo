@@ -22,11 +22,11 @@ import java.util.Set;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    private static final String ADMIN_USERNAME = "admin";
     public static final String ISSUER = "PetHub";
     public static final String ACCESS_CLAIM = "access_token";
     public static final String REFRESH_CLAIM = "refresh_token";
     public static final String AUTHORITIES_CLAIM = "authorities";
+    private static final String ADMIN_USERNAME = "admin";
 
     private final ApplicationProperties applicationProperties;
 

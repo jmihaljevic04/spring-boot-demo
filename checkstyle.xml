@@ -13,10 +13,6 @@
         <property name="fileExtensions" value="java"/>
     </module>
     <module name="FileTabCharacter"/>
-    <module name="LineLength">
-        <property name="max" value="150"/>
-        <property name="fileExtensions" value="java"/>
-    </module>
     <module name="NewlineAtEndOfFile"/>
     <module name="RegexpSingleline">
         <property name="format" value="\s+$"/>
@@ -24,6 +20,7 @@
         <property name="maximum" value="0"/>
         <property name="message" value="Line has trailing spaces."/>
     </module>
+    <module name="UniqueProperties"/>
 
     <module name="TreeWalker">
         <module name="AbbreviationAsWordInName"/>
@@ -52,7 +49,6 @@
         <module name="EqualsAvoidNull"/>
         <module name="EqualsHashCode"/>
         <module name="FinalClass"/>
-        <module name="FinalParameters"/>
         <module name="GenericWhitespace"/>
         <module name="HiddenField">
             <property name="tokens" value="VARIABLE_DEF"/>
@@ -65,15 +61,6 @@
         <module name="IllegalImport"/>
         <module name="IllegalInstantiation"/>
         <module name="IllegalThrows"/>
-        <module name="ImportOrder"/>
-        <module name="Indentation">
-            <property name="basicOffset" value="4"/>
-            <property name="braceAdjustment" value="4"/>
-            <property name="caseIndent" value="4"/>
-            <property name="throwsIndent" value="8"/>
-            <property name="lineWrappingIndentation" value="8"/>
-            <property name="arrayInitIndent" value="4"/>
-        </module>
         <module name="InnerAssignment"/>
         <module name="InterfaceIsType"/>
         <module name="InterfaceTypeParameterName"/>
@@ -82,9 +69,6 @@
         <module name="LeftCurly"/>
         <module name="LocalFinalVariableName"/>
         <module name="LocalVariableName"/>
-        <module name="MagicNumber">
-            <property name="ignoreAnnotation" value="true"/>
-        </module>
         <module name="MemberName"/>
         <module name="MethodLength"/>
         <module name="MethodName"/>
@@ -113,7 +97,6 @@
         <module name="TodoComment"/>
         <module name="TypeName"/>
         <module name="TypecastParenPad"/>
-        <module name="UniqueProperties"/>
         <module name="UnusedImports">
             <property name="processJavadoc" value="false"/>
         </module>
