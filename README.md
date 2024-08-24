@@ -145,7 +145,9 @@ If necessary, containers can be started with following commands (positioned in r
 - stop and remove containers and volumes: `docker compose down -v`
 
 Code style is mainly influenced by default IntelliJ IDEA style, but overwritten with `.editorconfig` file, and is
-automatically applied.
+automatically applied. Additionally, Checkstyle has been introduced into build phase to validate codebase by defined
+configuration.
+If there are some violations, build will fail.
 
 Maven wrapper is available, so use it instead your local installation (if using IntelliJ IDEA, change usage to wrapper).
 
@@ -185,6 +187,24 @@ Applications support both synchronous and asynchronous communication between the
 APIs) where we are expecting response immediately and consciously blocking further process.
 Async is done via RabbitMQ pub/sub mechanism in cases where response and execution time is not necessary, for example
 triggering to send an email or process something.
+
+### RabbitMQ
+
+RabbitMQ, as a async messaging tool, has been implemented with single virtual host and, by default, two consumers: `api`
+and `batch` application.
+Infrastructure supports multiple instance of each application, meaning having multiple consumers of f.e. `api`
+application.
+
+In general, it's imagined that `api` is always producer (sender), because all changes and `batch` application is always
+listener. This can be changed if need arises.
+
+If there is need for it, producers and listeners can be disabled with application property.
+
+Retry policies for producer and listener has been implemented separately, one using `spring-retry` and latter using
+retry and dead-letter queue.
+For more details, check RabbitMQ configuration classes.
+
+Since for most of the tests RabbitMQ isn't necessary, property is present to disable spinning-up container.
 
 ### Flyway
 

@@ -20,7 +20,7 @@ public class TestcontainersConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "integration-test.rabbitmq.enabled", havingValue = "true")
+    @ConditionalOnProperty(name = "pet.integration-test.rabbitmq-container.enabled", havingValue = "true")
     @ServiceConnection
     RabbitMQContainer rabbitContainer() {
         return new RabbitMQContainer(DockerImageName.parse("rabbitmq:3.13-alpine")).withReuse(true);

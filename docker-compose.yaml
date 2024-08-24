@@ -14,7 +14,7 @@ services:
             interval: 10s
             timeout: 5s
             retries: 3
-    rabbitmq:
+    rabbitmq: # TODO: additional config (multiple users and vhost)
         image: 'rabbitmq:3.13-management-alpine'
         container_name: 'pet-rabbitmq'
         environment:
