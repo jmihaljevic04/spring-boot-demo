@@ -1,0 +1,73 @@
+{
+    "rabbit_version": "3.13.6",
+    "rabbitmq_version": "3.13.6",
+    "product_name": "RabbitMQ",
+    "product_version": "3.13.6",
+    "users": [
+        {
+            "name": "pet-admin",
+            "password": "pet-password",
+            "tags": "administrator"
+        },
+        {
+            "name": "pet-api",
+            "password": "pet-api-password",
+            "tags": "administrator"
+        },
+        {
+            "name": "pet-batch",
+            "password": "pet-batch-password",
+            "tags": "administrator"
+        }
+    ],
+    "vhosts": [
+        {
+            "name": "pet-hub"
+        }
+    ],
+    "permissions": [
+        {
+            "user": "pet-admin",
+            "vhost": "pet-hub",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        },
+        {
+            "user": "pet-api",
+            "vhost": "pet-hub",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        },
+        {
+            "user": "pet-batch",
+            "vhost": "pet-hub",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        }
+    ],
+    "topic_permissions": [
+    ],
+    "parameters": [
+    ],
+    "global_parameters": [
+        {
+            "name": "cluster_name",
+            "value": "pet-hub-rabbitmq-cluster@localhost"
+        },
+        {
+            "name": "internal_cluster_id",
+            "value": "rabbitmq-cluster-id-pet-hbu"
+        }
+    ],
+    "policies": [
+    ],
+    "queues": [
+    ],
+    "exchanges": [
+    ],
+    "bindings": [
+    ]
+}

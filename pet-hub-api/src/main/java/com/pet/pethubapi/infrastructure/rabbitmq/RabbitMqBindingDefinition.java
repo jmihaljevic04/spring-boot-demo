@@ -20,6 +20,7 @@ public class RabbitMqBindingDefinition {
     private static final int MESSAGE_TTL = (int) Duration.ofHours(1).toMillis();
 
     public static final String PET_TOPIC_EXCHANGE = "pet-topic-exchange";
+    public static final String PET_FANOUT_EXCHANGE = "pet-fanout-exchange";
 
     public static final String RETRY_QUEUE = "retry-queue";
     public static final String PARKING_LOT_QUEUE = "parking-lot-queue";
@@ -34,7 +35,7 @@ public class RabbitMqBindingDefinition {
 
     @Bean
     FanoutExchange fanoutExchange() {
-        return new FanoutExchange("fanoutExchange");
+        return new FanoutExchange(PET_FANOUT_EXCHANGE);
     }
 
     @Bean

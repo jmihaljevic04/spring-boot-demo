@@ -14,12 +14,11 @@ services:
             interval: 10s
             timeout: 5s
             retries: 3
-    rabbitmq: # TODO: additional config (multiple users and vhost)
-        image: 'rabbitmq:3.13-management-alpine'
+    rabbitmq:
         container_name: 'pet-rabbitmq'
-        environment:
-            - 'RABBITMQ_DEFAULT_PASS=pet-password'
-            - 'RABBITMQ_DEFAULT_USER=pet-admin'
+        build:
+            context: ./rabbitmq
+            dockerfile: Dockerfile
         ports:
             - '5672:5672'
             - '15672:15672'

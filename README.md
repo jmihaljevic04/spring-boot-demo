@@ -137,7 +137,7 @@ Useful commands to:
 
 For running application locally `docker-compose` file is present to run containerized integrations. If running with
 Spring command (or through IDE), containers are started automatically.
-If necessary, containers can be started with following commands (positioned in root directory):
+If necessary, containers can be started with following commands (positioned in _docker_ directory):
 
 - download and start containers: `docker compose up`
 - start with downloaded containers: `docker compose start`
