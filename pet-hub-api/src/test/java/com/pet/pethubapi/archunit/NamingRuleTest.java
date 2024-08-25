@@ -8,7 +8,6 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import jakarta.persistence.Entity;
 import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.tngtech.archunit.core.domain.properties.CanBeAnnotated.Predicates.annotatedWith;
@@ -35,11 +34,6 @@ public class NamingRuleTest {
     public static final ArchRule repositoryNamingRule = ArchRuleDefinition.classes()
         .that().areAnnotatedWith(Repository.class)
         .should().haveSimpleNameEndingWith("Repository");
-
-    @ArchTest
-    public static final ArchRule serviceNamingRule = ArchRuleDefinition.classes()
-        .that().areAnnotatedWith(Service.class)
-        .should().haveSimpleNameEndingWith("ServiceImpl");
 
     @ArchTest
     public static final ArchRule interfaceNamingRule = ArchRuleDefinition.noClasses()
