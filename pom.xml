@@ -17,6 +17,7 @@
     <inceptionYear>2024</inceptionYear>
 
     <modules>
+        <module>pet-hub-rabbitmq</module>
         <module>pet-hub-api</module>
         <module>pet-hub-batch</module>
     </modules>
@@ -309,27 +310,16 @@
     </dependencyManagement>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${pet.maven-spring-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${pet.maven-spring-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>build-info</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
             <plugin>
                 <!-- exposes Git info on Actuator metrics -->
                 <groupId>io.github.git-commit-id</groupId>

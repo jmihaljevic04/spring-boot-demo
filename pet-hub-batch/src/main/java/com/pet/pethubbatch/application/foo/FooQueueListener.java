@@ -1,7 +1,7 @@
 package com.pet.pethubbatch.application.foo;
 
-import com.pet.pethubbatch.infrastructure.logging.RabbitMqListenerLogger;
-import com.pet.pethubbatch.infrastructure.rabbitmq.RabbitMqRetryUtil;
+import com.pet.pethubrabbitmq.util.RabbitMqListenerLogger;
+import com.pet.pethubrabbitmq.util.RabbitMqRetryUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.core.Message;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @ConditionalOnProperty(value = "pet.rabbitmq.enabled", havingValue = "true")
 public class FooQueueListener {
 
-    @RabbitListener(id = "foo-queue-listener", queues = "foo-queue", containerFactory = "rabbitListenerContainerFactory")
+    @RabbitListener(id = "foo-queue-listener-dlq", queues = "foo-queue", containerFactory = "rabbitListenerContainerFactory")
     public void consumeMessageWithDlq(final Message message) {
         RabbitMqListenerLogger.logIncomingMessage(message);
         try {
@@ -26,7 +26,7 @@ public class FooQueueListener {
         }
     }
 
-    @RabbitListener(id = "foo-queue-listener", queues = "foo-queue", containerFactory = "rabbitListenerContainerFactory")
+    @RabbitListener(id = "foo-queue-listener-retry", queues = "foo-queue", containerFactory = "rabbitListenerContainerFactory")
     public void consumeMessageWithRetry(final Message message) {
         RabbitMqListenerLogger.logIncomingMessage(message);
         RabbitMqRetryUtil.checkIfMessageWasRetried(message);

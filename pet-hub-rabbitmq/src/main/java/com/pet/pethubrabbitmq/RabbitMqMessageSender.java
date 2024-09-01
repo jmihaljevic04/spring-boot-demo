@@ -1,4 +1,4 @@
-package com.pet.pethubapi.infrastructure.rabbitmq;
+package com.pet.pethubrabbitmq;
 
 public interface RabbitMqMessageSender<D> {
 

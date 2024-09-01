@@ -1,4 +1,4 @@
-package com.pet.pethubbatch.infrastructure.rabbitmq;
+package com.pet.pethubrabbitmq.config;
 
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;

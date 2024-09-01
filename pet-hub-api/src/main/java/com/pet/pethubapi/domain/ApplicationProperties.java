@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationProperties {
 
     private final JWTProperties jwt = new JWTProperties();
-    private final RabbitMqProperties rabbitmq = new RabbitMqProperties();
 
     @Getter
     @Setter
@@ -23,14 +22,6 @@ public class ApplicationProperties {
         private int accessExpiration;
         private int adminAccessExpiration;
         private int refreshExpiration;
-
-    }
-
-    @Getter
-    @Setter
-    public static final class RabbitMqProperties {
-
-        private boolean enabled;
 
     }
 

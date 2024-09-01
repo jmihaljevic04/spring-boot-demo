@@ -1,6 +1,5 @@
-package com.pet.pethubbatch.infrastructure.rabbitmq;
+package com.pet.pethubrabbitmq.util;
 
-import com.pet.pethubbatch.infrastructure.logging.RabbitMqListenerLogger;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.core.Message;

@@ -13,7 +13,17 @@
     <name>pet-hub-api</name>
     <description>PetHub application providing API endpoints.</description>
 
+    <properties>
+        <pet.rabbitmq.version>0.0.1-SNAPSHOT</pet.rabbitmq.version>
+    </properties>
+
     <dependencies>
+        <dependency>
+            <groupId>com.pet</groupId>
+            <artifactId>pet-hub-rabbitmq</artifactId>
+            <version>${pet.rabbitmq.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -163,5 +173,30 @@
             <artifactId>rest-assured</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                    <mainClass>com.pet.pethubapi.PetHubApiApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

@@ -1,7 +1,7 @@
-package com.pet.pethubapi.infrastructure.rabbitmq.impl;
+package com.pet.pethubrabbitmq.impl;
 
-import com.pet.pethubapi.domain.ApplicationProperties;
-import com.pet.pethubapi.infrastructure.rabbitmq.RabbitMqMessageSender;
+import com.pet.pethubrabbitmq.RabbitMqMessageSender;
+import com.pet.pethubrabbitmq.RabbitMqProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpException;
@@ -17,11 +17,11 @@ import java.nio.charset.StandardCharsets;
 public class RabbitMqMessageSenderImpl<D> implements RabbitMqMessageSender<D> {
 
     private final RabbitTemplate rabbitTemplate;
-    private final ApplicationProperties applicationProperties;
+    private final RabbitMqProperties rabbitMqProperties;
 
     @Override
     public void sendMessageToTopic(D body, String topicExchangeName, String routingKey) {
-        if (!applicationProperties.getRabbitmq().isEnabled()) {
+        if (!rabbitMqProperties.isEnabled()) {
             log.warn("Sending message to topic exchange because RabbitMQ integration is disabled!");
             return;
         }
@@ -40,7 +40,7 @@ public class RabbitMqMessageSenderImpl<D> implements RabbitMqMessageSender<D> {
 
     @Override
     public void sendMessageToFanout(D body, String fanoutExchangeName) {
-        if (!applicationProperties.getRabbitmq().isEnabled()) {
+        if (!rabbitMqProperties.isEnabled()) {
             log.warn("Failed to send message to fanout exchange because RabbitMQ integration is disabled!");
             return;
         }

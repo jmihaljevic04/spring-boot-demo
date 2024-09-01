@@ -1,4 +1,4 @@
-package com.pet.pethubapi.infrastructure.rabbitmq;
+package com.pet.pethubrabbitmq.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -18,16 +18,16 @@ import java.time.Duration;
 @Configuration
 public class RabbitMqBindingDefinition {
 
-    private static final int MESSAGE_TTL = (int) Duration.ofHours(1).toMillis();
-
-    private static final String DEAD_LETTER_EXCHANGE = "pet-dead-letter-exchange";
-    private static final String DEAD_LETTER_ROUTING_KEY = "dead-letter-rk";
-
     public static final String PET_TOPIC_EXCHANGE = "pet-topic-exchange";
     public static final String PET_FANOUT_EXCHANGE = "pet-fanout-exchange";
 
     public static final String FOO_QUEUE = "foo-queue";
     public static final String RETRY_QUEUE = "retry-queue";
+
+    private static final int MESSAGE_TTL = (int) Duration.ofHours(1).toMillis();
+
+    private static final String DEAD_LETTER_EXCHANGE = "pet-dead-letter-exchange";
+    private static final String DEAD_LETTER_ROUTING_KEY = "dead-letter-rk";
 
     @Bean
     TopicExchange topicExchange() {

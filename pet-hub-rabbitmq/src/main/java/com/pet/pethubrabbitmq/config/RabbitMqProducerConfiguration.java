@@ -1,4 +1,4 @@
-package com.pet.pethubapi.infrastructure.rabbitmq;
+package com.pet.pethubrabbitmq.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpException;
