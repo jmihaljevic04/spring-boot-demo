@@ -17,6 +17,7 @@
     <inceptionYear>2024</inceptionYear>
 
     <modules>
+        <module>pet-hub-rabbitmq</module>
         <module>pet-hub-api</module>
         <module>pet-hub-batch</module>
     </modules>
@@ -56,6 +57,8 @@
         <pet.lombok.version>1.18.32</pet.lombok.version>
         <pet.spring-openapi.version>2.5.0</pet.spring-openapi.version>
         <pet.hazelcast.version>5.4.0</pet.hazelcast.version>
+        <pet.apache-commons-lang.version>3.17.0</pet.apache-commons-lang.version>
+        <pet.apache-commons-utils.version>4.4</pet.apache-commons-utils.version>
 
         <pet.spring-test.version>3.3.0</pet.spring-test.version>
         <pet.spring-testcontainers.version>3.3.0</pet.spring-testcontainers.version>
@@ -230,6 +233,17 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${pet.jacoco.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${pet.apache-commons-lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${pet.apache-commons-utils.version}</version>
+            </dependency>
+
 
             <!-- TEST section -->
             <dependency>
@@ -296,27 +310,16 @@
     </dependencyManagement>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${pet.maven-spring-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${pet.maven-spring-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>build-info</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
             <plugin>
                 <!-- exposes Git info on Actuator metrics -->
                 <groupId>io.github.git-commit-id</groupId>

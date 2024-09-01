@@ -13,7 +13,17 @@
     <name>pet-hub-batch</name>
     <description>PetHub application executing scheduled jobs.</description>
 
+    <properties>
+        <pet.rabbitmq.version>0.0.1-SNAPSHOT</pet.rabbitmq.version>
+    </properties>
+
     <dependencies>
+        <dependency>
+            <groupId>com.pet</groupId>
+            <artifactId>pet-hub-rabbitmq</artifactId>
+            <version>${pet.rabbitmq.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -126,6 +136,14 @@
             <artifactId>jjwt-jackson</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+        </dependency>
 
         <!-- TEST section -->
         <dependency>
@@ -178,5 +196,30 @@
             <artifactId>rest-assured</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                    <mainClass>com.pet.pethubbatch.PetHubBatchApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

@@ -16,7 +16,7 @@ public final class ObjectMapperUtils {
     }
 
     private ObjectMapperUtils() {
-        throw new IllegalAccessError();
+        throw new IllegalAccessError("Utility class!");
     }
 
     public static String toJsonString(final Object object) {

@@ -3,7 +3,7 @@ package com.pet.pethubbatch;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.pet.pethubbatch", "com.pet.pethubrabbitmq"})
 public class PetHubBatchApplication {
 
     protected PetHubBatchApplication() {

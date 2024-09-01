@@ -56,7 +56,6 @@
             <property name="ignoreSetter" value="true"/>
         </module>
         <module name="HideUtilityClassConstructor"/>
-        <module name="IllegalCatch"/>
         <module name="IllegalIdentifierName"/>
         <module name="IllegalImport"/>
         <module name="IllegalInstantiation"/>

@@ -137,7 +137,7 @@ Useful commands to:
 
 For running application locally `docker-compose` file is present to run containerized integrations. If running with
 Spring command (or through IDE), containers are started automatically.
-If necessary, containers can be started with following commands (positioned in root directory):
+If necessary, containers can be started with following commands (positioned in _docker_ directory):
 
 - download and start containers: `docker compose up`
 - start with downloaded containers: `docker compose start`
@@ -145,7 +145,9 @@ If necessary, containers can be started with following commands (positioned in r
 - stop and remove containers and volumes: `docker compose down -v`
 
 Code style is mainly influenced by default IntelliJ IDEA style, but overwritten with `.editorconfig` file, and is
-automatically applied.
+automatically applied. Additionally, Checkstyle has been introduced into build phase to validate codebase by defined
+configuration.
+If there are some violations, build will fail.
 
 Maven wrapper is available, so use it instead your local installation (if using IntelliJ IDEA, change usage to wrapper).
 
@@ -154,7 +156,8 @@ etc.
 
 ### Microservices
 
-Project contains two microservices: `api` and `batch`. Purpose of it is to split functionalities and load to separate
+Project contains two runnable microservices: `api` and `batch`. Purpose of it is to split functionalities and load to
+separate
 executable _jars_.
 For instance, first one serves API endpoints and can be easily scaled based on incoming load, while second one is
 responsible for handling scheduled jobs, which may be "heavy" but won't impact API performance.
@@ -170,7 +173,8 @@ dependency for _spring-batch_.
 
 Regarding dependencies, common approach is to have `common`, `shared` or some similarly named _jar_ which is used in
 both microservices (but is not application by itself), and provides shared dependencies, domain classes, utilities etc.
-Although it simplifies development and remove need for most of the duplicate, it just hides another dependency which has
+Although it simplifies development and remove need for most of the duplication, it just hides another dependency which
+has
 to be maintained and is weak point for both microservices. Some examples are:
 
 - changes made in common module require redeploy of both microservices (tightly coupled)
@@ -185,6 +189,28 @@ Applications support both synchronous and asynchronous communication between the
 APIs) where we are expecting response immediately and consciously blocking further process.
 Async is done via RabbitMQ pub/sub mechanism in cases where response and execution time is not necessary, for example
 triggering to send an email or process something.
+
+### RabbitMQ
+
+RabbitMQ, as a async messaging tool, has been implemented with single virtual host and, by default, two consumers: `api`
+and `batch` application.
+Infrastructure supports multiple instance of each application, meaning having multiple consumers of f.e. `api`
+application.
+
+In general, it's imagined that `api` is always producer (sender), because all changes come through API and `batch`
+application is always
+listener. There are exceptions in rule, where `batch` has to send retry message back to queue.
+
+If there is need for it, producers and listeners can be disabled with application property.
+
+Retry policies for producer and listener has been implemented separately, one using `spring-retry` and latter using
+retry and dead-letter queue.
+For more details, check RabbitMQ configuration classes.
+
+Since for most of the tests RabbitMQ isn't necessary, property is present to disable spinning-up container.
+
+Due to shared configuration between both application, RabbitMQ has been extracted to separate microservice (acting just
+as a library) called `rabbitmq`.
 
 ### Flyway
 
@@ -203,7 +229,9 @@ existing user (authentication is required).
 
 Actuator has four endpoint categories enabled (which are accessible only by admin role):
 
-- health: _localhost:8080/api/actuator/health_ (available for unauthenticated requests also)
+- health API app: _localhost:8080/api/actuator/health/pet-hub-api_ (available for unauthenticated requests also)
+- health BATCH app: _localhost:8081/api/batch/actuator/health/pet-hub-batch_ (available for unauthenticated requests
+  also)
 - info: _localhost:8080/api/actuator/info_
 - metrics: _localhost:8080/api/actuator/metrics_
 - Prometheus-formatted metrics: _localhost:8080/api/actuator/prometheus_
