@@ -2,6 +2,7 @@ package com.pet.pethubapi.infrastructure.rabbitmq;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
@@ -19,14 +20,14 @@ public class RabbitMqBindingDefinition {
 
     private static final int MESSAGE_TTL = (int) Duration.ofHours(1).toMillis();
 
+    private static final String DEAD_LETTER_EXCHANGE = "pet-dead-letter-exchange";
+    private static final String DEAD_LETTER_ROUTING_KEY = "dead-letter-rk";
+
     public static final String PET_TOPIC_EXCHANGE = "pet-topic-exchange";
     public static final String PET_FANOUT_EXCHANGE = "pet-fanout-exchange";
 
+    public static final String FOO_QUEUE = "foo-queue";
     public static final String RETRY_QUEUE = "retry-queue";
-    public static final String PARKING_LOT_QUEUE = "parking-lot-queue";
-
-    public static final String RETRY_ROUTING_KEY = ".retry.";
-    public static final String DEAD_LETTER_ROUTING_KEY = ".dead-letter.";
 
     @Bean
     TopicExchange topicExchange() {
@@ -39,13 +40,18 @@ public class RabbitMqBindingDefinition {
     }
 
     @Bean
-    Queue queue() {
+    DirectExchange deadLetterExchange() {
+        return new DirectExchange(DEAD_LETTER_EXCHANGE);
+    }
+
+    @Bean
+    Queue fooQueue() {
         return QueueBuilder
-            .durable("queue")
+            .durable(FOO_QUEUE)
             .quorum()
             .ttl(MESSAGE_TTL)
-            .deadLetterExchange(PET_TOPIC_EXCHANGE)
-            .deadLetterRoutingKey(DEAD_LETTER_ROUTING_KEY + "ttl-expiration")
+            .deadLetterExchange(DEAD_LETTER_EXCHANGE)
+            .deadLetterRoutingKey(DEAD_LETTER_ROUTING_KEY)
             .build();
     }
 
@@ -55,8 +61,8 @@ public class RabbitMqBindingDefinition {
             .durable(RETRY_QUEUE)
             .quorum()
             .ttl(MESSAGE_TTL)
-            .deadLetterExchange(PET_TOPIC_EXCHANGE)
-            .deadLetterRoutingKey(DEAD_LETTER_ROUTING_KEY + "retry-ttl-expiration")
+            .deadLetterExchange(DEAD_LETTER_EXCHANGE)
+            .deadLetterRoutingKey(DEAD_LETTER_ROUTING_KEY)
             .build();
     }
 
@@ -64,28 +70,27 @@ public class RabbitMqBindingDefinition {
      * This queue is not meant to be programmatically consumed. Only for manual manipulation via Admin UI.
      * Reasoning: if original messages couldn't be consumed, there is high probability that dead letters wouldn't be consumed also. Ideally, those would be consumed by third-party and saved in DB.
      */
-    // TODO: Prometheus custom metric increment on each message in this queue
     @Bean
-    Queue parkingLotQueue() {
+    Queue deadLetterQueue() {
         return QueueBuilder
-            .durable(PARKING_LOT_QUEUE)
+            .durable("dead-letter-queue")
             .quorum()
             .build();
     }
 
     @Bean
-    Binding binding() {
-        return BindingBuilder.bind(queue()).to(topicExchange()).with(".queue");
+    Binding fooQueueTopicbinding() {
+        return BindingBuilder.bind(fooQueue()).to(topicExchange()).with(FOO_QUEUE + ".#");
     }
 
     @Bean
     Binding retryBinding() {
-        return BindingBuilder.bind(retryQueue()).to(topicExchange()).with(RETRY_ROUTING_KEY + "#");
+        return BindingBuilder.bind(retryQueue()).to(topicExchange()).with(RETRY_QUEUE + ".#");
     }
 
     @Bean
-    Binding deadLetterBinding() {
-        return BindingBuilder.bind(queue()).to(topicExchange()).with(DEAD_LETTER_ROUTING_KEY + "#");
+    Binding deadLetterQueueBinding() {
+        return BindingBuilder.bind(deadLetterQueue()).to(deadLetterExchange()).with(DEAD_LETTER_ROUTING_KEY);
     }
 
 }

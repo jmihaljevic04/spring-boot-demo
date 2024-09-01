@@ -223,7 +223,9 @@ existing user (authentication is required).
 
 Actuator has four endpoint categories enabled (which are accessible only by admin role):
 
-- health: _localhost:8080/api/actuator/health_ (available for unauthenticated requests also)
+- health API app: _localhost:8080/api/actuator/health/pet-hub-api_ (available for unauthenticated requests also)
+- health BATCH app: _localhost:8081/api/batch/actuator/health/pet-hub-batch_ (available for unauthenticated requests
+  also)
 - info: _localhost:8080/api/actuator/info_
 - metrics: _localhost:8080/api/actuator/metrics_
 - Prometheus-formatted metrics: _localhost:8080/api/actuator/prometheus_

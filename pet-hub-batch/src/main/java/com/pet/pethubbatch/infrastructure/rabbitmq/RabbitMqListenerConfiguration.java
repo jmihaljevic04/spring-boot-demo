@@ -13,7 +13,8 @@ public class RabbitMqListenerConfiguration {
 
     /**
      * Configuration does not implement Spring retry policy due to the fact it has blocking effect on consumer (each retry keeps consumer instance blocked until all retries are exhausted).
-     * Having concurrent consumers could mitigate that issue, but still is blocking. Implemented solution is using retry queue combined with death-letter exchange and parking-lot queue, which is not blocking consumer instance.
+     * Having concurrent consumers could mitigate that issue, but still is blocking.
+     * Implemented solution is using retry queue combined with death-letter exchange and queue (acting as parking lot for dead messages), which is not blocking consumer instance.
      */
     @Bean
     SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(final ConnectionFactory connectionFactory) {

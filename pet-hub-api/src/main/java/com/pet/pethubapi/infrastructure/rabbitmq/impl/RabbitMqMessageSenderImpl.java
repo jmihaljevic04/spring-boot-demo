@@ -29,7 +29,7 @@ public class RabbitMqMessageSenderImpl<D> implements RabbitMqMessageSender<D> {
         try {
             final var rabbitMsg = MessageBuilder
                 .withBody(body.toString().getBytes(StandardCharsets.UTF_8))
-                .setMessageId("msgId")
+                .setMessageId("traceId")
                 .build();
             rabbitTemplate.send(topicExchangeName, routingKey, rabbitMsg);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class RabbitMqMessageSenderImpl<D> implements RabbitMqMessageSender<D> {
         try {
             final var rabbitMsg = MessageBuilder
                 .withBody(body.toString().getBytes(StandardCharsets.UTF_8))
-                .setMessageId("msgId")
+                .setMessageId("traceId")
                 .build();
             rabbitTemplate.send(fanoutExchangeName, "", rabbitMsg);
         } catch (Exception e) {
