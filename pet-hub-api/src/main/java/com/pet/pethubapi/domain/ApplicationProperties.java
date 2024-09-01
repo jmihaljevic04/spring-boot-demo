@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationProperties {
 
     private final JWTProperties jwt = new JWTProperties();
-    private final RabbitMQProperties rabbitmq = new RabbitMQProperties();
+    private final RabbitMqProperties rabbitmq = new RabbitMqProperties();
 
     @Getter
     @Setter
@@ -28,7 +28,7 @@ public class ApplicationProperties {
 
     @Getter
     @Setter
-    public static final class RabbitMQProperties {
+    public static final class RabbitMqProperties {
 
         private boolean enabled;
 
