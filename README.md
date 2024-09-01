@@ -156,7 +156,8 @@ etc.
 
 ### Microservices
 
-Project contains two microservices: `api` and `batch`. Purpose of it is to split functionalities and load to separate
+Project contains two runnable microservices: `api` and `batch`. Purpose of it is to split functionalities and load to
+separate
 executable _jars_.
 For instance, first one serves API endpoints and can be easily scaled based on incoming load, while second one is
 responsible for handling scheduled jobs, which may be "heavy" but won't impact API performance.
@@ -172,7 +173,8 @@ dependency for _spring-batch_.
 
 Regarding dependencies, common approach is to have `common`, `shared` or some similarly named _jar_ which is used in
 both microservices (but is not application by itself), and provides shared dependencies, domain classes, utilities etc.
-Although it simplifies development and remove need for most of the duplicate, it just hides another dependency which has
+Although it simplifies development and remove need for most of the duplication, it just hides another dependency which
+has
 to be maintained and is weak point for both microservices. Some examples are:
 
 - changes made in common module require redeploy of both microservices (tightly coupled)
@@ -195,8 +197,9 @@ and `batch` application.
 Infrastructure supports multiple instance of each application, meaning having multiple consumers of f.e. `api`
 application.
 
-In general, it's imagined that `api` is always producer (sender), because all changes and `batch` application is always
-listener. This can be changed if need arises.
+In general, it's imagined that `api` is always producer (sender), because all changes come through API and `batch`
+application is always
+listener. There are exceptions in rule, where `batch` has to send retry message back to queue.
 
 If there is need for it, producers and listeners can be disabled with application property.
 
@@ -205,6 +208,9 @@ retry and dead-letter queue.
 For more details, check RabbitMQ configuration classes.
 
 Since for most of the tests RabbitMQ isn't necessary, property is present to disable spinning-up container.
+
+Due to shared configuration between both application, RabbitMQ has been extracted to separate microservice (acting just
+as a library) called `rabbitmq`.
 
 ### Flyway
 
