@@ -22,7 +22,6 @@ public class RabbitMqBindingDefinition {
     public static final String PET_FANOUT_EXCHANGE = "pet-fanout-exchange";
 
     public static final String FOO_QUEUE = "foo-queue";
-    public static final String RETRY_QUEUE = "retry-queue";
 
     private static final int MESSAGE_TTL = (int) Duration.ofHours(1).toMillis();
 
@@ -55,17 +54,6 @@ public class RabbitMqBindingDefinition {
             .build();
     }
 
-    @Bean
-    Queue retryQueue() {
-        return QueueBuilder
-            .durable(RETRY_QUEUE)
-            .quorum()
-            .ttl(MESSAGE_TTL)
-            .deadLetterExchange(DEAD_LETTER_EXCHANGE)
-            .deadLetterRoutingKey(DEAD_LETTER_ROUTING_KEY)
-            .build();
-    }
-
     /**
      * This queue is not meant to be programmatically consumed. Only for manual manipulation via Admin UI.
      * Reasoning: if original messages couldn't be consumed, there is high probability that dead letters wouldn't be consumed also. Ideally, those would be consumed by third-party and saved in DB.
@@ -81,11 +69,6 @@ public class RabbitMqBindingDefinition {
     @Bean
     Binding fooQueueTopicbinding() {
         return BindingBuilder.bind(fooQueue()).to(topicExchange()).with(FOO_QUEUE + ".#");
-    }
-
-    @Bean
-    Binding retryBinding() {
-        return BindingBuilder.bind(retryQueue()).to(topicExchange()).with(RETRY_QUEUE + ".#");
     }
 
     @Bean
