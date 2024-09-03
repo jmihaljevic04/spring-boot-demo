@@ -3,7 +3,7 @@ package com.pet.pethubbatch.application.foo;
 import com.pet.pethubrabbitmq.config.RabbitMqBindingDefinition;
 import com.pet.pethubrabbitmq.sender.RabbitMqMessageSender;
 import com.pet.pethubrabbitmq.util.RabbitMqListenerLogger;
-import com.pet.pethubrabbitmq.util.RabbitMqRetryUtil;
+import com.pet.pethubrabbitmq.util.RabbitMqRetryUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
@@ -35,14 +35,14 @@ public class FooQueueListener {
     @RabbitListener(id = "foo-queue-listener-retry", queues = RabbitMqBindingDefinition.FOO_QUEUE, containerFactory = "rabbitListenerContainerFactory")
     public void consumeMessageWithRetry(final Message message) {
         RabbitMqListenerLogger.logIncomingMessage(message);
-        RabbitMqRetryUtil.checkIfMessageWasRetried(message);
+        RabbitMqRetryUtils.checkIfMessageWasRetried(message);
 
         try {
             // processing message
             throw new RuntimeException();
         } catch (Exception e) {
             // retry message
-            RabbitMqRetryUtil.markMessageForRetry(message);
+            RabbitMqRetryUtils.markMessageForRetry(message);
             messageSender.resendMessageToTopic(message);
         }
     }

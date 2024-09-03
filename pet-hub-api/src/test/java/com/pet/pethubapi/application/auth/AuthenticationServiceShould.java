@@ -1,12 +1,7 @@
-package com.pet.pethubapi.application;
+package com.pet.pethubapi.application.auth;
 
 import com.pet.pethubapi.PetIntegrationTest;
 import com.pet.pethubapi.RestoreDatabaseCallback;
-import com.pet.pethubapi.application.auth.AuthenticationService;
-import com.pet.pethubapi.application.auth.InvalidAuthenticationException;
-import com.pet.pethubapi.application.auth.LoginDTO;
-import com.pet.pethubapi.application.auth.RegisterDTO;
-import com.pet.pethubapi.application.auth.UnauthorizedException;
 import com.pet.pethubsecurity.JWTResponse;
 import com.pet.pethubsecurity.domain.role.Role;
 import com.pet.pethubsecurity.domain.role.RoleEnum;

@@ -4,11 +4,11 @@ import org.apache.commons.collections4.MapUtils;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.core.Message;
 
-public final class RabbitMqRetryUtil {
+public final class RabbitMqRetryUtils {
 
     private static final String RETRY_HEADER_NAME = "x-pet-message-retried";
 
-    private RabbitMqRetryUtil() {
+    private RabbitMqRetryUtils() {
         throw new IllegalAccessError("Utility class!");
     }
 

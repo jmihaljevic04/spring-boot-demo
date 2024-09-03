@@ -1,10 +1,5 @@
-package com.pet.pethubapi.application.auth.impl;
+package com.pet.pethubapi.application.auth;
 
-import com.pet.pethubapi.application.auth.AuthenticationService;
-import com.pet.pethubapi.application.auth.InvalidAuthenticationException;
-import com.pet.pethubapi.application.auth.LoginDTO;
-import com.pet.pethubapi.application.auth.RegisterDTO;
-import com.pet.pethubapi.application.auth.UnauthorizedException;
 import com.pet.pethubsecurity.JWTResponse;
 import com.pet.pethubsecurity.domain.role.Role;
 import com.pet.pethubsecurity.domain.role.RoleEnum;
@@ -25,7 +20,7 @@ import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Service
-public class AuthenticationServiceImpl implements AuthenticationService {
+class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final Pattern EMAIL_VALIDATOR = Pattern.compile("^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,4}$");
     // at least one small and one capital letter, at least one digit, at least one special symbol, and length [8,20]

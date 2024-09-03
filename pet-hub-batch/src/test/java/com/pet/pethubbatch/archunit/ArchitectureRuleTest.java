@@ -1,6 +1,6 @@
-package com.pet.pethubapi.archunit;
+package com.pet.pethubbatch.archunit;
 
-import com.pet.pethubapi.PetHubApiApplication;
+import com.pet.pethubbatch.PetHubBatchApplication;
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAnyPackage;
 
 @SuppressWarnings("unused")
-@AnalyzeClasses(packagesOf = PetHubApiApplication.class)
+@AnalyzeClasses(packagesOf = PetHubBatchApplication.class)
 class ArchitectureRuleTest {
 
     @ArchTest
@@ -41,7 +41,7 @@ class ArchitectureRuleTest {
 
     @ArchTest
     public static final ArchRule packageStructureRule = ArchRuleDefinition.classes()
-        .that(DescribedPredicate.not(resideInAnyPackage("com.pet.pethubapi", "com.pet.pethubapi.archunit")))
+        .that(DescribedPredicate.not(resideInAnyPackage("com.pet.pethubbatch", "com.pet.pethubbatch.archunit")))
         .should().resideInAnyPackage("..application..", "..infrastructure..", "..interfaces..", "..domain..");
 
     @ArchTest

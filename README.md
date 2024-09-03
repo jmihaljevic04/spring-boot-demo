@@ -249,3 +249,15 @@ File is located at: C:\Users\<Username>.
 
 Container reuse feature is only available within application itself (API and BATCH applications will have separate
 containers.)
+
+### ArchUnit
+
+ArchUnit are tests which validate codebase architecture/structure by defined rules, presented as unit tests.
+Since they are scanning specifically by package names and location, each module has to implement its own copy of rules.
+Also, some modules can have only subset of rules (f.e. `rabbitmq` which doesn't need DDD architecture, or controller
+rules).
+
+Revise all rules containing `.allowEmptyShould(true)` if it is still necessary. Goal is to have zero allows of that
+kind.
+
+Caveat is if there is need for changing common rule, change has to be applied on all modules manually.
