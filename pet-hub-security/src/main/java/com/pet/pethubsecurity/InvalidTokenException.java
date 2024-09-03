@@ -1,4 +1,4 @@
-package com.pet.pethubapi.infrastructure.security;
+package com.pet.pethubsecurity;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

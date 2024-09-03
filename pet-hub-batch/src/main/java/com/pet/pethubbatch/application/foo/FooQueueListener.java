@@ -1,7 +1,7 @@
 package com.pet.pethubbatch.application.foo;
 
-import com.pet.pethubrabbitmq.RabbitMqMessageSender;
 import com.pet.pethubrabbitmq.config.RabbitMqBindingDefinition;
+import com.pet.pethubrabbitmq.sender.RabbitMqMessageSender;
 import com.pet.pethubrabbitmq.util.RabbitMqListenerLogger;
 import com.pet.pethubrabbitmq.util.RabbitMqRetryUtil;
 import lombok.RequiredArgsConstructor;

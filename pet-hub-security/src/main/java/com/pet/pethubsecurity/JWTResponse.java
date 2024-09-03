@@ -1,4 +1,4 @@
-package com.pet.pethubapi.infrastructure.security;
+package com.pet.pethubsecurity;
 
 public record JWTResponse(String accessToken, String refreshToken) {
 

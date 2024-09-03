@@ -3,7 +3,7 @@ package com.pet.pethubapi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {"com.pet.pethubapi", "com.pet.pethubrabbitmq"})
+@SpringBootApplication(scanBasePackages = {"com.pet.pethubapi", "com.pet.pethubrabbitmq", "com.pet.pethubsecurity"})
 public class PetHubApiApplication {
 
     protected PetHubApiApplication() {

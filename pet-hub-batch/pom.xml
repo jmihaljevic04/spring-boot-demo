@@ -15,6 +15,7 @@
 
     <properties>
         <pet.rabbitmq.version>0.0.1-SNAPSHOT</pet.rabbitmq.version>
+        <pet.security.version>0.0.1-SNAPSHOT</pet.security.version>
     </properties>
 
     <dependencies>
@@ -22,6 +23,11 @@
             <groupId>com.pet</groupId>
             <artifactId>pet-hub-rabbitmq</artifactId>
             <version>${pet.rabbitmq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pet</groupId>
+            <artifactId>pet-hub-security</artifactId>
+            <version>${pet.security.version}</version>
         </dependency>
 
         <dependency>
@@ -54,10 +60,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
@@ -87,10 +89,6 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast-spring</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
         </dependency>
 
         <!-- UTILITY section -->
@@ -127,16 +125,6 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-impl</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-jackson</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
@@ -164,11 +152,6 @@
         <dependency>
             <groupId>org.springframework.batch</groupId>
             <artifactId>spring-batch-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

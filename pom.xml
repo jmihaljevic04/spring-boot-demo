@@ -16,7 +16,9 @@
     <description>Pet project as a Spring Boot demo application. This is parent project providing dependencies.</description>
     <inceptionYear>2024</inceptionYear>
 
+    <!-- order is important here, because it represents module build order, and libraries should be built before runnable microservices -->
     <modules>
+        <module>pet-hub-security</module>
         <module>pet-hub-rabbitmq</module>
         <module>pet-hub-api</module>
         <module>pet-hub-batch</module>

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableRabbit
-public class RabbitMqListenerConfiguration {
+class RabbitMqListenerConfiguration {
 
     /**
      * Configuration does not implement Spring retry policy due to the fact it has blocking effect on consumer (each retry keeps consumer instance blocked until all retries are exhausted).

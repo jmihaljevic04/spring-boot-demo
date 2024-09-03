@@ -1,4 +1,4 @@
-package com.pet.pethubapi.domain.role;
+package com.pet.pethubsecurity.domain.role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

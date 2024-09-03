@@ -1,5 +1,6 @@
-package com.pet.pethubapi.infrastructure.security;
+package com.pet.pethubsecurity.config.web;
 
+import com.pet.pethubsecurity.jwt.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String AUTH_HEADER_NAME = "Authorization";
     private static final String JWT_PREFIX = "Bearer ";

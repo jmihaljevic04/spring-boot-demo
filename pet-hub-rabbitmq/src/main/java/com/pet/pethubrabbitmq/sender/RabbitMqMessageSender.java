@@ -1,4 +1,4 @@
-package com.pet.pethubrabbitmq;
+package com.pet.pethubrabbitmq.sender;
 
 import org.springframework.amqp.core.Message;
 

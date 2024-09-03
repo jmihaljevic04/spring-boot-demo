@@ -5,7 +5,7 @@ import com.pet.pethubapi.application.auth.AuthenticationService;
 import com.pet.pethubapi.application.auth.InvalidAuthenticationException;
 import com.pet.pethubapi.application.auth.LoginDTO;
 import com.pet.pethubapi.application.auth.RegisterDTO;
-import com.pet.pethubapi.infrastructure.security.JWTResponse;
+import com.pet.pethubsecurity.JWTResponse;
 import io.restassured.RestAssured;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;

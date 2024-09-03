@@ -1,6 +1,6 @@
-package com.pet.pethubapi.infrastructure.security;
+package com.pet.pethubsecurity.config.web;
 
-import com.pet.pethubapi.infrastructure.security.impl.UserDetailsServiceImpl;
+import com.pet.pethubsecurity.jwt.JwtService;
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfiguration {
+class SecurityConfiguration {
 
     private final JwtService jwtService;
 

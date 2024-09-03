@@ -16,7 +16,7 @@ import java.time.Duration;
 
 @Slf4j
 @Configuration
-public class RabbitMqProducerConfiguration {
+class RabbitMqProducerConfiguration {
 
     @Bean
     RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {

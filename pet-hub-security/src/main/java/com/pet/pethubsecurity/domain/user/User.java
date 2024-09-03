@@ -1,7 +1,6 @@
-package com.pet.pethubapi.domain.user;
+package com.pet.pethubsecurity.domain.user;
 
-import com.pet.pethubapi.domain.BaseEntity;
-import com.pet.pethubapi.domain.role.Role;
+import com.pet.pethubsecurity.domain.role.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,13 +11,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 
@@ -28,7 +32,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "app_user")
-public class User extends BaseEntity implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,6 +56,27 @@ public class User extends BaseEntity implements UserDetails {
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+
+    @Setter(AccessLevel.NONE)
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Setter(AccessLevel.NONE)
+    @UpdateTimestamp
+    @Column(name = "last_updated_at")
+    private LocalDateTime lastUpdatedAt;
+
+    @Column(name = "last_updated_by")
+    private String lastUpdatedBy;
+
+    @Version
+    @Setter(AccessLevel.NONE)
+    @Column
+    private Integer version;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

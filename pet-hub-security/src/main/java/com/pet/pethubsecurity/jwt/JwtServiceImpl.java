@@ -1,10 +1,9 @@
-package com.pet.pethubapi.infrastructure.security.impl;
+package com.pet.pethubsecurity.jwt;
 
-import com.pet.pethubapi.domain.ApplicationProperties;
-import com.pet.pethubapi.domain.role.Role;
-import com.pet.pethubapi.infrastructure.security.InvalidTokenException;
-import com.pet.pethubapi.infrastructure.security.JWTResponse;
-import com.pet.pethubapi.infrastructure.security.JwtService;
+import com.pet.pethubsecurity.InvalidTokenException;
+import com.pet.pethubsecurity.JWTResponse;
+import com.pet.pethubsecurity.config.JwtProperties;
+import com.pet.pethubsecurity.domain.role.Role;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -20,7 +19,7 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
-public class JwtServiceImpl implements JwtService {
+class JwtServiceImpl implements JwtService {
 
     public static final String ISSUER = "PetHub";
     public static final String ACCESS_CLAIM = "access_token";
@@ -28,7 +27,7 @@ public class JwtServiceImpl implements JwtService {
     public static final String AUTHORITIES_CLAIM = "authorities";
     private static final String ADMIN_USERNAME = "admin";
 
-    private final ApplicationProperties applicationProperties;
+    private final JwtProperties jwtProperties;
 
     @Override
     public JWTResponse generateTokens(String username, Set<Role> authorities) {
@@ -106,7 +105,7 @@ public class JwtServiceImpl implements JwtService {
 
     private String generateRefreshToken(String username, Date currentDate) {
         final var accessTokenExpiration = getExpirationInterval(username, currentDate);
-        final var expiration = applicationProperties.getJwt().getRefreshExpiration();
+        final var expiration = jwtProperties.getRefreshExpiration();
 
         return Jwts.builder()
             .subject(username)
@@ -123,16 +122,16 @@ public class JwtServiceImpl implements JwtService {
 
         final int expirationInterval;
         if (isAdmin) {
-            expirationInterval = applicationProperties.getJwt().getAdminAccessExpiration();
+            expirationInterval = jwtProperties.getAdminAccessExpiration();
         } else {
-            expirationInterval = applicationProperties.getJwt().getAccessExpiration();
+            expirationInterval = jwtProperties.getAccessExpiration();
         }
 
         return new Date(currentDate.getTime() + expirationInterval);
     }
 
     private SecretKey getSignKey() {
-        final var encodedKey = applicationProperties.getJwt().getSecretKey();
+        final var encodedKey = jwtProperties.getSecretKey();
         final var decodedKey = Base64.getDecoder().decode(encodedKey);
         return Keys.hmacShaKeyFor(decodedKey);
     }

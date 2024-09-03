@@ -1,4 +1,4 @@
-package com.pet.pethubapi.domain.role;
+package com.pet.pethubsecurity.domain.role;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

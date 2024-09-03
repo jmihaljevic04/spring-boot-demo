@@ -1,8 +1,8 @@
-package com.pet.pethubapi.infrastructure.security;
+package com.pet.pethubsecurity.jwt;
 
-import com.pet.pethubapi.domain.ApplicationProperties;
-import com.pet.pethubapi.domain.role.Role;
-import com.pet.pethubapi.infrastructure.security.impl.JwtServiceImpl;
+import com.pet.pethubsecurity.InvalidTokenException;
+import com.pet.pethubsecurity.config.JwtProperties;
+import com.pet.pethubsecurity.domain.role.Role;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Test;
@@ -21,16 +21,16 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@ContextConfiguration(classes = {ApplicationProperties.class, JwtServiceImpl.class})
-@EnableConfigurationProperties(value = ApplicationProperties.class)
-@TestPropertySource("classpath:application-default.properties")
+@ContextConfiguration(classes = {JwtProperties.class, JwtServiceImpl.class})
+@EnableConfigurationProperties(value = JwtProperties.class)
+@TestPropertySource("classpath:security-test.properties")
 @ExtendWith(SpringExtension.class)
 class JwtServiceShould {
 
     private final Date currentDate = new Date();
 
     @Autowired
-    private ApplicationProperties applicationProperties;
+    private JwtProperties jwtProperties;
     @Autowired
     private JwtService jwtService;
 
@@ -275,7 +275,7 @@ class JwtServiceShould {
     }
 
     private SecretKey getSignKey() {
-        final var encodedKey = applicationProperties.getJwt().getSecretKey();
+        final var encodedKey = jwtProperties.getSecretKey();
         final var decodedKey = Base64.getDecoder().decode(encodedKey);
         return Keys.hmacShaKeyFor(decodedKey);
     }

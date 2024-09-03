@@ -1,7 +1,6 @@
-package com.pet.pethubrabbitmq.impl;
+package com.pet.pethubrabbitmq.sender;
 
-import com.pet.pethubrabbitmq.RabbitMqMessageSender;
-import com.pet.pethubrabbitmq.RabbitMqProperties;
+import com.pet.pethubrabbitmq.config.RabbitMqProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpException;
@@ -15,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RabbitMqMessageSenderImpl<D> implements RabbitMqMessageSender<D> {
+class RabbitMqMessageSenderImpl<D> implements RabbitMqMessageSender<D> {
 
     private final RabbitTemplate rabbitTemplate;
     private final RabbitMqProperties rabbitMqProperties;
