@@ -15,6 +15,7 @@ services:
             interval: 10s
             timeout: 5s
             retries: 3
+
     rabbitmq:
         container_name: 'pet-rabbitmq'
         build:
@@ -28,3 +29,20 @@ services:
             interval: 5s
             timeout: 3s
             retries: 3
+
+    mongodb:
+        image: 'mongo:8.0-rc-noble'
+        container_name: 'pet-mongodb'
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: 'pet-admin'
+            MONGO_INITDB_ROOT_PASSWORD: 'pet-password'
+            MONGO_INITDB_DATABASE: 'petHub'
+        ports:
+            - '27017:27017'
+        healthcheck:
+            test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+            interval: 10s
+            timeout: 10s
+            retries: 5
+            start_period: 40s
