@@ -71,6 +71,7 @@
         <pet.testcontainers-junit.version>1.19.8</pet.testcontainers-junit.version>
         <pet.testcontainers-postgresql.version>1.19.8</pet.testcontainers-postgresql.version>
         <pet.testcontainers-rabbitmq.version>1.19.8</pet.testcontainers-rabbitmq.version>
+        <pet.testcontainers-mongodb.version>1.19.8</pet.testcontainers-mongodb.version>
         <pet.archunit.version>1.3.0</pet.archunit.version>
         <pet.rest-assured.version>5.4.0</pet.rest-assured.version>
 
@@ -299,6 +300,12 @@
                 <groupId>org.testcontainers</groupId>
                 <artifactId>rabbitmq</artifactId>
                 <version>${pet.testcontainers-rabbitmq.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>mongodb</artifactId>
+                <version>${pet.testcontainers-mongodb.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

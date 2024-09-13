@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
+import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.RabbitMQContainer;
 
@@ -23,6 +24,13 @@ public class TestcontainersConfiguration {
     @ServiceConnection
     RabbitMQContainer rabbitContainer() {
         return new RabbitMQContainer("rabbitmq:3.13.6-alpine").withReuse(true);
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "pet.integration-test.mongodb-container.enabled", havingValue = "true")
+    @ServiceConnection
+    MongoDBContainer mongoDbContainer() {
+        return new MongoDBContainer("mongo:8.0-rc-noble").withReuse(true);
     }
 
     public static void main(String[] args) {
