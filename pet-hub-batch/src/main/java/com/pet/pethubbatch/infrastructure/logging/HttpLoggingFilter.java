@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 @Slf4j(topic = "audit-logger")
 @Order(value = Ordered.HIGHEST_PRECEDENCE + 1) // puts it after Spring Security filter
 @Component
-public class HttpLoggingFilter extends OncePerRequestFilter {
+class HttpLoggingFilter extends OncePerRequestFilter {
 
     private static final String REQUEST_ID_HEADER_KEY = "X-Request-ID";
     private static final String LOAD_BALANCER_HEADER_KEY = "X-Forwaded-For";

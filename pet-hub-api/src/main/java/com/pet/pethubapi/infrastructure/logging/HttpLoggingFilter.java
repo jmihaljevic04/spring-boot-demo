@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 @Slf4j(topic = "audit-logger")
 @Order(value = Ordered.HIGHEST_PRECEDENCE + 1) // puts it after Spring Security filter
 @Component
-public class HttpLoggingFilter extends OncePerRequestFilter {
+class HttpLoggingFilter extends OncePerRequestFilter {
 
     private static final String REQUEST_ID_HEADER_KEY = "X-Request-ID";
     private static final String LOAD_BALANCER_HEADER_KEY = "X-Forwaded-For";
@@ -71,10 +71,10 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
             final var requestSb = new StringBuilder();
             requestSb
                 .append("HTTP ").append(httpMethod).append(" request :: ")
-                .append("Request ID: ").append(requestId)
-                .append(LOG_ITEM_DELIMITER).append("Request URI: ").append(requestUri)
-                .append(LOG_ITEM_DELIMITER).append("Source: ").append(source)
-                .append(LOG_ITEM_DELIMITER).append("Target: ").append(target);
+                .append("Request ID: ").append(requestId).append(LOG_ITEM_DELIMITER)
+                .append("Request URI: ").append(requestUri).append(LOG_ITEM_DELIMITER)
+                .append("Source: ").append(source).append(LOG_ITEM_DELIMITER)
+                .append("Target: ").append(target);
 
             if (shouldLogRequestBody(httpMethod)) {
                 final var requestBody = new String(requestWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
@@ -110,12 +110,12 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
         responseWrapper.copyBodyToResponse();
     }
 
-    private String getUniqueIdentifier(ContentCachingRequestWrapper request) {
+    private static String getUniqueIdentifier(ContentCachingRequestWrapper request) {
         final var requestIdFromHeader = request.getHeader(REQUEST_ID_HEADER_KEY);
         return StringUtils.isEmpty(requestIdFromHeader) ? UUID.randomUUID().toString() : requestIdFromHeader;
     }
 
-    private String getRequestUri(ContentCachingRequestWrapper request) {
+    private static String getRequestUri(ContentCachingRequestWrapper request) {
         final var base = request.getRequestURI();
         final var params = request.getParameterMap();
 
@@ -131,27 +131,27 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
         return base.concat(sb.toString());
     }
 
-    private String getSource(ContentCachingRequestWrapper request) {
+    private static String getSource(ContentCachingRequestWrapper request) {
         final var lbHeader = request.getHeader(LOAD_BALANCER_HEADER_KEY);
         return StringUtils.isEmpty(lbHeader) ? request.getRemoteAddr() : lbHeader;
     }
 
-    private boolean shouldLogRequestBody(String httpMethod) {
+    static boolean shouldLogRequestBody(String httpMethod) {
         return !HttpMethod.GET.matches(httpMethod) && !HttpMethod.DELETE.matches(httpMethod);
     }
 
     /**
      * Trims, normalizes trailing whitespaces into single one and removes new lines.
      */
-    private String normalizeBody(String originalBody) {
+    static String normalizeBody(String originalBody) {
         return StringUtils.normalizeSpace(originalBody.replace("\n", "").replace("\r", ""));
     }
 
-    private boolean isAuthRequest(String requestUri) {
+    private static boolean isAuthRequest(String requestUri) {
         return requestUri.contains(AUTH_URL);
     }
 
-    private String hideSensitiveData(String body, Pattern pattern) {
+    private static String hideSensitiveData(String body, Pattern pattern) {
         final var matcher = pattern.matcher(body);
         if (matcher.find()) {
             return body.replace(matcher.group(3), "********");
