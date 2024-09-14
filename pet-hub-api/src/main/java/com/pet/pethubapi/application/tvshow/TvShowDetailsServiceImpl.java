@@ -20,7 +20,7 @@ class TvShowDetailsServiceImpl implements TvShowDetailsService {
 
     @Override
     public List<TvShowDTO> getAllShows(Pageable pageable) {
-        return showDetailsRepository.getAllShows();
+        return showDetailsRepository.getAllShows(pageable.getPageNumber());
     }
 
     @Override

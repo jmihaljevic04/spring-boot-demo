@@ -11,7 +11,7 @@ import org.testcontainers.containers.RabbitMQContainer;
 
 // https://github.com/spring-io/start.spring.io/issues/1247
 @TestConfiguration(proxyBeanMethods = false)
-public class TestcontainersConfiguration {
+class TestcontainersConfiguration {
 
     @Bean
     @ServiceConnection
