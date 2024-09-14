@@ -1,9 +1,14 @@
 package com.pet.pethubapi.domain.tvshow;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.util.StdConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +27,17 @@ public final class TvShowDTO {
     private LocalDate premiered;
     private LocalDate ended;
     private String officialSite;
-    private String country;
     private TvShowRating rating;
     private Map<String, String> externals; // object containing external IDs for different show websites (e.g. IMDb)
-    private Long updated; // epoch format
+    @JsonDeserialize(converter = EpochTimestampToLocalDateTimeConverter.class)
+    private LocalDateTime updated; // epoch format
+
+    private static class EpochTimestampToLocalDateTimeConverter extends StdConverter<Long, LocalDateTime> {
+
+        public LocalDateTime convert(final Long value) {
+            return Instant.ofEpochSecond(value).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        }
+
+    }
 
 }
