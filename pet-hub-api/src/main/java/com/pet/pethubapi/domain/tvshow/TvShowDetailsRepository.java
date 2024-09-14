@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface TvShowDetailsRepository {
 
-    List<TvShowDTO> getAllShows();
+    List<TvShowDTO> getAllShows(int pageNumber);
 
     List<TvShowSearchResponse> getShowDetailsByName(String name);
 
