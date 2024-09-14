@@ -12,7 +12,7 @@ import org.springframework.web.client.ResponseErrorHandler;
 import java.io.IOException;
 
 @Component
-public class TvMazeRestClientErrorHandler implements ResponseErrorHandler {
+class TvMazeRestClientErrorHandler implements ResponseErrorHandler {
 
     @Override
     public boolean hasError(ClientHttpResponse response) throws IOException {
