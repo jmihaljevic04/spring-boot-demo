@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SuppressWarnings("unused")
 @AnalyzeClasses(packagesOf = PetHubApiApplication.class)
-public class AnnotationRuleTest {
+class AnnotationRuleTest {
 
     @ArchTest
     public static final ArchRule serviceRepositoryAnnotationRule = ArchRuleDefinition.classes()

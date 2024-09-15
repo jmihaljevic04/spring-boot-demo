@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @SuppressWarnings("unused")
 @AnalyzeClasses(packages = "com.pet.pethubrabbitmq")
-public class AnnotationRuleTest {
+class AnnotationRuleTest {
 
     @ArchTest
     public static final ArchRule serviceRepositoryAnnotationRule = ArchRuleDefinition.classes()

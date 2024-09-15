@@ -11,7 +11,7 @@ import static com.tngtech.archunit.library.ProxyRules.no_classes_should_directly
 
 @SuppressWarnings("unused")
 @AnalyzeClasses(packagesOf = PetHubApiApplication.class)
-public class ProxyRuleTest {
+class ProxyRuleTest {
 
     @ArchTest
     public static final ArchRule publicTransactionalMethodRule = ArchRuleDefinition.methods()

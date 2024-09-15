@@ -32,8 +32,9 @@ public final class TvShowDTO {
     @JsonDeserialize(converter = EpochTimestampToLocalDateTimeConverter.class)
     private LocalDateTime updated; // epoch format
 
-    private static class EpochTimestampToLocalDateTimeConverter extends StdConverter<Long, LocalDateTime> {
+    private static final class EpochTimestampToLocalDateTimeConverter extends StdConverter<Long, LocalDateTime> {
 
+        @Override
         public LocalDateTime convert(final Long value) {
             return Instant.ofEpochSecond(value).atZone(ZoneId.systemDefault()).toLocalDateTime();
         }

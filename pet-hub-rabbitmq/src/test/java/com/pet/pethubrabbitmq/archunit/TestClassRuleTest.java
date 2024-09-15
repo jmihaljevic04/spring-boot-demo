@@ -12,7 +12,7 @@ import static com.tngtech.archunit.core.domain.properties.CanBeAnnotated.Predica
 
 @SuppressWarnings("unused")
 @AnalyzeClasses(packages = "com.pet.pethubrabbitmq")
-public class TestClassRuleTest {
+class TestClassRuleTest {
 
     @ArchTest
     public static final ArchRule testClassAccessRule = ArchRuleDefinition.classes()
