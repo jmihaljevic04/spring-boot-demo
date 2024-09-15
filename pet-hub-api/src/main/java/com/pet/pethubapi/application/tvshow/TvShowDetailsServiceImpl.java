@@ -3,6 +3,7 @@ package com.pet.pethubapi.application.tvshow;
 import com.pet.pethubapi.domain.tvshow.TvShowDTO;
 import com.pet.pethubapi.domain.tvshow.TvShowDetailsRepository;
 import com.pet.pethubapi.domain.tvshow.TvShowSearchResponse;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ class TvShowDetailsServiceImpl implements TvShowDetailsService {
 
     private final TvShowDetailsRepository showDetailsRepository;
 
+    @Timed(value = "tv-show.get-all", description = "Duration for fetching all TV shows page-by-page")
     @Override
     public List<TvShowDTO> getAllShows(Pageable pageable) {
         return showDetailsRepository.getAllShows(pageable.getPageNumber());
