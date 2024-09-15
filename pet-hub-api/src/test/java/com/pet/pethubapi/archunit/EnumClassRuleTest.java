@@ -8,7 +8,7 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 
 @SuppressWarnings("unused")
 @AnalyzeClasses(packagesOf = PetHubApiApplication.class)
-public class EnumClassRuleTest {
+class EnumClassRuleTest {
 
     @ArchTest
     public static final ArchRule privateFinalFieldsRule = ArchRuleDefinition.fields()
