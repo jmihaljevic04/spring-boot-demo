@@ -15,4 +15,6 @@ public interface TvShowDetailsService {
      */
     List<TvShowSearchResponse> getShowDetailsByName(String showName);
 
+    TvShowDTO getShowDetailsById(Long showId);
+
 }
