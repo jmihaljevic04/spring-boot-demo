@@ -32,9 +32,30 @@ class TvShowDetailsServiceImpl implements TvShowDetailsService {
         final var normalizedName = StringUtils.normalizeSpace(showName.replaceAll("\\P{Print}", ""));
 
         final List<TvShowSearchResponse> result = showDetailsRepository.getShowDetailsByName(normalizedName);
-        return result.stream()
+        final var filteredResults = result.stream()
             .filter(response -> response.getScore() >= SHOW_MATCHED_SCORE_MIN_THRESHOLD)
             .toList();
+
+        if (filteredResults.isEmpty()) {
+            throw new InvalidShowDetailsActionException("TV Show with name: " + normalizedName + " not found!");
+        }
+
+        return filteredResults;
+    }
+
+    @Override
+    public TvShowDTO getShowDetailsById(Long showId) {
+        if (showId == null || showId <= 0) {
+            throw new InvalidShowDetailsActionException("TV Show ID is invalid!");
+        }
+
+        final var result = showDetailsRepository.getShowDetailsById(showId);
+
+        if (result.isEmpty()) {
+            throw new InvalidShowDetailsActionException("TV Show with ID: " + showId + " not found!");
+        }
+
+        return result.get();
     }
 
 }

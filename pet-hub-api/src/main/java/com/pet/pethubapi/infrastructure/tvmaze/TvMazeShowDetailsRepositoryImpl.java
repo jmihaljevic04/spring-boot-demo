@@ -1,6 +1,5 @@
 package com.pet.pethubapi.infrastructure.tvmaze;
 
-import com.pet.pethubapi.domain.ApiApplicationProperties;
 import com.pet.pethubapi.domain.tvshow.TvShowDTO;
 import com.pet.pethubapi.domain.tvshow.TvShowDetailsRepository;
 import com.pet.pethubapi.domain.tvshow.TvShowSearchResponse;
@@ -11,6 +10,7 @@ import org.springframework.web.client.RestClient;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -18,7 +18,6 @@ class TvMazeShowDetailsRepositoryImpl implements TvShowDetailsRepository {
 
     private final RestClient tvMazeShowIndexRestClient;
     private final RestClient tvMazeSearchRestClient;
-    private final ApiApplicationProperties applicationProperties;
 
     @Override
     public List<TvShowDTO> getAllShows(int pageNumber) {
@@ -46,6 +45,20 @@ class TvMazeShowDetailsRepositoryImpl implements TvShowDetailsRepository {
         }
 
         return Arrays.asList(responseBody);
+    }
+
+    @Override
+    public Optional<TvShowDTO> getShowDetailsById(Long id) {
+        final var responseBody = tvMazeShowIndexRestClient.get()
+            .uri(uriBuilder -> uriBuilder.path("/" + id).build())
+            .retrieve()
+            .body(TvShowDTO.class);
+
+        if (responseBody == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(responseBody);
     }
 
 }
