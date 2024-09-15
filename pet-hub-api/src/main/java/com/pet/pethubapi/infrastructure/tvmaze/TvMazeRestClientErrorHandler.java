@@ -28,7 +28,7 @@ class TvMazeRestClientErrorHandler implements ResponseErrorHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     private static final class TvMazeIntegrationException extends RuntimeException {
 
-        public TvMazeIntegrationException(final String message) {
+        TvMazeIntegrationException(final String message) {
             super(message);
         }
 

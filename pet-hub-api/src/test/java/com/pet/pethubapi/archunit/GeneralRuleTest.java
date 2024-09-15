@@ -15,7 +15,7 @@ import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_
 
 @SuppressWarnings("unused")
 @AnalyzeClasses(packagesOf = PetHubApiApplication.class)
-public class GeneralRuleTest {
+class GeneralRuleTest {
 
     @ArchTest
     public static final ArchRule standardStreamRule = NO_CLASSES_SHOULD_ACCESS_STANDARD_STREAMS;

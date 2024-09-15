@@ -7,7 +7,7 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 
 @SuppressWarnings("unused")
 @AnalyzeClasses(packages = "com.pet.pethubrabbitmq")
-public class ExceptionClassRuleTest {
+class ExceptionClassRuleTest {
 
     @ArchTest
     public static final ArchRule extendRuntimeExRule = ArchRuleDefinition.classes()

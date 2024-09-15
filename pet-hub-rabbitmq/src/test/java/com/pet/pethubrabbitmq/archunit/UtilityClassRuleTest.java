@@ -7,7 +7,7 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 
 @SuppressWarnings("unused")
 @AnalyzeClasses(packages = "com.pet.pethubrabbitmq")
-public class UtilityClassRuleTest {
+class UtilityClassRuleTest {
 
     @ArchTest
     public static final ArchRule privateConstructorRule = ArchRuleDefinition.classes()

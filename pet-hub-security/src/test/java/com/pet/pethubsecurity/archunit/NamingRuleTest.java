@@ -12,7 +12,7 @@ import static com.tngtech.archunit.core.domain.properties.CanBeAnnotated.Predica
 
 @SuppressWarnings("unused")
 @AnalyzeClasses(packages = "com.pet.pethubsecurity")
-public class NamingRuleTest {
+class NamingRuleTest {
 
     @ArchTest
     public static final ArchRule dtoNamingRule = ArchRuleDefinition.noClasses()
