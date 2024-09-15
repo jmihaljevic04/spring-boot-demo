@@ -22,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/tv-show")
+@RequestMapping("/tv-shows")
 class TvShowDetailsController {
 
     private final TvShowDetailsService showDetailsService;
