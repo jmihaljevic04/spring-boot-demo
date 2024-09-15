@@ -4,6 +4,7 @@ import com.pet.pethubapi.domain.tvshow.TvShowDTO;
 import com.pet.pethubapi.domain.tvshow.TvShowDetailsRepository;
 import com.pet.pethubapi.domain.tvshow.TvShowSearchResponse;
 import io.micrometer.core.annotation.Timed;
+import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Observed(name = "tv-show-service")
 @RequiredArgsConstructor
 @Service
 class TvShowDetailsServiceImpl implements TvShowDetailsService {
