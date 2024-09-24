@@ -1,4 +1,4 @@
-package com.pet.pethubapi.infrastructure;
+package com.pet.pethubapi.infrastructure.observability;
 
 import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;
