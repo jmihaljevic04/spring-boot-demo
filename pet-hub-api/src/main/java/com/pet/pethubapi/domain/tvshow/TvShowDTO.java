@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.util.StdConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
-public final class TvShowDTO {
+public final class TvShowDTO implements Serializable {
 
     private Long id;
     private String url;

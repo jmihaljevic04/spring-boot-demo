@@ -19,14 +19,14 @@ import java.time.Duration;
 @Configuration
 class TvMazeRestClientConfiguration {
 
-    @Autowired
-    private ObservationRegistry observationRegistry;
-
     private static final RestClient.Builder TV_MAZE_REST_CLIEN_BUILDER = RestClient.builder()
         .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
         .defaultHeader(HttpHeaders.CACHE_CONTROL, CacheControl.maxAge(Duration.ZERO).getHeaderValue())
         .defaultStatusHandler(new TvMazeRestClientErrorHandler())
         .requestInterceptor(new RestClientRequestLogger());
+
+    @Autowired
+    private ObservationRegistry observationRegistry;
 
     private final ApiApplicationProperties applicationProperties;
     @Value("${spring.application.name}")
