@@ -12,6 +12,9 @@ public interface TvShowDetailsRepository {
 
     List<TvShowDTO> getAllShows(int pageNumber);
 
+    /**
+     * Method invocation has been cached by input param (show name) as cache key.
+     */
     List<TvShowSearchResponse> getShowDetailsByName(String name);
 
     /**
@@ -29,6 +32,7 @@ public interface TvShowDetailsRepository {
     /**
      * Recovery method when all retries are exhausted. Accepts exception and input from original (first) request.
      * Method signature must match to be applied as recoverable method (same return value, exception and original input).
+     * Recovery method must be declared within same interface to be applied.
      *
      * @return always throws exception
      */
