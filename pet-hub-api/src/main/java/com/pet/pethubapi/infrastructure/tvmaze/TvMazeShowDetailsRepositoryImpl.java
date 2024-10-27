@@ -3,6 +3,7 @@ package com.pet.pethubapi.infrastructure.tvmaze;
 import com.pet.pethubapi.domain.tvshow.TvShowDTO;
 import com.pet.pethubapi.domain.tvshow.TvShowDetailsRepository;
 import com.pet.pethubapi.domain.tvshow.TvShowSearchResponse;
+import com.pet.pethubapi.infrastructure.tvmaze.audit.TvMazeRequestAuditor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +30,13 @@ class TvMazeShowDetailsRepositoryImpl implements TvShowDetailsRepository {
 
     private final RestClient tvMazeShowIndexRestClient;
     private final RestClient tvMazeSearchRestClient;
+    private final TvMazeRequestAuditor requestAuditor;
 
     @Override
     public List<TvShowDTO> getAllShows(int pageNumber) {
+        requestAuditor.validateRequestOverflow();
+        requestAuditor.auditGetAllShows();
+
         final var responseBody = tvMazeShowIndexRestClient.get()
             .uri(uriBuilder -> uriBuilder.queryParam("page", pageNumber).build())
             .retrieve()
@@ -47,6 +52,9 @@ class TvMazeShowDetailsRepositoryImpl implements TvShowDetailsRepository {
     @Override
     @Cacheable(cacheNames = SHOW_DETAILS_BY_NAME_CACHE, key = "#p0")
     public List<TvShowSearchResponse> getShowDetailsByName(String name) {
+        requestAuditor.validateRequestOverflow();
+        requestAuditor.auditShowByName();
+
         final var responseBody = tvMazeSearchRestClient.get()
             .uri(uriBuilder -> uriBuilder.queryParam("q", name).build())
             .retrieve()
@@ -61,6 +69,9 @@ class TvMazeShowDetailsRepositoryImpl implements TvShowDetailsRepository {
 
     @Override
     public Optional<TvShowDTO> getShowDetailsById(Long id) {
+        requestAuditor.validateRequestOverflow();
+        requestAuditor.auditShowById();
+
         final TvShowDTO responseBody = executeRetryableGetShowDetailsByIdRequest(id);
 
         if (responseBody == null) {

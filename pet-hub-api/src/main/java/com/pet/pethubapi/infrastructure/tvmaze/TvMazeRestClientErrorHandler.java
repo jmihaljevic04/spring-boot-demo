@@ -2,17 +2,18 @@ package com.pet.pethubapi.infrastructure.tvmaze;
 
 import com.pet.pethubapi.application.ObjectMapperUtils;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.ResponseErrorHandler;
 
 import java.io.IOException;
 
-@Component
+@RequiredArgsConstructor
 class TvMazeRestClientErrorHandler implements ResponseErrorHandler {
+
+    private final Integer tvMazeRateLimit;
 
     @Override
     public boolean hasError(ClientHttpResponse response) throws IOException {
@@ -21,17 +22,14 @@ class TvMazeRestClientErrorHandler implements ResponseErrorHandler {
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
-        final var errorResponseBody = ObjectMapperUtils.OBJECT_MAPPER.readValue(response.getBody(), TvMazeErrorResponse.class);
-        throw new TvMazeIntegrationException("Error when calling TvMaze API with HTTP status code: " + response.getStatusCode().value() + " and message: " + errorResponseBody.getMessage() + "!");
-    }
-
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    private static final class TvMazeIntegrationException extends RuntimeException {
-
-        TvMazeIntegrationException(final String message) {
-            super(message);
+        if (HttpStatus.TOO_MANY_REQUESTS.equals(response.getStatusCode())) {
+            // this is valid for requests which aren't retryable; those who are retryable will handle this gracefully
+            // theoretically shouldn't happen due to implemented request overflow validation
+            throw new TvMazeIntegrationException("TVMaze API responded with too many requests. Requests for next " + tvMazeRateLimit + " seconds will be ignored!");
         }
 
+        final var errorResponseBody = ObjectMapperUtils.OBJECT_MAPPER.readValue(response.getBody(), TvMazeErrorResponse.class);
+        throw new TvMazeIntegrationException("Error when calling TvMaze API with HTTP status code: " + response.getStatusCode().value() + " and message: " + errorResponseBody.getMessage() + "!");
     }
 
     @Getter
