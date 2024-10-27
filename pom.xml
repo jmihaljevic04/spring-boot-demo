@@ -37,7 +37,6 @@
         <pet.spring-actuator.version>3.3.0</pet.spring-actuator.version>
         <pet.spring-amqp.version>3.3.0</pet.spring-amqp.version>
         <pet.spring-batch.version>3.3.0</pet.spring-batch.version>
-        <pet.spring-data-jdbc.version>3.3.0</pet.spring-data-jdbc.version>
         <pet.spring-data-jpa.version>3.3.0</pet.spring-data-jpa.version>
         <pet.spring-mail.version>3.3.0</pet.spring-mail.version>
         <pet.spring-quartz.version>3.3.0</pet.spring-quartz.version>
@@ -98,11 +97,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-batch</artifactId>
                 <version>${pet.spring-batch.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jdbc</artifactId>
-                <version>${pet.spring-data-jdbc.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
