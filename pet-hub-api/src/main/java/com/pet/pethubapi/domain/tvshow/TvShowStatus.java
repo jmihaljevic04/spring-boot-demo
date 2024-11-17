@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum TvShowStatus {
 
-    RUNNING("Running"), ENDED("Ended"), TBD("To Be Determined");
+    RUNNING("Running"), ENDED("Ended"), TBD("To Be Determined"), IN_DEVELOPMENT("In Development");
 
     @JsonValue
     private final String value;

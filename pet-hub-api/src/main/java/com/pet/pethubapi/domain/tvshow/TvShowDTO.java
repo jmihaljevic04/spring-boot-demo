@@ -18,7 +18,6 @@ import java.util.Map;
 public final class TvShowDTO implements Serializable {
 
     private Long id;
-    private String url;
     private String name;
     private String language;
     private List<String> genres;
