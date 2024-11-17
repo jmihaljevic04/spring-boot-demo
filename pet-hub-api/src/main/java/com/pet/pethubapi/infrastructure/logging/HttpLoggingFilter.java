@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Slf4j(topic = "audit-logger")
+@Order(value = Ordered.HIGHEST_PRECEDENCE + 1) // puts it after Spring Security filter
 @Component
 public class HttpLoggingFilter extends OncePerRequestFilter {
 
@@ -58,12 +61,10 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
         final var requestUri = getRequestUri(requestWrapper);
         final var source = getSource(requestWrapper);
         final var target = request.getServerName();
-
         final var startTime = Instant.now();
-        filterChain.doFilter(requestWrapper, responseWrapper);
-        final var duration = Duration.between(startTime, Instant.now()).toMillis();
+        final var shouldLogRequestResponse = IGNORED_APIS.stream().noneMatch(requestUri::contains);
 
-        if (IGNORED_APIS.stream().noneMatch(requestUri::contains)) {
+        if (shouldLogRequestResponse) {
             final var isAuthRequest = isAuthRequest(requestUri);
 
             // request
@@ -89,30 +90,23 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
                 }
             }
 
-            // response
-            final var responseStatus = response.getStatus();
-            var responseBody = new String(responseWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
-            if (isAuthRequest) {
-                for (var pattern : SENSITIVE_DATA_PATTERNS) {
-                    responseBody = hideSensitiveData(responseBody, pattern);
-                }
-            }
-
-            final var responseSb = new StringBuilder();
-            responseSb
-                .append("HTTP ").append(httpMethod).append(" response :: ")
-                .append("Request ID: ").append(requestId).append(LOG_ITEM_DELIMITER)
-                .append("Request URI: ").append(requestUri).append(LOG_ITEM_DELIMITER)
-                .append("Source: ").append(source).append(LOG_ITEM_DELIMITER)
-                .append("Target: ").append(target).append(LOG_ITEM_DELIMITER)
-                .append("Response status: ").append(responseStatus).append(LOG_ITEM_DELIMITER)
-                .append("Response body: ").append(responseBody).append(LOG_ITEM_DELIMITER)
-                .append("Duration: ").append(duration).append("ms");
-
             log.info(requestSb.toString());
-            log.info(responseSb.toString());
         }
 
+        try {
+            filterChain.doFilter(requestWrapper, responseWrapper);
+        } catch (IOException | ServletException e) {
+            if (shouldLogRequestResponse) {
+                logResponseBody(response, responseWrapper, requestId, httpMethod, requestUri, source, target, startTime);
+            }
+            responseWrapper.copyBodyToResponse();
+
+            throw e;
+        }
+
+        if (shouldLogRequestResponse) {
+            logResponseBody(response, responseWrapper, requestId, httpMethod, requestUri, source, target, startTime);
+        }
         responseWrapper.copyBodyToResponse();
     }
 
@@ -164,6 +158,38 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
         }
 
         return body;
+    }
+
+    private void logResponseBody(@NonNull HttpServletResponse response,
+                                 ContentCachingResponseWrapper responseWrapper,
+                                 String requestId,
+                                 String httpMethod,
+                                 String requestUri,
+                                 String source,
+                                 String target,
+                                 Instant startTime) throws IOException {
+        final var duration = Duration.between(startTime, Instant.now()).toMillis();
+        final var responseStatus = response.getStatus();
+        var responseBody = new String(responseWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
+
+        if (isAuthRequest(requestUri)) {
+            for (var pattern : SENSITIVE_DATA_PATTERNS) {
+                responseBody = hideSensitiveData(responseBody, pattern);
+            }
+        }
+
+        final var responseSb = new StringBuilder();
+        responseSb
+            .append("HTTP ").append(httpMethod).append(" response :: ")
+            .append("Request ID: ").append(requestId).append(LOG_ITEM_DELIMITER)
+            .append("Request URI: ").append(requestUri).append(LOG_ITEM_DELIMITER)
+            .append("Source: ").append(source).append(LOG_ITEM_DELIMITER)
+            .append("Target: ").append(target).append(LOG_ITEM_DELIMITER)
+            .append("Response status: ").append(responseStatus).append(LOG_ITEM_DELIMITER)
+            .append("Response body: ").append(responseBody).append(LOG_ITEM_DELIMITER) // this will be empty when exception occurs
+            .append("Duration: ").append(duration).append("ms");
+
+        log.info(responseSb.toString());
     }
 
 }
