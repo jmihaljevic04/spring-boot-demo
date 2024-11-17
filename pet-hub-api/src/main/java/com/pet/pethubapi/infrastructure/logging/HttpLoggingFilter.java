@@ -28,16 +28,16 @@ import java.util.regex.Pattern;
 @Slf4j(topic = "audit-logger")
 @Order(value = Ordered.HIGHEST_PRECEDENCE + 1) // puts it after Spring Security filter
 @Component
-class HttpLoggingFilter extends OncePerRequestFilter {
+public class HttpLoggingFilter extends OncePerRequestFilter {
 
     private static final String REQUEST_ID_HEADER_KEY = "X-Request-ID";
     private static final String LOAD_BALANCER_HEADER_KEY = "X-Forwaded-For";
     private static final String LOG_ITEM_DELIMITER = ", ";
     private static final String AUTH_URL = "/auth/";
     private static final List<Pattern> SENSITIVE_DATA_PATTERNS = new ArrayList<>(3);
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("(\"password\":)\\s?(\"(.+?)\")");
-    private static final Pattern ACCESS_TOKEN_PATTERN = Pattern.compile("(\"accessToken\":)\\s?(\"(.+?)\")");
-    private static final Pattern REFRESH_TOKEN_PATTERN = Pattern.compile("(\"refreshToken\":)\\s?(\"(.+?)\")");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("(\"password\"\\s*:\\s*\")([^\"]*)(\")");
+    private static final Pattern ACCESS_TOKEN_PATTERN = Pattern.compile("(\"accessToken\"\\s*:\\s*\")([^\"]*)(\")");
+    private static final Pattern REFRESH_TOKEN_PATTERN = Pattern.compile("(\"refreshToken\"\\s*:\\s*\")([^\"]*)(\")");
     private static final List<String> IGNORED_APIS = new ArrayList<>();
 
     static {
@@ -64,40 +64,12 @@ class HttpLoggingFilter extends OncePerRequestFilter {
         final var startTime = Instant.now();
         final var shouldLogRequestResponse = IGNORED_APIS.stream().noneMatch(requestUri::contains);
 
-        if (shouldLogRequestResponse) {
-            final var isAuthRequest = isAuthRequest(requestUri);
-
-            // request
-            final var requestSb = new StringBuilder();
-            requestSb
-                .append("HTTP ").append(httpMethod).append(" request :: ")
-                .append("Request ID: ").append(requestId).append(LOG_ITEM_DELIMITER)
-                .append("Request URI: ").append(requestUri).append(LOG_ITEM_DELIMITER)
-                .append("Source: ").append(source).append(LOG_ITEM_DELIMITER)
-                .append("Target: ").append(target);
-
-            if (shouldLogRequestBody(httpMethod)) {
-                final var requestBody = new String(requestWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
-                if (StringUtils.isBlank(requestBody)) {
-                    requestSb.append(LOG_ITEM_DELIMITER).append("Request body is empty");
-                } else {
-                    var normalizedRequestBody = normalizeBody(requestBody);
-
-                    if (isAuthRequest) {
-                        normalizedRequestBody = hideSensitiveData(normalizedRequestBody, PASSWORD_PATTERN);
-                    }
-                    requestSb.append(LOG_ITEM_DELIMITER).append("Request body: ").append(normalizedRequestBody);
-                }
-            }
-
-            log.info(requestSb.toString());
-        }
-
         try {
             filterChain.doFilter(requestWrapper, responseWrapper);
         } catch (IOException | ServletException e) {
             if (shouldLogRequestResponse) {
-                logResponseBody(response, responseWrapper, requestId, httpMethod, requestUri, source, target, startTime);
+                logRequestBody(httpMethod, requestId, requestUri, source, target, requestWrapper);
+                logResponseBody(responseWrapper, httpMethod, requestId, requestUri, source, target, startTime);
             }
             responseWrapper.copyBodyToResponse();
 
@@ -105,17 +77,19 @@ class HttpLoggingFilter extends OncePerRequestFilter {
         }
 
         if (shouldLogRequestResponse) {
-            logResponseBody(response, responseWrapper, requestId, httpMethod, requestUri, source, target, startTime);
+            logRequestBody(httpMethod, requestId, requestUri, source, target, requestWrapper);
+            logResponseBody(responseWrapper, httpMethod, requestId, requestUri, source, target, startTime);
         }
+
         responseWrapper.copyBodyToResponse();
     }
 
-    private static String getUniqueIdentifier(ContentCachingRequestWrapper request) {
+    private String getUniqueIdentifier(ContentCachingRequestWrapper request) {
         final var requestIdFromHeader = request.getHeader(REQUEST_ID_HEADER_KEY);
         return StringUtils.isEmpty(requestIdFromHeader) ? UUID.randomUUID().toString() : requestIdFromHeader;
     }
 
-    private static String getRequestUri(ContentCachingRequestWrapper request) {
+    private String getRequestUri(ContentCachingRequestWrapper request) {
         final var base = request.getRequestURI();
         final var params = request.getParameterMap();
 
@@ -131,7 +105,7 @@ class HttpLoggingFilter extends OncePerRequestFilter {
         return base.concat(sb.toString());
     }
 
-    private static String getSource(ContentCachingRequestWrapper request) {
+    private String getSource(ContentCachingRequestWrapper request) {
         final var lbHeader = request.getHeader(LOAD_BALANCER_HEADER_KEY);
         return StringUtils.isEmpty(lbHeader) ? request.getRemoteAddr() : lbHeader;
     }
@@ -147,36 +121,59 @@ class HttpLoggingFilter extends OncePerRequestFilter {
         return StringUtils.normalizeSpace(originalBody.replace("\n", "").replace("\r", ""));
     }
 
-    private static boolean isAuthRequest(String requestUri) {
+    private boolean isAuthRequest(String requestUri) {
         return requestUri.contains(AUTH_URL);
     }
 
-    private static String hideSensitiveData(String body, Pattern pattern) {
+    private String maskSensitiveData(String body, Pattern pattern) {
         final var matcher = pattern.matcher(body);
         if (matcher.find()) {
-            return body.replace(matcher.group(3), "********");
+            return matcher.replaceAll("$1********$3");
         }
 
         return body;
     }
 
-    private void logResponseBody(@NonNull HttpServletResponse response,
-                                 ContentCachingResponseWrapper responseWrapper,
-                                 String requestId,
+    private void logRequestBody(String httpMethod,
+                                String requestId,
+                                String requestUri,
+                                String source,
+                                String target,
+                                ContentCachingRequestWrapper requestWrapper) {
+        final var requestSb = new StringBuilder();
+        requestSb
+            .append("HTTP ").append(httpMethod).append(" request :: ")
+            .append("Request ID: ").append(requestId)
+            .append(LOG_ITEM_DELIMITER).append("Request URI: ").append(requestUri)
+            .append(LOG_ITEM_DELIMITER).append("Source: ").append(source)
+            .append(LOG_ITEM_DELIMITER).append("Target: ").append(target);
+
+        if (shouldLogRequestBody(httpMethod)) {
+            final var requestBody = new String(requestWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
+            if (StringUtils.isBlank(requestBody)) {
+                requestSb.append(LOG_ITEM_DELIMITER).append("Request body is empty");
+            } else {
+                var normalizedRequestBody = normalizeBody(requestBody);
+
+                if (isAuthRequest(requestUri)) {
+                    normalizedRequestBody = maskSensitiveData(normalizedRequestBody, PASSWORD_PATTERN);
+                }
+                requestSb.append(LOG_ITEM_DELIMITER).append("Request body: ").append(normalizedRequestBody);
+            }
+        }
+
+        log.info(requestSb.toString());
+    }
+
+    private void logResponseBody(ContentCachingResponseWrapper responseWrapper,
                                  String httpMethod,
+                                 String requestId,
                                  String requestUri,
                                  String source,
                                  String target,
                                  Instant startTime) throws IOException {
         final var duration = Duration.between(startTime, Instant.now()).toMillis();
-        final var responseStatus = response.getStatus();
-        var responseBody = new String(responseWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
-
-        if (isAuthRequest(requestUri)) {
-            for (var pattern : SENSITIVE_DATA_PATTERNS) {
-                responseBody = hideSensitiveData(responseBody, pattern);
-            }
-        }
+        final var responseStatus = responseWrapper.getStatus();
 
         final var responseSb = new StringBuilder();
         responseSb
@@ -185,9 +182,24 @@ class HttpLoggingFilter extends OncePerRequestFilter {
             .append("Request URI: ").append(requestUri).append(LOG_ITEM_DELIMITER)
             .append("Source: ").append(source).append(LOG_ITEM_DELIMITER)
             .append("Target: ").append(target).append(LOG_ITEM_DELIMITER)
-            .append("Response status: ").append(responseStatus).append(LOG_ITEM_DELIMITER)
-            .append("Response body: ").append(responseBody).append(LOG_ITEM_DELIMITER) // this will be empty when exception occurs
-            .append("Duration: ").append(duration).append("ms");
+            .append("Duration: ").append(duration).append("ms").append(LOG_ITEM_DELIMITER)
+            .append("Response status: ").append(responseStatus).append(LOG_ITEM_DELIMITER);
+
+        final var responseBody = new String(responseWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
+        if (StringUtils.isBlank(responseBody)) {
+            // this will be also empty when exception occurs
+            responseSb.append("Response body is empty");
+        } else {
+            var normalizedResponseBody = normalizeBody(responseBody);
+
+            if (isAuthRequest(requestUri)) {
+                for (var pattern : SENSITIVE_DATA_PATTERNS) {
+                    normalizedResponseBody = maskSensitiveData(normalizedResponseBody, pattern);
+                }
+            }
+
+            responseSb.append("Response body: ").append(normalizedResponseBody);
+        }
 
         log.info(responseSb.toString());
     }
