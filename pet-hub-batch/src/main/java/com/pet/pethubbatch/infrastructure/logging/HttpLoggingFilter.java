@@ -106,14 +106,14 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
         return StringUtils.isEmpty(lbHeader) ? request.getRemoteAddr() : lbHeader;
     }
 
-    boolean shouldLogRequestBody(String httpMethod) {
+    static boolean shouldLogRequestBody(String httpMethod) {
         return !HttpMethod.GET.matches(httpMethod) && !HttpMethod.DELETE.matches(httpMethod);
     }
 
     /**
      * Trims, normalizes trailing whitespaces into single one and removes new lines.
      */
-    String normalizeBody(String originalBody) {
+    static String normalizeBody(String originalBody) {
         return StringUtils.normalizeSpace(originalBody.replace("\n", "").replace("\r", ""));
     }
 
