@@ -31,7 +31,7 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
 
     private static final String REQUEST_ID_HEADER_KEY = "X-Request-Id";
     private static final String LOAD_BALANCER_HEADER_KEY = "X-Forwarded-For";
-    private static final String LOG_ITEM_DELIMITER = ", ";
+    static final String LOG_ITEM_DELIMITER = ", ";
     private static final String AUTH_URL = "/auth/";
     private static final List<Pattern> SENSITIVE_DATA_PATTERNS = new ArrayList<>(3);
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("(\"password\"\\s*:\\s*\")([^\"]*)(\")");
@@ -106,14 +106,14 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
         return StringUtils.isEmpty(lbHeader) ? request.getRemoteAddr() : lbHeader;
     }
 
-    private boolean shouldLogRequestBody(String httpMethod) {
+    boolean shouldLogRequestBody(String httpMethod) {
         return !HttpMethod.GET.matches(httpMethod) && !HttpMethod.DELETE.matches(httpMethod);
     }
 
     /**
      * Trims, normalizes trailing whitespaces into single one and removes new lines.
      */
-    private String normalizeBody(String originalBody) {
+    String normalizeBody(String originalBody) {
         return StringUtils.normalizeSpace(originalBody.replace("\n", "").replace("\r", ""));
     }
 
