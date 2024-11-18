@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
+import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -26,13 +26,12 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Slf4j(topic = "audit-logger")
-@Order(value = Ordered.HIGHEST_PRECEDENCE + 1) // puts it after Spring Security filter
 @Component
-class HttpLoggingFilter extends OncePerRequestFilter {
+public class HttpLoggingFilter extends OncePerRequestFilter {
 
-    private static final String REQUEST_ID_HEADER_KEY = "X-Request-ID";
-    private static final String LOAD_BALANCER_HEADER_KEY = "X-Forwaded-For";
-    static final String LOG_ITEM_DELIMITER = ", ";
+    private static final String REQUEST_ID_HEADER_KEY = "X-Request-Id";
+    private static final String LOAD_BALANCER_HEADER_KEY = "X-Forwarded-For";
+    private static final String LOG_ITEM_DELIMITER = ", ";
     private static final String AUTH_URL = "/auth/";
     private static final List<Pattern> SENSITIVE_DATA_PATTERNS = new ArrayList<>(3);
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("(\"password\"\\s*:\\s*\")([^\"]*)(\")");
@@ -64,24 +63,21 @@ class HttpLoggingFilter extends OncePerRequestFilter {
         final var startTime = Instant.now();
         final var shouldLogRequestResponse = IGNORED_APIS.stream().noneMatch(requestUri::contains);
 
+        MDC.put("requestId", requestId);
+        MDC.put("authUser", SecurityContextHolder.getContext().getAuthentication().getName());
+
         try {
+            // execute request
             filterChain.doFilter(requestWrapper, responseWrapper);
-        } catch (IOException | ServletException e) {
+        } finally {
             if (shouldLogRequestResponse) {
                 logRequest(httpMethod, requestId, requestUri, source, target, requestWrapper);
                 logResponse(responseWrapper, httpMethod, requestId, requestUri, source, target, startTime);
             }
+
             responseWrapper.copyBodyToResponse();
-
-            throw e;
+            MDC.clear();
         }
-
-        if (shouldLogRequestResponse) {
-            logRequest(httpMethod, requestId, requestUri, source, target, requestWrapper);
-            logResponse(responseWrapper, httpMethod, requestId, requestUri, source, target, startTime);
-        }
-
-        responseWrapper.copyBodyToResponse();
     }
 
     private String getUniqueIdentifier(ContentCachingRequestWrapper request) {
@@ -110,14 +106,14 @@ class HttpLoggingFilter extends OncePerRequestFilter {
         return StringUtils.isEmpty(lbHeader) ? request.getRemoteAddr() : lbHeader;
     }
 
-    static boolean shouldLogRequestBody(String httpMethod) {
+    private boolean shouldLogRequestBody(String httpMethod) {
         return !HttpMethod.GET.matches(httpMethod) && !HttpMethod.DELETE.matches(httpMethod);
     }
 
     /**
      * Trims, normalizes trailing whitespaces into single one and removes new lines.
      */
-    static String normalizeBody(String originalBody) {
+    private String normalizeBody(String originalBody) {
         return StringUtils.normalizeSpace(originalBody.replace("\n", "").replace("\r", ""));
     }
 
@@ -171,7 +167,7 @@ class HttpLoggingFilter extends OncePerRequestFilter {
                              String requestUri,
                              String source,
                              String target,
-                             Instant startTime) throws IOException {
+                             Instant startTime) {
         final var duration = Duration.between(startTime, Instant.now()).toMillis();
         final var responseStatus = responseWrapper.getStatus();
 
