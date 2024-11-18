@@ -71,8 +71,8 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
             filterChain.doFilter(requestWrapper, responseWrapper);
         } finally {
             if (shouldLogRequestResponse) {
-                logRequestBody(httpMethod, requestId, requestUri, source, target, requestWrapper);
-                logResponseBody(responseWrapper, httpMethod, requestId, requestUri, source, target, startTime);
+                logRequest(httpMethod, requestId, requestUri, source, target, requestWrapper);
+                logResponse(responseWrapper, httpMethod, requestId, requestUri, source, target, startTime);
             }
 
             responseWrapper.copyBodyToResponse();
@@ -130,12 +130,12 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
         return body;
     }
 
-    private void logRequestBody(String httpMethod,
-                                String requestId,
-                                String requestUri,
-                                String source,
-                                String target,
-                                ContentCachingRequestWrapper requestWrapper) {
+    private void logRequest(String httpMethod,
+                            String requestId,
+                            String requestUri,
+                            String source,
+                            String target,
+                            ContentCachingRequestWrapper requestWrapper) {
         final var requestSb = new StringBuilder();
         requestSb
             .append("HTTP ").append(httpMethod).append(" request :: ")
@@ -161,13 +161,13 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
         log.info(requestSb.toString());
     }
 
-    private void logResponseBody(ContentCachingResponseWrapper responseWrapper,
-                                 String httpMethod,
-                                 String requestId,
-                                 String requestUri,
-                                 String source,
-                                 String target,
-                                 Instant startTime) {
+    private void logResponse(ContentCachingResponseWrapper responseWrapper,
+                             String httpMethod,
+                             String requestId,
+                             String requestUri,
+                             String source,
+                             String target,
+                             Instant startTime) {
         final var duration = Duration.between(startTime, Instant.now()).toMillis();
         final var responseStatus = responseWrapper.getStatus();
 
