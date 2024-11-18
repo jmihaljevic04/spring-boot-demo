@@ -32,7 +32,7 @@ class HttpLoggingFilter extends OncePerRequestFilter {
 
     private static final String REQUEST_ID_HEADER_KEY = "X-Request-ID";
     private static final String LOAD_BALANCER_HEADER_KEY = "X-Forwaded-For";
-    private static final String LOG_ITEM_DELIMITER = ", ";
+    static final String LOG_ITEM_DELIMITER = ", ";
     private static final String AUTH_URL = "/auth/";
     private static final List<Pattern> SENSITIVE_DATA_PATTERNS = new ArrayList<>(3);
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("(\"password\"\\s*:\\s*\")([^\"]*)(\")");
@@ -68,8 +68,8 @@ class HttpLoggingFilter extends OncePerRequestFilter {
             filterChain.doFilter(requestWrapper, responseWrapper);
         } catch (IOException | ServletException e) {
             if (shouldLogRequestResponse) {
-                logRequestBody(httpMethod, requestId, requestUri, source, target, requestWrapper);
-                logResponseBody(responseWrapper, httpMethod, requestId, requestUri, source, target, startTime);
+                logRequest(httpMethod, requestId, requestUri, source, target, requestWrapper);
+                logResponse(responseWrapper, httpMethod, requestId, requestUri, source, target, startTime);
             }
             responseWrapper.copyBodyToResponse();
 
@@ -77,8 +77,8 @@ class HttpLoggingFilter extends OncePerRequestFilter {
         }
 
         if (shouldLogRequestResponse) {
-            logRequestBody(httpMethod, requestId, requestUri, source, target, requestWrapper);
-            logResponseBody(responseWrapper, httpMethod, requestId, requestUri, source, target, startTime);
+            logRequest(httpMethod, requestId, requestUri, source, target, requestWrapper);
+            logResponse(responseWrapper, httpMethod, requestId, requestUri, source, target, startTime);
         }
 
         responseWrapper.copyBodyToResponse();
@@ -110,14 +110,14 @@ class HttpLoggingFilter extends OncePerRequestFilter {
         return StringUtils.isEmpty(lbHeader) ? request.getRemoteAddr() : lbHeader;
     }
 
-    private boolean shouldLogRequestBody(String httpMethod) {
+    static boolean shouldLogRequestBody(String httpMethod) {
         return !HttpMethod.GET.matches(httpMethod) && !HttpMethod.DELETE.matches(httpMethod);
     }
 
     /**
      * Trims, normalizes trailing whitespaces into single one and removes new lines.
      */
-    private String normalizeBody(String originalBody) {
+    static String normalizeBody(String originalBody) {
         return StringUtils.normalizeSpace(originalBody.replace("\n", "").replace("\r", ""));
     }
 
@@ -134,12 +134,12 @@ class HttpLoggingFilter extends OncePerRequestFilter {
         return body;
     }
 
-    private void logRequestBody(String httpMethod,
-                                String requestId,
-                                String requestUri,
-                                String source,
-                                String target,
-                                ContentCachingRequestWrapper requestWrapper) {
+    private void logRequest(String httpMethod,
+                            String requestId,
+                            String requestUri,
+                            String source,
+                            String target,
+                            ContentCachingRequestWrapper requestWrapper) {
         final var requestSb = new StringBuilder();
         requestSb
             .append("HTTP ").append(httpMethod).append(" request :: ")
@@ -165,13 +165,13 @@ class HttpLoggingFilter extends OncePerRequestFilter {
         log.info(requestSb.toString());
     }
 
-    private void logResponseBody(ContentCachingResponseWrapper responseWrapper,
-                                 String httpMethod,
-                                 String requestId,
-                                 String requestUri,
-                                 String source,
-                                 String target,
-                                 Instant startTime) throws IOException {
+    private void logResponse(ContentCachingResponseWrapper responseWrapper,
+                             String httpMethod,
+                             String requestId,
+                             String requestUri,
+                             String source,
+                             String target,
+                             Instant startTime) throws IOException {
         final var duration = Duration.between(startTime, Instant.now()).toMillis();
         final var responseStatus = responseWrapper.getStatus();
 
