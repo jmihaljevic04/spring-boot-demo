@@ -93,17 +93,17 @@ public class RestClientRequestLogger implements ClientHttpRequestInterceptor {
     private record BufferingClientHttpResponseWrapper(ClientHttpResponse response, byte[] body) implements ClientHttpResponse {
 
         @Override
-        public InputStream getBody() {
+        public @NonNull InputStream getBody() {
             return new ByteArrayInputStream(body);
         }
 
         @Override
-        public HttpStatusCode getStatusCode() throws IOException {
+        public @NonNull HttpStatusCode getStatusCode() throws IOException {
             return response.getStatusCode();
         }
 
         @Override
-        public String getStatusText() throws IOException {
+        public @NonNull String getStatusText() throws IOException {
             return response.getStatusText();
         }
 
@@ -113,7 +113,7 @@ public class RestClientRequestLogger implements ClientHttpRequestInterceptor {
         }
 
         @Override
-        public HttpHeaders getHeaders() {
+        public @NonNull HttpHeaders getHeaders() {
             return response.getHeaders();
         }
 

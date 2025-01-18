@@ -23,13 +23,13 @@ public final class ObjectMapperUtils {
         try {
             return OBJECT_MAPPER.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw new InvalidSerializationException(e);
+            throw new InvalidJsonProcessingException(e);
         }
     }
 
-    private static final class InvalidSerializationException extends RuntimeException {
+    private static final class InvalidJsonProcessingException extends RuntimeException {
 
-        private InvalidSerializationException(final Exception e) {
+        private InvalidJsonProcessingException(final Exception e) {
             super(e);
         }
 

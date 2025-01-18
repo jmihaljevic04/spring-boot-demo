@@ -27,7 +27,7 @@ class TestcontainersConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "pet.integration-test.mongodb-container.enabled", havingValue = "true")
+    //@ConditionalOnProperty(name = "pet.integration-test.mongodb-container.enabled", havingValue = "true") => check application-default.properties
     @ServiceConnection
     MongoDBContainer mongoDbContainer() {
         return new MongoDBContainer("mongo:8.0-rc-noble").withReuse(true);
