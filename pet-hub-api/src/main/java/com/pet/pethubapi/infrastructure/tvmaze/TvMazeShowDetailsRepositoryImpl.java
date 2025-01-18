@@ -5,13 +5,16 @@ import com.pet.pethubapi.domain.tvshow.TvShowDetailsRepository;
 import com.pet.pethubapi.domain.tvshow.TvShowSearchResponse;
 import com.pet.pethubapi.infrastructure.tvmaze.audit.TvMazeRequestAuditor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.retry.RetryException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
@@ -26,10 +29,15 @@ import java.util.concurrent.TimeUnit;
 @Repository
 class TvMazeShowDetailsRepositoryImpl implements TvShowDetailsRepository {
 
-    private static final String SHOW_DETAILS_BY_NAME_CACHE = "show-details-by-name";
+    public static final String SHOW_DETAILS_BY_NAME_CACHE = "show-details-by-name";
 
-    private final RestClient tvMazeShowIndexRestClient;
-    private final RestClient tvMazeSearchRestClient;
+    @Setter
+    @Autowired
+    private RestClient tvMazeShowIndexRestClient;
+    @Setter
+    @Autowired
+    private RestClient tvMazeSearchRestClient;
+
     private final TvMazeRequestAuditor requestAuditor;
 
     @Override
@@ -37,10 +45,16 @@ class TvMazeShowDetailsRepositoryImpl implements TvShowDetailsRepository {
         requestAuditor.validateRequestOverflow();
         requestAuditor.auditGetAllShows();
 
-        final var responseBody = tvMazeShowIndexRestClient.get()
-            .uri(uriBuilder -> uriBuilder.queryParam("page", pageNumber).build())
-            .retrieve()
-            .body(TvShowDTO[].class);
+        final TvShowDTO[] responseBody;
+        try {
+            responseBody = tvMazeShowIndexRestClient.get()
+                .uri(uriBuilder -> uriBuilder.queryParam("page", pageNumber).build())
+                .retrieve()
+                .body(TvShowDTO[].class);
+        } catch (ResourceAccessException e) {
+            log.error(e.getMessage(), e);
+            throw new TvMazeIntegrationException("Unexpected error while calling TVMaze: '" + e.getMessage() + "'!");
+        }
 
         if (responseBody == null) {
             return Collections.emptyList();
@@ -55,10 +69,16 @@ class TvMazeShowDetailsRepositoryImpl implements TvShowDetailsRepository {
         requestAuditor.validateRequestOverflow();
         requestAuditor.auditShowByName();
 
-        final var responseBody = tvMazeSearchRestClient.get()
-            .uri(uriBuilder -> uriBuilder.queryParam("q", name).build())
-            .retrieve()
-            .body(TvShowSearchResponse[].class);
+        final TvShowSearchResponse[] responseBody;
+        try {
+            responseBody = tvMazeSearchRestClient.get()
+                .uri(uriBuilder -> uriBuilder.queryParam("q", name).build())
+                .retrieve()
+                .body(TvShowSearchResponse[].class);
+        } catch (ResourceAccessException e) {
+            log.error(e.getMessage(), e);
+            throw new TvMazeIntegrationException("Unexpected error while calling TVMaze: '" + e.getMessage() + "'!");
+        }
 
         if (responseBody == null) {
             return Collections.emptyList();
@@ -95,7 +115,7 @@ class TvMazeShowDetailsRepositoryImpl implements TvShowDetailsRepository {
      * Deletes all entries from cache by scheduled method. Not defined in interface, but must be public method. Not intended to act as a TTL!
      */
     @CacheEvict(cacheNames = SHOW_DETAILS_BY_NAME_CACHE, allEntries = true)
-    @Scheduled(fixedDelay = 23, timeUnit = TimeUnit.HOURS)
+    @Scheduled(fixedDelay = 23, initialDelay = 2, timeUnit = TimeUnit.HOURS)
     public void clearCache() {
         log.info("Clearing all entries from cache: {}...", SHOW_DETAILS_BY_NAME_CACHE);
     }

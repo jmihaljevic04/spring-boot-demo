@@ -1,7 +1,9 @@
 package com.pet.pethubapi.infrastructure.tvmaze;
 
 import com.pet.pethubapi.application.ObjectMapperUtils;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
@@ -29,15 +31,17 @@ class TvMazeRestClientErrorHandler implements ResponseErrorHandler {
         }
 
         final var errorResponseBody = ObjectMapperUtils.OBJECT_MAPPER.readValue(response.getBody(), TvMazeErrorResponse.class);
-        throw new TvMazeIntegrationException("Error when calling TvMaze API with HTTP status code: " + response.getStatusCode().value() + " and message: " + errorResponseBody.getMessage() + "!");
+        throw new TvMazeIntegrationException("Error when calling TvMaze API with HTTP status code: " + response.getStatusCode().value() + " and message: '" + errorResponseBody.getMessage() + "'!");
     }
 
     @Getter
     @Setter
-    private static final class TvMazeErrorResponse {
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static final class TvMazeErrorResponse {
 
-        private String message;
         private int code;
+        private String message;
 
     }
 

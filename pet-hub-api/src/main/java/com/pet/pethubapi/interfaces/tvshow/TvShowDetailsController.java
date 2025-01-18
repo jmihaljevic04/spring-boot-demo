@@ -31,20 +31,25 @@ class TvShowDetailsController {
     @GetMapping(value = "/", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TvShowDTO>> getAllTvShows(@PageableDefault final Pageable pageable) {
         final var result = showDetailsService.getAllShows(pageable);
+        if (result.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok().body(result);
     }
 
     @GetMapping(value = "/details", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TvShowSearchResponse>> getTvShowDetailsByName(@RequestParam("showName") final String showName) {
         final var result = showDetailsService.getShowDetailsByName(showName);
+        if (result.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         result.forEach(searchResponse -> {
             final var selfLink = linkTo(methodOn(TvShowDetailsController.class).getTvShowDetailsById(searchResponse.getShow().getId())).withSelfRel();
             searchResponse.add(selfLink);
         });
 
-        if (result.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok().body(result);
     }
 

@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 class TvShowDetailsServiceImpl implements TvShowDetailsService {
 
-    private static final double SHOW_MATCHED_SCORE_MIN_THRESHOLD = 0.5D;
+    public static final double SHOW_MATCHED_SCORE_MIN_THRESHOLD = 0.5D;
 
     private final TvShowDetailsRepository showDetailsRepository;
 
@@ -41,7 +41,7 @@ class TvShowDetailsServiceImpl implements TvShowDetailsService {
             .toList();
 
         if (filteredResults.isEmpty()) {
-            throw new InvalidShowDetailsActionException("TV Show with name: " + normalizedName + " not found!");
+            throw new InvalidShowDetailsActionException("TV Show with name: '" + normalizedName + "' not found!");
         }
 
         return filteredResults;
@@ -53,13 +53,8 @@ class TvShowDetailsServiceImpl implements TvShowDetailsService {
             throw new InvalidShowDetailsActionException("TV Show ID is invalid!");
         }
 
-        final var result = showDetailsRepository.getShowDetailsById(showId);
-
-        if (result.isEmpty()) {
-            throw new InvalidShowDetailsActionException("TV Show with ID: " + showId + " not found!");
-        }
-
-        return result.get();
+        return showDetailsRepository.getShowDetailsById(showId)
+            .orElseThrow(() -> new InvalidShowDetailsActionException("TV Show with ID: " + showId + " not found!"));
     }
 
 }

@@ -12,8 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
-import java.time.Duration;
-
 @RequiredArgsConstructor
 @Configuration
 class TvMazeRestClientConfiguration {
@@ -26,25 +24,26 @@ class TvMazeRestClientConfiguration {
 
     @Bean
     RestClient tvMazeShowIndexRestClient() {
-        return getDefaultRestClientBuilder()
+        return defaultTvMazeRestClient()
             .baseUrl(applicationProperties.getTvMaze().getShowIndex().getBaseUrl())
             .build();
     }
 
     @Bean
     RestClient tvMazeSearchRestClient() {
-        return getDefaultRestClientBuilder()
+        return defaultTvMazeRestClient()
             .baseUrl(applicationProperties.getTvMaze().getSearch().getBaseUrl())
             .build();
     }
 
-    private RestClient.Builder getDefaultRestClientBuilder() {
+    @Bean
+    RestClient.Builder defaultTvMazeRestClient() {
         return RestClient.builder()
             .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-            .defaultHeader(HttpHeaders.CACHE_CONTROL, CacheControl.maxAge(Duration.ZERO).getHeaderValue())
+            .defaultHeader(HttpHeaders.CACHE_CONTROL, CacheControl.noCache().getHeaderValue())
+            .defaultHeader(HttpHeaders.FROM, appName)
             .defaultStatusHandler(new TvMazeRestClientErrorHandler(applicationProperties.getTvMaze().getRateLimit().getTimeInterval()))
             .observationRegistry(observationRegistry)
-            .defaultHeader(HttpHeaders.FROM, appName)
             .requestInterceptor(new RestClientRequestLogger());
     }
 

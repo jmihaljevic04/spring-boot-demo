@@ -44,7 +44,7 @@ public class TvMazeRequestAuditorImpl implements TvMazeRequestAuditor {
 
     private void validateDailyRequestLimit() {
         final var dailyRequestLimit = applicationProperties.getTvMaze().getRateLimit().getMaxDaily();
-        final var midnightToday = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0);
+        final var midnightToday = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
 
         final var numberOfRequestsToday = auditRepository.countByTimestampAfter(midnightToday);
 
@@ -57,7 +57,7 @@ public class TvMazeRequestAuditorImpl implements TvMazeRequestAuditor {
         final var requestRateLimit = applicationProperties.getTvMaze().getRateLimit().getMaxPerInterval();
         final var requestRateLimitInterval = applicationProperties.getTvMaze().getRateLimit().getTimeInterval();
 
-        final var numberOfRequests = auditRepository.countByTimestampAfter(LocalDateTime.now().minusSeconds(requestRateLimitInterval));
+        final var numberOfRequests = auditRepository.countByTimestampAfter(LocalDateTime.now().minusSeconds(requestRateLimitInterval).withNano(0));
 
         if (numberOfRequests >= requestRateLimit) {
             throw new TvMazeIntegrationException("Number of requests executed starting in last: " + requestRateLimitInterval + " seconds exceeds request limit of: " + requestRateLimit + " requests! Please wait for next: " + requestRateLimitInterval + " seconds!");
