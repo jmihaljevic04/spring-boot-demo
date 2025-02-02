@@ -14,10 +14,9 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,10 +26,8 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = false)
-@ToString
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "app_user")
 public class User implements UserDetails {

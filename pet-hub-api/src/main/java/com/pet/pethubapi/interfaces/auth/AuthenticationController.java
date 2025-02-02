@@ -19,7 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
-public class AuthenticationController {
+class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 

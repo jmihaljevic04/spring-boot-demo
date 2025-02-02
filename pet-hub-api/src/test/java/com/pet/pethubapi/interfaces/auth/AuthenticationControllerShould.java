@@ -35,7 +35,7 @@ class AuthenticationControllerShould {
 
     @BeforeAll
     void setUp() {
-        RestAssured.baseURI = "http://localhost";
+        RestAssured.baseURI = "http://localhost/api/auth";
         RestAssured.port = port;
     }
 
@@ -50,7 +50,7 @@ class AuthenticationControllerShould {
         input.setLastName("Testic");
 
         var response = given()
-            .basePath("/api/auth/register")
+            .basePath("/register")
             .body(input).contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().post()
             .then().extract().response();
@@ -69,7 +69,7 @@ class AuthenticationControllerShould {
         when(authenticationServiceMock.authenticateUser(input)).thenReturn(mockResponse);
 
         var response = given()
-            .basePath("/api/auth/login")
+            .basePath("/login")
             .body(input).contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().post()
             .then().extract().response();
@@ -89,7 +89,7 @@ class AuthenticationControllerShould {
         when(authenticationServiceMock.authenticateUser(input)).thenThrow(new InvalidAuthenticationException("test msg"));
 
         var response = given()
-            .basePath("/api/auth/login")
+            .basePath("/login")
             .body(input).contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().post()
             .then().extract().response();
@@ -108,7 +108,7 @@ class AuthenticationControllerShould {
         when(authenticationServiceMock.refreshAuthToken(input)).thenReturn(mockResponse);
 
         var response = given()
-            .basePath("/api/auth/refresh-token")
+            .basePath("/refresh-token")
             .header("X-Auth-Refresh", input)
             .when().get()
             .then().extract().response();

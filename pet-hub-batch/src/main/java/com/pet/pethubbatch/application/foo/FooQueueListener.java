@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConditionalOnProperty(value = "pet.rabbitmq.enabled", havingValue = "true")
 @RequiredArgsConstructor
-public class FooQueueListener {
+class FooQueueListener {
 
     private final RabbitMqMessageSender<String> messageSender;
 

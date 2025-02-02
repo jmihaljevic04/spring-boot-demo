@@ -7,7 +7,7 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 
 @SuppressWarnings("unused")
 @AnalyzeClasses(packages = "com.pet.pethubrabbitmq")
-public class EnumClassRuleTest {
+class EnumClassRuleTest {
 
     @ArchTest
     public static final ArchRule privateFinalFieldsRule = ArchRuleDefinition.fields()

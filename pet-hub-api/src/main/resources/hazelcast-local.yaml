@@ -1,0 +1,20 @@
+hazelcast:
+    properties:
+        hazelcast.merge.first.run.delay.seconds: 60
+        hazelcast.health.monitoring.threshold.cpu.percentage: 90
+        hazelcast.health.monitoring.threshold.memory.percentage: 90
+    cluster-name: pet-hub-api-dev
+    network:
+        port:
+            auto-increment: true
+            port-count: 5
+            port: 5701
+        join:
+            auto-detection:
+                enabled: false
+            multicast:
+                enabled: false
+            tcp-ip:
+                enabled: true
+                required-member: localhost
+                members: localhost

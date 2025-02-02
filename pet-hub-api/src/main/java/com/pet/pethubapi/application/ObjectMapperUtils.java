@@ -7,7 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public final class ObjectMapperUtils {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     static {
         OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -23,13 +23,13 @@ public final class ObjectMapperUtils {
         try {
             return OBJECT_MAPPER.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw new InvalidSerializationException(e);
+            throw new InvalidJsonProcessingException(e);
         }
     }
 
-    private static final class InvalidSerializationException extends RuntimeException {
+    private static final class InvalidJsonProcessingException extends RuntimeException {
 
-        private InvalidSerializationException(final Exception e) {
+        private InvalidJsonProcessingException(final Exception e) {
             super(e);
         }
 

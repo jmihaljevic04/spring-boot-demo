@@ -116,6 +116,25 @@ Example commands:
 
 ***
 
+## API versioning
+
+Even though it is useful in some cases, API versioning won't be implemented here due to following reasons:
+
+- significant increase of code complexity (new endpoints, new DTOs, logic branching)
+- introduces complexity on database level (new schemas => data migration, data consistency)
+- increase scope of testing, especially compatibility testing
+
+To sum up, versioning introduces complexity in maintaining APIs while introducing complexity for integrators in
+adapting.
+
+Versioning does have its pros, but there are ways to mitigate them without introducing mentioned issues:
+
+- proper API documentation/communication with integrators
+- staging environments where integrators can adapt their queries (simultaneous releases)
+- blue/green or canary deployments (special production environment where integrator can adapt)
+
+***
+
 ## Dependency management
 
 All dependencies and their versions are managed in parent/root _pom.xml_ file, and used/resolved in child _pom.xml_
@@ -261,3 +280,17 @@ Revise all rules containing `.allowEmptyShould(true)` if it is still necessary. 
 kind.
 
 Caveat is if there is need for changing common rule, change has to be applied on all modules manually.
+
+### Mockito
+
+At the moment, while using `@MockBean` annotation to mock/stub beans or method invocations, strict stubbing is not
+enabled by default.
+That results in duplicate code (stubbing - verifying) at the moment. We always want to have verify of mocked bean,
+because some `void` methods could be invoked and tests won't cover that automatically.
+
+Reason why we are using whole infrastructure of `@MockBean` (which requires whole application context) is because of
+underlying configuration necessary for starting application.
+Isolated service which could be tested with unit tests should not start whole application context, rather just use
+Mockito (which has strict stubbing enabled by default).
+
+More info can be found here: https://github.com/spring-projects/spring-framework/issues/33318
