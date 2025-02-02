@@ -110,7 +110,8 @@ Versioning is done automatically with CI/CD tool and `maven-version-plugin` and 
 Example commands:
 
 1. `mvn -B -Darguments=-DskipTests release:prepare release:clean` remove _SNAPSHOT_ suffix, tag with current versions,
-   push it to repo, set new development version (increment path and add suffix) and also push it to repo. `clean` cleans
+   push it to repo, set new development version (increment patch and add suffix) and also push it to repo. `clean`
+   cleans
    utility auto-generated files
 2. next command would be `mvn release:perform` but that is still in **TODO** due to setting up artifact repository
 
