@@ -6,8 +6,9 @@
         <artifactId>spring-boot-demo</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>pet-hub-security</artifactId>
 
+    <artifactId>pet-hub-security</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <name>pet-hub-security</name>
     <description>PetHub library providing security configuration to runnable microservices.</description>
 

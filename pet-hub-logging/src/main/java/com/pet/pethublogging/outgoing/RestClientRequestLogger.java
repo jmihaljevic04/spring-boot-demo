@@ -1,5 +1,6 @@
-package com.pet.pethubapi.infrastructure.logging;
+package com.pet.pethublogging.outgoing;
 
+import com.pet.pethublogging.incoming.HttpLoggingFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +22,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
-import static com.pet.pethubapi.infrastructure.logging.HttpLoggingFilter.LOG_ITEM_DELIMITER;
+import static com.pet.pethublogging.incoming.HttpLoggingFilter.LOG_ITEM_DELIMITER;
 
 @Slf4j(topic = "audit-logger")
 @Component

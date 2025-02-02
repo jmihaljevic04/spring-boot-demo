@@ -18,6 +18,7 @@
 
     <!-- order is important here, because it represents module build order, and libraries should be built before runnable microservices -->
     <modules>
+        <module>pet-hub-logging</module>
         <module>pet-hub-security</module>
         <module>pet-hub-rabbitmq</module>
         <module>pet-hub-api</module>
@@ -33,6 +34,9 @@
 
     <properties>
         <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <pet.spring-actuator.version>3.3.0</pet.spring-actuator.version>
         <pet.spring-amqp.version>3.3.0</pet.spring-amqp.version>

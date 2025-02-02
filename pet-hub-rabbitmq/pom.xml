@@ -6,8 +6,9 @@
         <artifactId>spring-boot-demo</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>pet-hub-rabbitmq</artifactId>
 
+    <artifactId>pet-hub-rabbitmq</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <name>pet-hub-rabbitmq</name>
     <description>PetHub library providing RabbitMQ configuration to runnable microservices.</description>
 

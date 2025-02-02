@@ -1,7 +1,7 @@
 package com.pet.pethubapi.infrastructure.tvmaze;
 
 import com.pet.pethubapi.domain.ApiApplicationProperties;
-import com.pet.pethubapi.infrastructure.logging.RestClientRequestLogger;
+import com.pet.pethublogging.outgoing.RestClientRequestLogger;
 import io.micrometer.observation.ObservationRegistry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

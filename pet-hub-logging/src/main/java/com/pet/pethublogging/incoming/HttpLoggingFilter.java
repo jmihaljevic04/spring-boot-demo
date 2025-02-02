@@ -1,4 +1,4 @@
-package com.pet.pethubapi.infrastructure.logging;
+package com.pet.pethublogging.incoming;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 @Component
 public class HttpLoggingFilter extends OncePerRequestFilter {
 
-    static final String LOG_ITEM_DELIMITER = ", ";
+    public static final String LOG_ITEM_DELIMITER = ", ";
     private static final String REQUEST_ID_HEADER_KEY = "X-Request-Id";
     private static final String LOAD_BALANCER_HEADER_KEY = "X-Forwarded-For";
     private static final String AUTH_URL = "/auth/";
@@ -80,6 +80,17 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
         }
     }
 
+    public static boolean shouldLogRequestBody(String httpMethod) {
+        return !HttpMethod.GET.matches(httpMethod) && !HttpMethod.DELETE.matches(httpMethod);
+    }
+
+    /**
+     * Trims, normalizes trailing whitespaces into single one and removes new lines.
+     */
+    public static String normalizeBody(String originalBody) {
+        return StringUtils.normalizeSpace(originalBody.replace("\n", "").replace("\r", ""));
+    }
+
     private String getUniqueIdentifier(ContentCachingRequestWrapper request) {
         final var requestIdFromHeader = request.getHeader(REQUEST_ID_HEADER_KEY);
         return StringUtils.isEmpty(requestIdFromHeader) ? UUID.randomUUID().toString() : requestIdFromHeader;
@@ -104,17 +115,6 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
     private String getSource(ContentCachingRequestWrapper request) {
         final var lbHeader = request.getHeader(LOAD_BALANCER_HEADER_KEY);
         return StringUtils.isEmpty(lbHeader) ? request.getRemoteAddr() : lbHeader;
-    }
-
-    static boolean shouldLogRequestBody(String httpMethod) {
-        return !HttpMethod.GET.matches(httpMethod) && !HttpMethod.DELETE.matches(httpMethod);
-    }
-
-    /**
-     * Trims, normalizes trailing whitespaces into single one and removes new lines.
-     */
-    static String normalizeBody(String originalBody) {
-        return StringUtils.normalizeSpace(originalBody.replace("\n", "").replace("\r", ""));
     }
 
     private boolean isAuthRequest(String requestUri) {
