@@ -38,40 +38,40 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <pet.spring-actuator.version>3.3.0</pet.spring-actuator.version>
-        <pet.spring-amqp.version>3.3.0</pet.spring-amqp.version>
-        <pet.spring-batch.version>3.3.0</pet.spring-batch.version>
-        <pet.spring-data-jpa.version>3.3.0</pet.spring-data-jpa.version>
-        <pet.spring-mail.version>3.3.0</pet.spring-mail.version>
-        <pet.spring-quartz.version>3.3.0</pet.spring-quartz.version>
-        <pet.spring-security.version>3.3.0</pet.spring-security.version>
-        <pet.spring-thymeleaf.version>3.3.0</pet.spring-thymeleaf.version>
-        <pet.spring-validation.version>3.3.0</pet.spring-validation.version>
-        <pet.spring-web.version>3.3.0</pet.spring-web.version>
-        <pet.spring-retry.version>2.0.6</pet.spring-retry.version>
-        <pet.spring-hateoas.version>3.3.0</pet.spring-hateoas.version>
-        <pet.spring-mongodb.version>3.3.0</pet.spring-mongodb.version>
-        <pet.flyway.version>10.10.0</pet.flyway.version>
-        <pet.thymeleaf-security-extras.version>3.1.2.RELEASE</pet.thymeleaf-security-extras.version>
-        <pet.jwt.version>0.12.5</pet.jwt.version>
-        <pet.google-guava-core.version>33.2.1-jre</pet.google-guava-core.version>
+        <pet.spring-actuator.version>3.3.8</pet.spring-actuator.version>
+        <pet.spring-amqp.version>3.3.8</pet.spring-amqp.version>
+        <pet.spring-batch.version>3.3.8</pet.spring-batch.version>
+        <pet.spring-data-jpa.version>3.3.8</pet.spring-data-jpa.version>
+        <pet.spring-mail.version>3.3.8</pet.spring-mail.version>
+        <pet.spring-quartz.version>3.3.8</pet.spring-quartz.version>
+        <pet.spring-security.version>3.3.8</pet.spring-security.version>
+        <pet.spring-thymeleaf.version>3.3.8</pet.spring-thymeleaf.version>
+        <pet.spring-validation.version>3.3.8</pet.spring-validation.version>
+        <pet.spring-web.version>3.3.8</pet.spring-web.version>
+        <pet.spring-retry.version>2.0.11</pet.spring-retry.version>
+        <pet.spring-hateoas.version>3.3.8</pet.spring-hateoas.version>
+        <pet.spring-mongodb.version>3.3.8</pet.spring-mongodb.version>
+        <pet.flyway.version>11.3.0</pet.flyway.version>
+        <pet.thymeleaf-security-extras.version>3.1.3.RELEASE</pet.thymeleaf-security-extras.version>
+        <pet.jwt.version>0.12.6</pet.jwt.version>
+        <pet.google-guava-core.version>33.4.0-jre</pet.google-guava-core.version>
 
-        <pet.spring-devtools.version>3.3.0</pet.spring-devtools.version>
-        <pet.spring-docker-compose.version>3.3.0</pet.spring-docker-compose.version>
-        <pet.micrometer-prometheus.version>1.13.0</pet.micrometer-prometheus.version>
-        <pet.postgresql.version>42.7.3</pet.postgresql.version>
-        <pet.spring-config-processor.version>3.3.0</pet.spring-config-processor.version>
-        <pet.lombok.version>1.18.32</pet.lombok.version>
-        <pet.spring-openapi.version>2.5.0</pet.spring-openapi.version>
-        <pet.hazelcast.version>5.4.0</pet.hazelcast.version>
+        <pet.spring-devtools.version>3.3.8</pet.spring-devtools.version>
+        <pet.spring-docker-compose.version>3.3.8</pet.spring-docker-compose.version>
+        <pet.micrometer-prometheus.version>1.14.3</pet.micrometer-prometheus.version>
+        <pet.postgresql.version>42.7.5</pet.postgresql.version>
+        <pet.spring-config-processor.version>3.3.8</pet.spring-config-processor.version>
+        <pet.lombok.version>1.18.36</pet.lombok.version>
+        <pet.spring-openapi.version>2.6.0</pet.spring-openapi.version>
+        <pet.hazelcast.version>5.5.0</pet.hazelcast.version>
         <pet.apache-commons-lang.version>3.17.0</pet.apache-commons-lang.version>
-        <pet.apache-commons-utils.version>4.4</pet.apache-commons-utils.version>
+        <pet.apache-commons-collection-utils.version>4.5.0-M3</pet.apache-commons-collection-utils.version>
 
-        <pet.spring-test.version>3.3.0</pet.spring-test.version>
-        <pet.spring-testcontainers.version>3.3.0</pet.spring-testcontainers.version>
-        <pet.spring-rabbitmq-test.version>3.1.5</pet.spring-rabbitmq-test.version>
-        <pet.spring-batch-test.version>5.1.2</pet.spring-batch-test.version>
-        <pet.spring-security-test.version>6.3.0</pet.spring-security-test.version>
+        <pet.spring-test.version>3.3.8</pet.spring-test.version>
+        <pet.spring-testcontainers.version>3.3.8</pet.spring-testcontainers.version>
+        <pet.spring-rabbitmq-test.version>3.1.8</pet.spring-rabbitmq-test.version>
+        <pet.spring-batch-test.version>5.1.3</pet.spring-batch-test.version>
+        <pet.spring-security-test.version>6.3.6</pet.spring-security-test.version>
         <pet.testcontainers-junit.version>1.19.8</pet.testcontainers-junit.version>
         <pet.testcontainers-postgresql.version>1.19.8</pet.testcontainers-postgresql.version>
         <pet.testcontainers-rabbitmq.version>1.19.8</pet.testcontainers-rabbitmq.version>
@@ -79,11 +79,11 @@
         <pet.archunit.version>1.3.0</pet.archunit.version>
         <pet.rest-assured.version>5.4.0</pet.rest-assured.version>
 
-        <pet.maven-spring-plugin.version>3.3.0</pet.maven-spring-plugin.version>
-        <pet.maven-surefire-plugin.version>3.2.5</pet.maven-surefire-plugin.version>
-        <pet.jacoco.version>0.8.11</pet.jacoco.version>
-        <pet.checkstyle-plugin.version>3.4.0</pet.checkstyle-plugin.version>
-        <pet.checkstyle.version>10.17.0</pet.checkstyle.version>
+        <pet.maven-spring-plugin.version>3.3.8</pet.maven-spring-plugin.version>
+        <pet.maven-surefire-plugin.version>3.5.2</pet.maven-surefire-plugin.version>
+        <pet.jacoco.version>0.8.12</pet.jacoco.version>
+        <pet.checkstyle-plugin.version>3.6.0</pet.checkstyle-plugin.version>
+        <pet.checkstyle.version>10.21.2</pet.checkstyle.version>
     </properties>
 
     <dependencyManagement>
@@ -254,7 +254,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
-                <version>${pet.apache-commons-utils.version}</version>
+                <version>${pet.apache-commons-collection-utils.version}</version>
             </dependency>
 
             <!-- TEST section -->

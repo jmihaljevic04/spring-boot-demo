@@ -34,19 +34,22 @@ Also, on commit set next options:
 
 ## Helpful guides
 
-When commiting use style described here: https://cbea.ms/git-commit/
+- When commiting use style described here: https://cbea.ms/git-commit/
 
-This application is developed trying to follow following document: https://12factor.net/
+- This application is developed trying to follow following document: https://12factor.net/
 
-Interesting articles about pull requests: https://medium.com/@sam-cooper/i-merge-my-own-pull-requests-3001fe247be2
+- Interesting articles about pull requests: https://medium.com/@sam-cooper/i-merge-my-own-pull-requests-3001fe247be2
 and https://medium.com/better-programming/i-review-my-own-pull-requests-83f74937ccf8
 
-Guide how to name test classes and
+- Guide how to name test classes and
 methods: https://www.codurance.com/publications/2014/12/13/naming-test-classes-and-methods <br>
 TDD methodology should be applied where possible, but not in strict mode.
 
-Why is having shared libraries (dependencies) hard to
+- Why is having shared libraries (dependencies) hard to
 maintain: https://phauer.com/2016/dont-share-libraries-among-microservices/
+
+- When updating dependency versions (Spring-related), it's useful to always check compatibility matrix.
+  Example for version 3.3.8: https://docs.spring.io/spring-boot/3.3/appendix/dependency-versions/coordinates.html
 
 ***
 
