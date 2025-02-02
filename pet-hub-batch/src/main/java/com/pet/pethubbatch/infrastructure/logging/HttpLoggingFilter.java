@@ -29,9 +29,9 @@ import java.util.regex.Pattern;
 @Component
 public class HttpLoggingFilter extends OncePerRequestFilter {
 
+    static final String LOG_ITEM_DELIMITER = ", ";
     private static final String REQUEST_ID_HEADER_KEY = "X-Request-Id";
     private static final String LOAD_BALANCER_HEADER_KEY = "X-Forwarded-For";
-    static final String LOG_ITEM_DELIMITER = ", ";
     private static final String AUTH_URL = "/auth/";
     private static final List<Pattern> SENSITIVE_DATA_PATTERNS = new ArrayList<>(3);
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("(\"password\"\\s*:\\s*\")([^\"]*)(\")");

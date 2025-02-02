@@ -3,7 +3,6 @@ package com.pet.pethubapi.domain.tvshow;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.util.StdConverter;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-@NoArgsConstructor
 public final class TvShowDTO implements Serializable {
 
     private Long id;

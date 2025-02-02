@@ -1,10 +1,8 @@
 package com.pet.pethubapi.application.auth;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public final class RegisterDTO {
 
     private String email;
