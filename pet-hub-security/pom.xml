@@ -3,11 +3,11 @@
     <parent>
         <groupId>com.pet</groupId>
         <artifactId>spring-boot-demo</artifactId>
-        <version>0.1.1-SNAPSHOT</version>
+        <version>0.2.0</version>
     </parent>
 
     <artifactId>pet-hub-security</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.2.0</version>
     <name>pet-hub-security</name>
     <description>PetHub library providing security configuration to runnable microservices.</description>
 
