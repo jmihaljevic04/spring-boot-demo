@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.pet</groupId>
         <artifactId>spring-boot-demo</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.1.0</version>
     </parent>
 
     <artifactId>pet-hub-api</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>pet-hub-api</name>
     <description>PetHub application providing API endpoints.</description>
 
     <properties>
-        <pet.rabbitmq.version>0.1.0-SNAPSHOT</pet.rabbitmq.version>
-        <pet.security.version>0.1.0-SNAPSHOT</pet.security.version>
-        <pet.logging.version>0.1.0-SNAPSHOT</pet.logging.version>
+        <pet.rabbitmq.version>0.1.0</pet.rabbitmq.version>
+        <pet.security.version>0.1.0</pet.security.version>
+        <pet.logging.version>0.1.0</pet.logging.version>
     </properties>
 
     <dependencies>
