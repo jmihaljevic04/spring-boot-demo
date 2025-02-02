@@ -4,18 +4,18 @@
     <parent>
         <groupId>com.pet</groupId>
         <artifactId>spring-boot-demo</artifactId>
-        <version>0.3.0-SNAPSHOT</version>
+        <version>0.3.0</version>
     </parent>
 
     <artifactId>pet-hub-batch</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.3.0</version>
     <name>pet-hub-batch</name>
     <description>PetHub application executing scheduled jobs.</description>
 
     <properties>
-        <pet.rabbitmq.version>0.3.0-SNAPSHOT</pet.rabbitmq.version>
-        <pet.security.version>0.3.0-SNAPSHOT</pet.security.version>
-        <pet.logging.version>0.3.0-SNAPSHOT</pet.logging.version>
+        <pet.rabbitmq.version>0.3.0</pet.rabbitmq.version>
+        <pet.security.version>0.3.0</pet.security.version>
+        <pet.logging.version>0.3.0</pet.logging.version>
     </properties>
 
     <dependencies>
