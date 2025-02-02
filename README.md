@@ -115,7 +115,7 @@ Example commands:
    utility auto-generated files
 2. next command would be `mvn release:perform` but that is still in **TODO** due to setting up artifact repository
 
-- `mvn build-helper:parse-version versions:set -DgenerateBackupPoms=false -DnewVersion=${parsedVersion.majorVersion}.${parsedVersion.nextMinorVersion}.0 versions:commit`
+- `mvn build-helper:parse-version versions:set -DgenerateBackupPoms=false -DnewVersion=${parsedVersion.majorVersion}.${parsedVersion.nextMinorVersion}.0-SNAPSHOT versions:commit`
   manually set next version for all modules, which in this case increments minor version
 
 ***

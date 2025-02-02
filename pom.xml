@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.pet</groupId>
     <artifactId>spring-boot-demo</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>spring-boot-demo</name>
     <description>Pet project as a Spring Boot demo application. This is parent project providing dependencies.</description>
