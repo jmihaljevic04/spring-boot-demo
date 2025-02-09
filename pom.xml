@@ -37,9 +37,9 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <pet.rabbitmq.version>${version}</pet.rabbitmq.version>
-        <pet.security.version>${version}</pet.security.version>
-        <pet.logging.version>${version}</pet.logging.version>
+        <pet.rabbitmq.version>${project.version}</pet.rabbitmq.version>
+        <pet.security.version>${project.version}</pet.security.version>
+        <pet.logging.version>${project.version}</pet.logging.version>
 
         <pet.spring-actuator.version>3.3.8</pet.spring-actuator.version>
         <pet.spring-amqp.version>3.3.8</pet.spring-amqp.version>
