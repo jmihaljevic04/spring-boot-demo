@@ -12,12 +12,6 @@
     <name>pet-hub-api</name>
     <description>PetHub application providing API endpoints.</description>
 
-    <properties>
-        <pet.rabbitmq.version>0.3.1-SNAPSHOT</pet.rabbitmq.version>
-        <pet.security.version>0.3.1-SNAPSHOT</pet.security.version>
-        <pet.logging.version>0.3.1-SNAPSHOT</pet.logging.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.pet</groupId>

@@ -12,7 +12,7 @@
     <version>0.3.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>spring-boot-demo</name>
-    <description>Pet project as a Spring Boot demo application. This is parent project providing dependencies.</description>
+    <description>Pet project as a Spring Boot demo application. This is parent project providing dependency definition.</description>
     <inceptionYear>2024</inceptionYear>
 
     <!-- order is important here, because it represents module build order, and libraries should be built before runnable microservices -->
@@ -36,6 +36,10 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <pet.rabbitmq.version>${version}</pet.rabbitmq.version>
+        <pet.security.version>${version}</pet.security.version>
+        <pet.logging.version>${version}</pet.logging.version>
 
         <pet.spring-actuator.version>3.3.8</pet.spring-actuator.version>
         <pet.spring-amqp.version>3.3.8</pet.spring-amqp.version>
@@ -423,8 +427,8 @@
                 </dependencies>
                 <executions>
                     <execution>
-                        <id>validate</id>
-                        <phase>validate</phase>
+                        <id>run-checkstyle</id>
+                        <phase>compile</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
