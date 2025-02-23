@@ -8,7 +8,6 @@ import com.pet.pethubapi.domain.tvshow.TvShowSearchResponse;
 import com.pet.pethubapi.interfaces.AuthenticatedUserUtils;
 import com.pet.pethubsecurity.jwt.JwtService;
 import io.restassured.RestAssured;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,6 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-@Slf4j
 @PetIntegrationTest
 class TvShowDetailsControllerShould {
 
