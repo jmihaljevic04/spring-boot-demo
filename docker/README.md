@@ -1,7 +1,13 @@
 # Docker
 
-Docker directory provides docker-compose file which is used by Spring Boot when starting via IDE, or it can be used for
-manual starting.
+For running application locally `docker-compose` file is present to run containerized integrations. If running with
+Spring command (or through IDE), containers are started automatically.
+If necessary, containers can be started with following commands (positioned in _docker_ directory):
+
+- download and start containers: `docker compose up`
+- start with downloaded containers: `docker compose start`
+- stop containers: `docker compose stop`
+- stop and remove containers and volumes: `docker compose down -v`
 
 Container _pet-hub_ contains Postgres, RabbitMQ and MongoDB with its respective configuration and health-checks.
 
