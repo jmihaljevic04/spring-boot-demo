@@ -1,5 +1,6 @@
 package com.pet.pethubapi.domain.tvshow;
 
+import com.pet.pethubapi.infrastructure.tvmaze.TvShowDetailsRepositoryRetryConfiguration;
 import org.springframework.retry.RetryException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;

@@ -1,11 +1,11 @@
-package com.pet.pethubapi.domain.tvshow;
+package com.pet.pethubapi.infrastructure.tvmaze;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-class TvShowDetailsRepositoryRetryConfiguration {
+public class TvShowDetailsRepositoryRetryConfiguration {
 
     /**
      * @return value expressed in milliseconds
