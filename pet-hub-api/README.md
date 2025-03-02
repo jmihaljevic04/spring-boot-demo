@@ -9,3 +9,6 @@ Web application providing endpoints to consumers.
     - fetching TV show by name (cached by input name)
     - fetching TV show by ID (retry mechanism - backoff)
     - fetching all TV shows with pagination
+- JsonPlaceholder API integration: https://jsonplaceholder.typicode.com/
+    - using HttpExchange interface approach
+    - using Wiremock as integration test tool

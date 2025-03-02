@@ -1,4 +1,3 @@
-# provided health checks (even though Spring Boot does its own) in favor of starting containers manually (and to have pre-condition)
 name: pet-hub
 services:
     postgres:
@@ -6,11 +5,14 @@ services:
         container_name: 'pet-postgres'
         restart: on-failure:2
         environment:
-            - 'POSTGRES_DB=pet_hub'
-            - 'POSTGRES_PASSWORD=pet-password'
-            - 'POSTGRES_USER=pet-admin'
+            POSTGRES_USER: 'pet-admin'
+            POSTGRES_PASSWORD: 'pet-password'
         ports:
             - '5432:5432'
+        volumes:
+            # scripts located in mapped directory will run automatically upon the creation of new container
+            - ./postgres:/docker-entrypoint-initdb.d
+            - postgres_data:/var/lib/postgresql/data
         healthcheck:
             test: [ "CMD-SHELL", "pg_isready -d postgres -U pet-admin" ]
             interval: 10s
@@ -47,3 +49,7 @@ services:
             interval: 10s
             timeout: 10s
             retries: 5
+
+volumes:
+    # persists Postgres data even if container is removed
+    postgres_data:

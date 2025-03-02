@@ -13,6 +13,7 @@ create table app_user
 );
 
 INSERT INTO public.app_user (email, password, first_name, last_name, created_by)
-VALUES ('admin@pethub.com', '{bcrypt}$2a$10$WO9MllE2D9Jq9xgWBdJW6u569K5Eux8Y.VOaXNxHDykYdsqYCXcpC', 'Admin', 'Admin', 'system'),
-       ('user@pethub.com', '{bcrypt}$2a$10$WEs.Ad8P7WbzGuzgJmnciO65vTuVaUjIaupC7eeMb1qtvnG7ShGkS', 'User', 'User', 'system');
+VALUES ('admin@pethub.com', '{bcrypt}$2a$10$WO9MllE2D9Jq9xgWBdJW6u569K5Eux8Y.VOaXNxHDykYdsqYCXcpC', 'Admin', 'Admin', 'system'), -- admin1!
+       ('user@pethub.com', '{bcrypt}$2a$10$WEs.Ad8P7WbzGuzgJmnciO65vTuVaUjIaupC7eeMb1qtvnG7ShGkS', 'User', 'User', 'system') -- user1!
+;
 

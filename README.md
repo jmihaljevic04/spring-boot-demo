@@ -178,12 +178,6 @@ executable _jars_.
 For instance, first one serves API endpoints and can be easily scaled based on incoming load, while second one is
 responsible for handling scheduled jobs, which may be "heavy" but won't impact API performance.
 
-In real microservice architecture, these should have two separate databases (Database per Service pattern), but since
-this is example application due to simplicity they will share it (one example is sync between entities on DB).
-In production environment this will also work with right configuration.
-What we need to keep on mind is database migrations, because they will be executed on shared database by first
-microservice which will start.
-
 Another advantage of splitting is splitting dependencies. For example, `api` microservice doesn't need to have
 dependency for _spring-batch_.
 
