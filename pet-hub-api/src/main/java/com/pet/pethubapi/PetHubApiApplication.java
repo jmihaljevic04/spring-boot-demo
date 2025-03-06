@@ -15,7 +15,7 @@ import java.net.InetAddress;
 @EnableScheduling
 @EnableCaching
 @EnableRetry
-@SpringBootApplication(scanBasePackages = {"com.pet.pethubapi", "com.pet.pethubrabbitmq", "com.pet.pethubsecurity"})
+@SpringBootApplication(scanBasePackages = {"com.pet.pethubapi", "com.pet.pethubrabbitmq", "com.pet.pethubsecurity", "com.pet.pethublogging"})
 public class PetHubApiApplication {
 
     public static void main(String[] args) {
