@@ -19,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class RestoreDatabaseCallback implements AfterAllCallback {
 
     @Override
-    public void afterAll(ExtensionContext extensionContext) throws Exception {
+    public void afterAll(ExtensionContext extensionContext) {
         final var flyway = SpringExtension.getApplicationContext(extensionContext).getBean(Flyway.class);
 
         log.info("Cleaning up database and execution migrations...");

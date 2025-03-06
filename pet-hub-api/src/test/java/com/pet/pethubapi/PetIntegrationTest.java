@@ -1,6 +1,7 @@
 package com.pet.pethubapi;
 
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -20,6 +21,7 @@ import java.lang.annotation.Target;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ContextConfiguration(classes = TestcontainersConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ExtendWith(ShutdownHazelcastCallback.class)
 public @interface PetIntegrationTest {
 
 }
