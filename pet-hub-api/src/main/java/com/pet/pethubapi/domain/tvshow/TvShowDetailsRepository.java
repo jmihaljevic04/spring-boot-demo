@@ -1,6 +1,5 @@
 package com.pet.pethubapi.domain.tvshow;
 
-import com.pet.pethubapi.infrastructure.tvmaze.TvShowDetailsRepositoryRetryConfiguration;
 import org.springframework.retry.RetryException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
@@ -22,7 +21,7 @@ public interface TvShowDetailsRepository {
      * Retryable method, retrying API call on all 4XX & 5XX status codes (including timeout exceptions).
      * Backoff configuration defined in separate class.
      *
-     * @see TvShowDetailsRepositoryRetryConfiguration
+     * @see com.pet.pethubapi.infrastructure.tvmaze.TvShowDetailsRepositoryRetryConfiguration
      */
     @Retryable(retryFor = RetryException.class,
         maxAttempts = 4,

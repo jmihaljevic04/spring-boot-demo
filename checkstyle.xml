@@ -22,7 +22,9 @@
     </module>
     <module name="UniqueProperties"/>
 
+    <module name="SuppressWarningsFilter"/>
     <module name="TreeWalker">
+        <module name="SuppressWarningsHolder"/>
         <module name="AbbreviationAsWordInName"/>
         <module name="AnnotationLocation"/>
         <module name="AnnotationUseStyle"/>

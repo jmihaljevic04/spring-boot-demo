@@ -30,6 +30,7 @@ class SecurityConfiguration {
 
     private final JwtService jwtService;
 
+    @SuppressWarnings("checkstyle:LambdaBodyLength")
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
