@@ -4,6 +4,11 @@ This is a Spring Boot demo application, made as a pet project, displaying some o
 web application within Spring framework. It consists of REST APIs secured by JWT, batch scheduled jobs, sending emails,
 cache and much more.
 
+User credentials:
+
+- admin: admin@pethub.com / admin1!
+- user: user@pethub.com / user1!
+
 ***
 
 ## Prerequisites
