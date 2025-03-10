@@ -3,7 +3,7 @@ hazelcast:
         hazelcast.merge.first.run.delay.seconds: 60
         hazelcast.health.monitoring.threshold.cpu.percentage: 90
         hazelcast.health.monitoring.threshold.memory.percentage: 90
-    cluster-name: pet-hub-api-dev
+    cluster-name: pet-hub-dev
     network:
         port:
             auto-increment: true
