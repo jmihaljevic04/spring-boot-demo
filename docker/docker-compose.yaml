@@ -5,6 +5,7 @@ services:
         container_name: 'pet-postgres'
         restart: on-failure:2
         environment:
+            POSTGRES_DB: 'postgres'
             POSTGRES_USER: 'pet-admin'
             POSTGRES_PASSWORD: 'pet-password'
         ports:
