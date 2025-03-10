@@ -13,7 +13,7 @@ import java.net.InetAddress;
 @Slf4j
 @EnableScheduling
 @EnableCaching
-@SpringBootApplication(scanBasePackages = {"com.pet.pethubbatch", "com.pet.pethubrabbitmq", "com.pet.pethubsecurity", "com.pet.pethublogging"})
+@SpringBootApplication
 public class PetHubBatchApplication {
 
     public static void main(String[] args) {

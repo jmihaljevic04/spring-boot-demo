@@ -17,7 +17,7 @@ Installation:
 
 - NodeJS
 - Git
-- Docker
+- Docker (latest)
 - Java 21
 - IDE (instructions are based on IntelliJ IDEA)
 
@@ -44,14 +44,14 @@ Also, on commit set next options:
 - This application is developed trying to follow following document: https://12factor.net/
 
 - Interesting articles about pull requests: https://medium.com/@sam-cooper/i-merge-my-own-pull-requests-3001fe247be2
-and https://medium.com/better-programming/i-review-my-own-pull-requests-83f74937ccf8
+  and https://medium.com/better-programming/i-review-my-own-pull-requests-83f74937ccf8
 
 - Guide how to name test classes and
-methods: https://www.codurance.com/publications/2014/12/13/naming-test-classes-and-methods <br>
-TDD methodology should be applied where possible, but not in strict mode.
+  methods: https://www.codurance.com/publications/2014/12/13/naming-test-classes-and-methods <br>
+  TDD methodology should be applied where possible, but not in strict mode.
 
 - Why is having shared libraries (dependencies) hard to
-maintain: https://phauer.com/2016/dont-share-libraries-among-microservices/
+  maintain: https://phauer.com/2016/dont-share-libraries-among-microservices/
 
 - When updating dependency versions (Spring-related), it's useful to always check compatibility matrix.
   Example for version 3.3.8: https://docs.spring.io/spring-boot/3.3/appendix/dependency-versions/coordinates.html
@@ -74,7 +74,6 @@ required.
 With this approach, it is easier to do hotfixes (create hotfix branch from appropriate environment, often production and
 _main_ branch), keep track of deployed releases and working on next release simultaneously, troubleshoot issues on
 specific environment (check-out branch/release and run it locally).
-
 
 When releasing new version, _SNAPSHOT_ suffix is removed and _develop_ branch is merged into _release_ branch. When
 deploying said release to production, nothing is changed and no artifacts are being built. It reuses built artifact for
@@ -186,17 +185,22 @@ responsible for handling scheduled jobs, which may be "heavy" but won't impact A
 Another advantage of splitting is splitting dependencies. For example, `api` microservice doesn't need to have
 dependency for _spring-batch_.
 
-Regarding dependencies, common approach is to have `common`, `shared` or some similarly named _jar_ which is used in
-both microservices (but is not application by itself), and provides shared dependencies, domain classes, utilities etc.
-Although it simplifies development and remove need for most of the duplication, it just hides another dependency which
-has
-to be maintained and is weak point for both microservices. Some examples are:
+Regarding dependencies, common approach is to have `common`, `shared` or some similarly named library (_jar_) which is
+used in both microservices (but is not a runnable application by itself), and provides shared dependencies, domain
+classes, utilities etc.
+Although it simplifies development and removes need for most of the duplication, it just hides another dependency which
+has to be maintained and is weak point for both microservices. Some examples are:
 
 - changes made in common module require redeploy of both microservices (tightly coupled)
-- in time combined with poor decisions, becomes cluttered with a bunch of logic
+- over time, combined with poor decisions, becomes cluttered with a bunch of logic
 - often hides need for extracting logic to another application (microservice)
 - if used by someone outside of this project (shared utilities on org level), provides transitive dependencies (which
   are often not handled properly) and discourages people on making changes due to many unknowns
+
+If there is need for shared libraries, they in most cases should be handling cross-cutting concerns shared between all
+runnable microservices, and should contain the least amount of logic necessary. For example, if we have microservice
+which connects to Elasticsearch, and it provides that functionality to all others, that library should contain only
+specifics regarding integrating with ES, and basic queries.
 
 ### Communication between microservices
 
@@ -234,6 +238,14 @@ Project is using default naming schema for Flyway migrations: `Vx.x__migration-d
 First version represents major project version and should be in sync. So, it can be said that migrations are grouped by
 major project version.
 Second version is plain iterating number of migration.
+
+### Internal library autoconfiguration
+
+Non-runnable microservices (libraries) are set up in a way that they are automatically available to runnable
+microservice as soon as it is defined as dependency. It is done via META-INF directory in which autoconfiguration class
+is defined. That class must be located in the root package of library. Following this approach, there is no need for
+importing configurations in owning microservice, using `@EntityScan`, `@ComponentScan` or `@Enable*Repositories` with
+hardcoded package names.
 
 ### OpenAPI (Swagger)
 
