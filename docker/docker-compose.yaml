@@ -45,6 +45,9 @@ services:
             MONGO_INITDB_DATABASE: 'petHub'
         ports:
             - '27017:27017'
+        volumes:
+            # scripts located in mapped directory will run automatically upon the creation of new container
+            - ./mongodb:/docker-entrypoint-initdb.d
         healthcheck:
             test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
             interval: 10s
