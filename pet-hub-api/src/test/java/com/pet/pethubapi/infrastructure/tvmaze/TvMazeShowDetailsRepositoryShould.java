@@ -92,7 +92,7 @@ class TvMazeShowDetailsRepositoryShould {
             .andExpect(header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
             .andExpect(header(HttpHeaders.CACHE_CONTROL, CacheControl.noCache().getHeaderValue()))
             .andExpect(header(HttpHeaders.FROM, appName))
-            .andRespond(withSuccess(ObjectMapperUtils.toJsonString(List.of(mockedResponseBody)), MediaType.APPLICATION_JSON));
+            .andRespond(withSuccess(ObjectMapperUtils.writeJson(List.of(mockedResponseBody)), MediaType.APPLICATION_JSON));
 
         var result = showDetailsRepository.getAllShows(2);
 
@@ -111,7 +111,7 @@ class TvMazeShowDetailsRepositoryShould {
             .andExpect(header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
             .andExpect(header(HttpHeaders.CACHE_CONTROL, CacheControl.noCache().getHeaderValue()))
             .andExpect(header(HttpHeaders.FROM, appName))
-            .andRespond(withSuccess(ObjectMapperUtils.toJsonString(List.of()), MediaType.APPLICATION_JSON));
+            .andRespond(withSuccess(ObjectMapperUtils.writeJson(List.of()), MediaType.APPLICATION_JSON));
 
         var result = showDetailsRepository.getAllShows(1);
 
@@ -152,7 +152,7 @@ class TvMazeShowDetailsRepositoryShould {
             .andExpect(header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
             .andExpect(header(HttpHeaders.CACHE_CONTROL, CacheControl.noCache().getHeaderValue()))
             .andExpect(header(HttpHeaders.FROM, appName))
-            .andRespond(withRawStatus(400).body(ObjectMapperUtils.toJsonString(tvMazeErrorResponse)));
+            .andRespond(withRawStatus(400).body(ObjectMapperUtils.writeJson(tvMazeErrorResponse)));
 
         assertThatThrownBy(() -> showDetailsRepository.getAllShows(1))
             .isInstanceOf(TvMazeIntegrationException.class)
@@ -179,7 +179,7 @@ class TvMazeShowDetailsRepositoryShould {
             .andExpect(header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
             .andExpect(header(HttpHeaders.CACHE_CONTROL, CacheControl.noCache().getHeaderValue()))
             .andExpect(header(HttpHeaders.FROM, appName))
-            .andRespond(withSuccess(ObjectMapperUtils.toJsonString(List.of(mockedResponseBody)), MediaType.APPLICATION_JSON));
+            .andRespond(withSuccess(ObjectMapperUtils.writeJson(List.of(mockedResponseBody)), MediaType.APPLICATION_JSON));
 
         var result = showDetailsRepository.getShowDetailsByName("Sopranos");
 
@@ -205,7 +205,7 @@ class TvMazeShowDetailsRepositoryShould {
             .andExpect(header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
             .andExpect(header(HttpHeaders.CACHE_CONTROL, CacheControl.noCache().getHeaderValue()))
             .andExpect(header(HttpHeaders.FROM, appName))
-            .andRespond(withSuccess(ObjectMapperUtils.toJsonString(List.of(mockedResponseBody)), MediaType.APPLICATION_JSON));
+            .andRespond(withSuccess(ObjectMapperUtils.writeJson(List.of(mockedResponseBody)), MediaType.APPLICATION_JSON));
 
         assertThat(cacheManager.getCache(SHOW_DETAILS_BY_NAME_CACHE).get("Sopranos")).isNull();
 
@@ -229,7 +229,7 @@ class TvMazeShowDetailsRepositoryShould {
             .andExpect(header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
             .andExpect(header(HttpHeaders.CACHE_CONTROL, CacheControl.noCache().getHeaderValue()))
             .andExpect(header(HttpHeaders.FROM, appName))
-            .andRespond(withSuccess(ObjectMapperUtils.toJsonString(List.of()), MediaType.APPLICATION_JSON));
+            .andRespond(withSuccess(ObjectMapperUtils.writeJson(List.of()), MediaType.APPLICATION_JSON));
 
         var result = showDetailsRepository.getShowDetailsByName("Sopranos");
 
@@ -271,7 +271,7 @@ class TvMazeShowDetailsRepositoryShould {
             .andExpect(header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
             .andExpect(header(HttpHeaders.CACHE_CONTROL, CacheControl.noCache().getHeaderValue()))
             .andExpect(header(HttpHeaders.FROM, appName))
-            .andRespond(withRawStatus(400).body(ObjectMapperUtils.toJsonString(tvMazeErrorResponse)));
+            .andRespond(withRawStatus(400).body(ObjectMapperUtils.writeJson(tvMazeErrorResponse)));
 
         assertThatThrownBy(() -> showDetailsRepository.getShowDetailsByName("Sopranos"))
             .isInstanceOf(TvMazeIntegrationException.class)
@@ -295,7 +295,7 @@ class TvMazeShowDetailsRepositoryShould {
             .andExpect(header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
             .andExpect(header(HttpHeaders.CACHE_CONTROL, CacheControl.noCache().getHeaderValue()))
             .andExpect(header(HttpHeaders.FROM, appName))
-            .andRespond(withSuccess(ObjectMapperUtils.toJsonString(mockedResponseBody), MediaType.APPLICATION_JSON));
+            .andRespond(withSuccess(ObjectMapperUtils.writeJson(mockedResponseBody), MediaType.APPLICATION_JSON));
 
         var result = showDetailsRepository.getShowDetailsById(1L);
 
