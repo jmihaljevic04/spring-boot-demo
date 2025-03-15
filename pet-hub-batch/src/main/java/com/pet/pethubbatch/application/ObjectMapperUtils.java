@@ -1,12 +1,9 @@
-package com.pet.pethubapi.application;
+package com.pet.pethubbatch.application;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public final class ObjectMapperUtils {
 
@@ -30,10 +27,10 @@ public final class ObjectMapperUtils {
         }
     }
 
-    public static <T> T readJson(final InputStream inputStream, final Class<T> clazz) {
+    public static <T> T readJson(final String jsonString, final Class<T> clazz) {
         try {
-            return OBJECT_MAPPER.readValue(inputStream, clazz);
-        } catch (IOException e) {
+            return OBJECT_MAPPER.readValue(jsonString, clazz);
+        } catch (JsonProcessingException e) {
             throw new InvalidJsonProcessingException(e);
         }
     }

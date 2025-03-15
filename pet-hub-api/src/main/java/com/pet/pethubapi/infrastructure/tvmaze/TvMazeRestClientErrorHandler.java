@@ -30,7 +30,7 @@ class TvMazeRestClientErrorHandler implements ResponseErrorHandler {
             throw new TvMazeIntegrationException("TVMaze API responded with too many requests. Requests for next " + tvMazeRateLimit + " seconds will be ignored!");
         }
 
-        final var errorResponseBody = ObjectMapperUtils.OBJECT_MAPPER.readValue(response.getBody(), TvMazeErrorResponse.class);
+        final var errorResponseBody = ObjectMapperUtils.readJson(response.getBody(), TvMazeErrorResponse.class);
         throw new TvMazeIntegrationException("Error when calling TvMaze API with HTTP status code: " + response.getStatusCode().value() + " and message: '" + errorResponseBody.getMessage() + "'!");
     }
 
