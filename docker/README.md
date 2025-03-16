@@ -24,6 +24,10 @@ MongoDB container has additional init script which adds created user to newly cr
 (not added by default; added in 'admin' DB), and initializes newly created database
 (database only created upon first insert).
 
+## Updating versions
+
+When updating image versions, also update them in Testcontainers configuration class.
+
 ## Spring Boot Docker Compose
 
 Spring Boot 3 introduced integration with Docker Compose to automate firing up Docker containers,

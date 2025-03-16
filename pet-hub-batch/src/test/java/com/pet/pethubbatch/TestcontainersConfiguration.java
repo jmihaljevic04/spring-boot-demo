@@ -15,7 +15,7 @@ class TestcontainersConfiguration {
     @Bean
     @ServiceConnection
     PostgreSQLContainer<?> postgresContainer() {
-        return new PostgreSQLContainer<>("postgres:16.3-alpine")
+        return new PostgreSQLContainer<>("postgres:17.4-alpine")
             .withDatabaseName("pet_hub_batch_test")
             .withReuse(true);
     }
