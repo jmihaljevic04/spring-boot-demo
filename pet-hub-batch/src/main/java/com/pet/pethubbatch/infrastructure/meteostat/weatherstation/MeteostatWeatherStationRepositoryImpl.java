@@ -24,7 +24,7 @@ class MeteostatWeatherStationRepositoryImpl implements MeteostatWeatherStationRe
     private final RestClient meteostatRestClient;
 
     @Override
-    public Path downloadImportFile() {
+    public Path downloadImportFile() throws MeteostatIntegrationException {
         try {
             final var downloadedFile = Files.createTempFile("weather-station-import-" + LocalDateTime.now(), ".json");
 
@@ -43,7 +43,9 @@ class MeteostatWeatherStationRepositoryImpl implements MeteostatWeatherStationRe
                 return downloadedFile;
             }
         } catch (IOException e) {
-            throw new MeteostatIntegrationException("Unable to download and extract weather station import file!", e);
+            throw new MeteostatIntegrationException("Unable to read or transform weather station import file!", e);
+        } catch (Exception e) {
+            throw new MeteostatIntegrationException("Unable to download weather station import!", e);
         }
     }
 
