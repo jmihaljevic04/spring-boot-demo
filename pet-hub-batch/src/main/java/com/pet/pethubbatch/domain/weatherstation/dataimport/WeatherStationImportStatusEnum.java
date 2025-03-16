@@ -11,7 +11,8 @@ public enum WeatherStationImportStatusEnum {
     STARTED(2, "started by scheduler"),
     IN_PROGRESS(3, "in progress"),
     COMPLETED(4, "successfully completed"),
-    FAILED(5, "failed");
+    FAILED(5, "failed"),
+    SKIPPED(6, "skipped due to no changes");
 
     private final Integer id;
     private final String description;
