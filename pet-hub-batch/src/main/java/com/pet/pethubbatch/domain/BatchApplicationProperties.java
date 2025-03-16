@@ -22,6 +22,16 @@ public class BatchApplicationProperties {
     public static final class MeteostatProperties {
 
         private String baseUrl;
+        private WeatherStationProperties weatherStation = new WeatherStationProperties();
+
+        @Getter
+        @Setter(AccessLevel.PACKAGE)
+        public static final class WeatherStationProperties {
+
+            private Boolean scheduledImportEnabled;
+            private String scheduledImportCron;
+
+        }
 
     }
 

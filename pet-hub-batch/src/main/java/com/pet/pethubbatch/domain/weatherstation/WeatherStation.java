@@ -2,6 +2,7 @@ package com.pet.pethubbatch.domain.weatherstation;
 
 import com.pet.pethubbatch.domain.BaseEntity;
 import com.pet.pethubbatch.domain.country.Country;
+import com.pet.pethubbatch.domain.weatherstation.dataimport.WeatherStationImport;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,9 +13,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "weather_station")
@@ -48,5 +53,9 @@ public class WeatherStation extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_code", referencedColumnName = "alpha_2_code")
     private Country country;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "import_id", referencedColumnName = "id")
+    private WeatherStationImport weatherStationImport;
 
 }
