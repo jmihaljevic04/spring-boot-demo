@@ -5,6 +5,12 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Data;
 import lombok.Getter;
 
+/**
+ * Used for flattening response structure from Meteostat.
+ * Property names <b>must not</b> be changed because they are tightly coupled with Meteostat and with SQL procedure importing weather stations.
+ *
+ * @see com.pet.pethubbatch.domain.weatherstation.dataimport.WeatherStationStaging
+ */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MeteostatWeatherStationDTO {
