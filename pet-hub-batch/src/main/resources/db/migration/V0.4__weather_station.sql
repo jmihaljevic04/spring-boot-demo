@@ -9,7 +9,8 @@ values (1, 'REQUESTED'),
        (2, 'STARTED'),
        (3, 'IN_PROGRESS'),
        (4, 'COMPLETED'),
-       (5, 'FAILED');
+       (5, 'FAILED'),
+       (6, 'SKIPPED');
 
 create table weather_station_import
 (
