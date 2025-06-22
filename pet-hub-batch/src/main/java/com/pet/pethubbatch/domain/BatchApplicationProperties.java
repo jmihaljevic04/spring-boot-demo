@@ -30,6 +30,7 @@ public class BatchApplicationProperties {
 
             private Boolean scheduledImportEnabled;
             private String scheduledImportCron;
+            private int importBatchSize;
 
         }
 

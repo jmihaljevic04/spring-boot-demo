@@ -9,4 +9,8 @@ public class InvalidWeatherStationImportActionException extends RuntimeException
         throw new ResponseStatusException(httpStatus, message);
     }
 
+    public InvalidWeatherStationImportActionException(String message, Exception e) {
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message, e);
+    }
+
 }

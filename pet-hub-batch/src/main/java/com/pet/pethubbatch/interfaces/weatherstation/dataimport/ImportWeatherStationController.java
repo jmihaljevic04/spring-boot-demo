@@ -1,5 +1,6 @@
 package com.pet.pethubbatch.interfaces.weatherstation.dataimport;
 
+import com.pet.pethubbatch.application.weatherstation.dataimport.ImportWeatherStationFacade;
 import com.pet.pethubbatch.application.weatherstation.dataimport.ImportWeatherStationService;
 import com.pet.pethubbatch.domain.weatherstation.dataimport.WeatherStationImportDTO;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 class ImportWeatherStationController {
 
     private final ImportWeatherStationService importWeatherStationService;
+    private final ImportWeatherStationFacade importWeatherStationFacade;
 
     @GetMapping(value = "/import", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WeatherStationImportTriggerResponse> importWeatherStations() {
@@ -29,6 +31,7 @@ class ImportWeatherStationController {
             status = "NOOP";
         } else {
             status = "Import started successfully!";
+            importWeatherStationFacade.importWeatherStations(importId);
         }
 
         final var responseBody = new WeatherStationImportTriggerResponse(importId, status);

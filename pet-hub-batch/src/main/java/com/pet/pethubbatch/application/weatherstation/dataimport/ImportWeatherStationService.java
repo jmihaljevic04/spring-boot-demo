@@ -6,6 +6,8 @@ public interface ImportWeatherStationService {
 
     Long NOOP_IMPORT_ID = -1L;
 
+    WeatherStationImportDTO getImportStatus(Long importId);
+
     /**
      * Trigger asynchronous import of weather stations. No-op if scheduled import is enabled or in progress.
      *
@@ -13,6 +15,10 @@ public interface ImportWeatherStationService {
      */
     Long triggerImport();
 
-    WeatherStationImportDTO getImportStatus(Long importId);
+    void startImport(Long importId);
+
+    void insertImportFile(Long importId);
+
+    void importWeatherStations(Long importId);
 
 }

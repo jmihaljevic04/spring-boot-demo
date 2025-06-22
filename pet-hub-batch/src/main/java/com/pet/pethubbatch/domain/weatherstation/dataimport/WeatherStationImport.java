@@ -22,13 +22,19 @@ import java.time.LocalDateTime;
 @Table(name = "weather_station_import")
 public class WeatherStationImport {
 
+    public static final int DESCRIPTION_LENGTH = 1000;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Setter
+    @Column(name = "file_path")
+    private String filePath;
+
+    @Setter
     @Column(name = "file_hash")
-    private Integer importFileHash;
+    private String fileHash;
 
     @Column(name = "requested_at")
     private LocalDateTime requestedAt;
@@ -47,7 +53,7 @@ public class WeatherStationImport {
     private LocalDateTime finishedAt;
 
     @Setter
-    @Column(name = "status_description", length = 1000)
+    @Column(name = "status_description", length = DESCRIPTION_LENGTH)
     private String statusDescription;
 
     @Setter

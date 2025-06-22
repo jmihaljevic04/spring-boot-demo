@@ -16,7 +16,7 @@ begin
            jdata.elevation,
            importId
     from (select jt.*
-          from json_table((select data from weather_station_json_temp),
+          from json_table((select file_content from weather_station_json_temp),
                           '$[*]' columns (external_id text path '$.id',
                               name text path '$.name',
                               country text path '$.country',
