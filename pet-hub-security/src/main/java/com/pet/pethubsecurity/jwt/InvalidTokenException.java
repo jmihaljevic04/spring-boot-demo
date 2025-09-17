@@ -1,4 +1,4 @@
-package com.pet.pethubsecurity;
+package com.pet.pethubsecurity.jwt;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

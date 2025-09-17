@@ -1,6 +1,6 @@
-package com.pet.pethubapi.application.auth;
+package com.pet.pethubsecurity.auth;
 
-import com.pet.pethubsecurity.JWTResponse;
+import com.pet.pethubsecurity.jwt.JWTResponse;
 
 public interface AuthenticationService {
 

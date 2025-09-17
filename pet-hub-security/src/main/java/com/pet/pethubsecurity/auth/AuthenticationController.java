@@ -1,9 +1,6 @@
-package com.pet.pethubapi.interfaces.auth;
+package com.pet.pethubsecurity.auth;
 
-import com.pet.pethubapi.application.auth.AuthenticationService;
-import com.pet.pethubapi.application.auth.LoginDTO;
-import com.pet.pethubapi.application.auth.RegisterDTO;
-import com.pet.pethubsecurity.JWTResponse;
+import com.pet.pethubsecurity.jwt.JWTResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

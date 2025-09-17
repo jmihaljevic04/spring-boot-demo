@@ -1,10 +1,10 @@
-package com.pet.pethubapi.application.auth;
+package com.pet.pethubsecurity.auth;
 
-import com.pet.pethubsecurity.JWTResponse;
 import com.pet.pethubsecurity.domain.role.Role;
 import com.pet.pethubsecurity.domain.role.RoleEnum;
 import com.pet.pethubsecurity.domain.user.User;
 import com.pet.pethubsecurity.domain.user.UserRepository;
+import com.pet.pethubsecurity.jwt.JWTResponse;
 import com.pet.pethubsecurity.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

@@ -1,13 +1,12 @@
 package com.pet.pethubapi.interfaces.auth;
 
 import com.pet.pethubapi.PetIntegrationTest;
-import com.pet.pethubapi.application.auth.AuthenticationService;
-import com.pet.pethubapi.application.auth.InvalidAuthenticationException;
-import com.pet.pethubapi.application.auth.LoginDTO;
-import com.pet.pethubapi.application.auth.RegisterDTO;
-import com.pet.pethubsecurity.JWTResponse;
+import com.pet.pethubsecurity.auth.AuthenticationService;
+import com.pet.pethubsecurity.auth.InvalidAuthenticationException;
+import com.pet.pethubsecurity.auth.LoginDTO;
+import com.pet.pethubsecurity.auth.RegisterDTO;
+import com.pet.pethubsecurity.jwt.JWTResponse;
 import io.restassured.RestAssured;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-@Slf4j
+// TODO: migrate to security library
 @PetIntegrationTest
 class AuthenticationControllerShould {
 

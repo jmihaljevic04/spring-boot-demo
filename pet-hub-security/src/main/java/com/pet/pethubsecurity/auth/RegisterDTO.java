@@ -1,4 +1,4 @@
-package com.pet.pethubapi.application.auth;
+package com.pet.pethubsecurity.auth;
 
 import lombok.Data;
 

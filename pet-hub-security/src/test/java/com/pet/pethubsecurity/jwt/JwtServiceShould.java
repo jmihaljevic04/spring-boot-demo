@@ -1,6 +1,5 @@
 package com.pet.pethubsecurity.jwt;
 
-import com.pet.pethubsecurity.InvalidTokenException;
 import com.pet.pethubsecurity.config.JwtProperties;
 import com.pet.pethubsecurity.domain.role.Role;
 import io.jsonwebtoken.Jwts;

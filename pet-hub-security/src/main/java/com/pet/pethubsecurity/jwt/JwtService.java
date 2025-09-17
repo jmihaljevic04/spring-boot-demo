@@ -1,6 +1,5 @@
 package com.pet.pethubsecurity.jwt;
 
-import com.pet.pethubsecurity.JWTResponse;
 import com.pet.pethubsecurity.domain.role.Role;
 
 import java.util.Set;
