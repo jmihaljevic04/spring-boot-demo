@@ -254,7 +254,7 @@ existing user (authentication is required).
 
 ### Actuator
 
-Actuator has four endpoint categories enabled (which are accessible only by admin role):
+Actuator has multiple endpoint categories enabled (which are accessible only by admin role):
 
 - health API app: _localhost:8080/api/actuator/health/pet-hub-api_ (available for unauthenticated requests also)
 - health BATCH app: _localhost:8081/api/batch/actuator/health/pet-hub-batch_ (available for unauthenticated requests
@@ -262,9 +262,11 @@ Actuator has four endpoint categories enabled (which are accessible only by admi
 - info: _localhost:8080/api/actuator/info_
 - metrics: _localhost:8080/api/actuator/metrics_
 - Prometheus-formatted metrics: _localhost:8080/api/actuator/prometheus_
+- thread dump: _localhost:8080/api/actuator/threaddump_
+- heap dump: _localhost:8080/api/actuator/heapdump_
 
-Besides those four, Actuator also provides basic liveness and readiness probes within _/health_ endpoint (which are not
-protected by authentication).
+Besides those listed, Actuator also provides basic liveness and readiness probes within _/health_ endpoint
+(which are not protected by authentication).
 
 ### Testcontainers
 
