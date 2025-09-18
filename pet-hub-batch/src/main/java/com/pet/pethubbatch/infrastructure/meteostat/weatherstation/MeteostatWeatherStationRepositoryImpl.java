@@ -27,6 +27,8 @@ import java.util.zip.GZIPInputStream;
 @RequiredArgsConstructor
 class MeteostatWeatherStationRepositoryImpl implements MeteostatWeatherStationRepository {
 
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH.mm.ss");
+
     private final RestClient meteostatRestClient;
 
     @NonNull
@@ -34,7 +36,7 @@ class MeteostatWeatherStationRepositoryImpl implements MeteostatWeatherStationRe
     public Path downloadImportFile() throws MeteostatIntegrationException {
         try {
             final var downloadedFile = Files
-                .createTempFile(IMPORT_FILE_PREFIX + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), ".json");
+                .createTempFile(IMPORT_FILE_PREFIX + LocalDateTime.now().format(FORMATTER), ".json");
 
             try (var response = meteostatRestClient.get().uri("/stations/lite.json.gz").retrieve().body(InputStream.class);
                  var gzipInputStream = new GZIPInputStream(response);
