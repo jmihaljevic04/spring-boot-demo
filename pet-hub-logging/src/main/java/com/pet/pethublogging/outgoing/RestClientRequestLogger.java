@@ -1,6 +1,6 @@
 package com.pet.pethublogging.outgoing;
 
-import com.pet.pethublogging.incoming.HttpLoggingFilter;
+import com.pet.pethublogging.HttpLoggingUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
@@ -22,7 +23,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
-import static com.pet.pethublogging.incoming.HttpLoggingFilter.LOG_ITEM_DELIMITER;
+import static com.pet.pethublogging.HttpLoggingUtils.LOG_ITEM_DELIMITER;
 
 @Slf4j(topic = "audit-logger")
 @Component
@@ -36,29 +37,30 @@ public class RestClientRequestLogger implements ClientHttpRequestInterceptor {
         final var requestId = UUID.randomUUID().toString();
         final var startTime = Instant.now();
 
-        logRequest(body, requestId, requestUri, httpMethod);
+        logRequest(body, requestId, requestUri, httpMethod, request.getHeaders().getContentType());
 
         final ClientHttpResponse response = execution.execute(request, body);
 
         final byte[] responseBody = response.getBody().readAllBytes();
-        logResponse(response.getStatusCode().value(), responseBody, requestId, requestUri, httpMethod, startTime);
+        logResponse(response.getStatusCode().value(), responseBody, response.getHeaders().getContentType(), requestId, requestUri, httpMethod,
+            startTime);
 
         return new BufferingClientHttpResponseWrapper(response, responseBody);
     }
 
-    private void logRequest(byte[] body, String requestId, String requestUri, HttpMethod httpMethod) {
+    private static void logRequest(byte[] body, String requestId, String requestUri, HttpMethod httpMethod, MediaType mediaType) {
         final var requestSb = new StringBuilder();
         requestSb
             .append("EXTERNAL HTTP ").append(httpMethod.name()).append(" request :: ")
             .append("Request ID: ").append(requestId).append(LOG_ITEM_DELIMITER)
             .append("Request URI: ").append(requestUri);
 
-        if (HttpLoggingFilter.shouldLogRequestBody(httpMethod.name())) {
+        if (HttpLoggingUtils.shouldLogRequestBody(httpMethod.name(), mediaType)) {
             final var requestBody = new String(body, StandardCharsets.UTF_8);
             if (StringUtils.isEmpty(requestBody)) {
                 requestSb.append(LOG_ITEM_DELIMITER).append("Request body is empty");
             } else {
-                requestSb.append(LOG_ITEM_DELIMITER).append("Request body: ").append(HttpLoggingFilter.normalizeBody(requestBody));
+                requestSb.append(LOG_ITEM_DELIMITER).append("Request body: ").append(HttpLoggingUtils.normalizeBody(requestBody));
             }
         }
 
@@ -67,6 +69,7 @@ public class RestClientRequestLogger implements ClientHttpRequestInterceptor {
 
     private static void logResponse(int responseStatus,
                                     byte[] responseBody,
+                                    MediaType contentType,
                                     String requestId,
                                     String requestUri,
                                     HttpMethod httpMethod,
@@ -80,12 +83,14 @@ public class RestClientRequestLogger implements ClientHttpRequestInterceptor {
             .append("Duration: ").append(duration).append("ms").append(LOG_ITEM_DELIMITER)
             .append("Response status: ").append(responseStatus).append(LOG_ITEM_DELIMITER);
 
-        if (ArrayUtils.isEmpty(responseBody)) {
-            responseSb.append("Response body is empty");
-        } else {
-            final var stringifyBody = new String(responseBody, StandardCharsets.UTF_8);
-            final var normalizedResponseBody = HttpLoggingFilter.normalizeBody(stringifyBody);
-            responseSb.append("Response body: ").append(normalizedResponseBody);
+        if (HttpLoggingUtils.shouldLogResponseBody(contentType)) {
+            if (ArrayUtils.isEmpty(responseBody)) {
+                responseSb.append("Response body is empty");
+            } else {
+                final var stringifyBody = new String(responseBody, StandardCharsets.UTF_8);
+                final var normalizedResponseBody = HttpLoggingUtils.normalizeBody(stringifyBody);
+                responseSb.append("Response body: ").append(normalizedResponseBody);
+            }
         }
 
         log.info(responseSb.toString());

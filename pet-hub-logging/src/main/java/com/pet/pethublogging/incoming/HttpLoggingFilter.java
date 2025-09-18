@@ -1,5 +1,6 @@
 package com.pet.pethublogging.incoming;
 
+import com.pet.pethublogging.HttpLoggingUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -7,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
-import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -25,11 +25,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import static com.pet.pethublogging.HttpLoggingUtils.LOG_ITEM_DELIMITER;
+
 @Slf4j(topic = "audit-logger")
 @Component
 public class HttpLoggingFilter extends OncePerRequestFilter {
 
-    public static final String LOG_ITEM_DELIMITER = ", ";
     private static final String REQUEST_ID_HEADER_KEY = "X-Request-Id";
     private static final String LOAD_BALANCER_HEADER_KEY = "X-Forwarded-For";
     private static final String AUTH_URL = "/auth/";
@@ -78,17 +79,6 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
             responseWrapper.copyBodyToResponse();
             MDC.clear();
         }
-    }
-
-    public static boolean shouldLogRequestBody(String httpMethod) {
-        return !HttpMethod.GET.matches(httpMethod) && !HttpMethod.DELETE.matches(httpMethod);
-    }
-
-    /**
-     * Trims, normalizes trailing whitespaces into single one and removes new lines.
-     */
-    public static String normalizeBody(String originalBody) {
-        return StringUtils.normalizeSpace(originalBody.replace("\n", "").replace("\r", ""));
     }
 
     private String getUniqueIdentifier(ContentCachingRequestWrapper request) {
@@ -144,12 +134,12 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
             .append(LOG_ITEM_DELIMITER).append("Source: ").append(source)
             .append(LOG_ITEM_DELIMITER).append("Target: ").append(target);
 
-        if (shouldLogRequestBody(httpMethod)) {
+        if (HttpLoggingUtils.shouldLogRequestBody(httpMethod, requestWrapper.getContentType())) {
             final var requestBody = new String(requestWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
             if (StringUtils.isBlank(requestBody)) {
                 requestSb.append(LOG_ITEM_DELIMITER).append("Request body is empty");
             } else {
-                var normalizedRequestBody = normalizeBody(requestBody);
+                var normalizedRequestBody = HttpLoggingUtils.normalizeBody(requestBody);
 
                 if (isAuthRequest(requestUri)) {
                     normalizedRequestBody = maskSensitiveData(normalizedRequestBody, PASSWORD_PATTERN);
@@ -182,19 +172,21 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
             .append("Response status: ").append(responseStatus).append(LOG_ITEM_DELIMITER);
 
         final var responseBody = new String(responseWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
-        if (StringUtils.isBlank(responseBody)) {
-            // this will be also empty when exception occurs
-            responseSb.append("Response body is empty");
-        } else {
-            var normalizedResponseBody = normalizeBody(responseBody);
+        if (HttpLoggingUtils.shouldLogResponseBody(responseWrapper.getContentType())) {
+            if (StringUtils.isBlank(responseBody)) {
+                // this will be also empty when exception occurs
+                responseSb.append("Response body is empty");
+            } else {
+                var normalizedResponseBody = HttpLoggingUtils.normalizeBody(responseBody);
 
-            if (isAuthRequest(requestUri)) {
-                for (var pattern : SENSITIVE_DATA_PATTERNS) {
-                    normalizedResponseBody = maskSensitiveData(normalizedResponseBody, pattern);
+                if (isAuthRequest(requestUri)) {
+                    for (var pattern : SENSITIVE_DATA_PATTERNS) {
+                        normalizedResponseBody = maskSensitiveData(normalizedResponseBody, pattern);
+                    }
                 }
-            }
 
-            responseSb.append("Response body: ").append(normalizedResponseBody);
+                responseSb.append("Response body: ").append(normalizedResponseBody);
+            }
         }
 
         log.info(responseSb.toString());
